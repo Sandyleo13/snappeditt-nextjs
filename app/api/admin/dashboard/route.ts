@@ -83,9 +83,10 @@ export async function GET() {
     // Recent orders
     const [recentOrders]: any = await db.execute(`
       SELECT p.id, p.total, p.created_at, p.paypal_order_id, p.user_name, p.user_email, p.service_name, p.qty,
-        o.status
+        oi.status
       FROM payments p
       LEFT JOIN orders o ON p.order_id = o.id
+      LEFT JOIN order_items oi ON oi.order_id = o.id
       ORDER BY p.created_at DESC
       LIMIT 10
     `);
@@ -108,7 +109,7 @@ export async function GET() {
       SELECT 
         status,
         COUNT(*) as count
-      FROM orders
+      FROM order_items
       GROUP BY status
     `);
 

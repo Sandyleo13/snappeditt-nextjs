@@ -36,29 +36,23 @@ export default async function UserDashboard() {
 
     const [orders]: any = await connection.execute(
       `SELECT 
-        o.id, o.status, p.total, p.paypal_order_id, o.created_at,
+        o.id, o.paypal_order_id, o.total, o.created_at,
         GROUP_CONCAT(oi.service_name ORDER BY oi.id SEPARATOR ', ') AS service_names,
         SUM(oi.qty) AS total_qty
        FROM orders o
-       LEFT JOIN payments p ON p.order_id = o.id
        LEFT JOIN order_items oi ON oi.order_id = o.id
        WHERE o.user_id = ?
-       GROUP BY o.id, o.status, p.total, p.paypal_order_id, o.created_at
+       GROUP BY o.id, o.paypal_order_id, o.total, o.created_at
        ORDER BY o.created_at DESC`,
       [user_id]
     );
 
     const totalOrders = orders.length;
     const completedOrders = orders.filter(
-      (o: any) =>
-        o.status === "Completed" ||
-        (o.paypal_order_id && !o.paypal_order_id.startsWith("PAYLATER-"))
+      (o: any) => o.paypal_order_id && !o.paypal_order_id.startsWith("PAYLATER-")
     ).length;
     const pendingOrders = orders.filter(
-      (o: any) =>
-        o.status !== "Completed" &&
-        o.paypal_order_id &&
-        o.paypal_order_id.startsWith("PAYLATER-")
+      (o: any) => o.paypal_order_id && o.paypal_order_id.startsWith("PAYLATER-")
     ).length;
     const totalSpent = orders.reduce(
       (sum: number, order: any) => sum + Number(order.total || 0),
@@ -144,12 +138,7 @@ export default async function UserDashboard() {
               ) : (
                 recentOrders.map((order: any) => {
                   const isPaylater = order.paypal_order_id?.startsWith("PAYLATER-");
-                  const label =
-                    order.status === "Completed"
-                      ? "Completed"
-                      : isPaylater
-                      ? "Pending"
-                      : "Processing";
+                  const label = isPaylater ? "Pending" : "Completed";
                   const cls =
                     label === "Completed"
                       ? "bg-emerald-100 text-emerald-700"
