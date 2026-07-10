@@ -1,0 +1,36 @@
+"use client";
+
+import "./globals.css";
+import Navbar from "../components/layout/Navbar";
+import { Footer } from "../components/layout/Footer";
+import FloatingCheckoutButton from "../components/shared/FloatingCheckoutButton";
+import { usePathname } from "next/navigation";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className="bg-[#F8F9FB]">
+        <ConditionalLayout>{children}</ConditionalLayout>
+      </body>
+    </html>
+  );
+}
+
+function ConditionalLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isUserRoute = pathname.startsWith("/user");
+
+  if (isAdminRoute || isUserRoute) {
+    return <>{children}</>;
+  }
+
+  return (
+    <>
+      <Navbar />
+      <main className="bg-[#F8F9FB]">{children}</main>
+      <Footer />
+      <FloatingCheckoutButton />
+    </>
+  );
+}

@@ -1,0 +1,359 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary Colors */
+  --primary: #F44336;
+  --primary-hover: #E53935;
+  --primary-dark: #D32F2F;
+  --primary-light: #FFE9E8;
+
+  /* Neutral Colors */
+  --background: #F3F4F6;
+  --white: #FFFFFF;
+  --border: #E5E7EB;
+  --divider: #D9D9D9;
+
+  /* Accent Colors */
+  /* Accent colors (mapped to primary-based subtle gradients to match screenshot) */
+  --accent-from: #F44336;
+  --accent-to: #FF6B6B;
+  --accent-muted-from: #FFF0F0;
+  --accent-muted-to: #FFF6F6;
+
+  /* Footer Colors */
+  --footer-background: #0f172a;
+  --footer-surface: #111827;
+  --footer-text: #ffffff;
+  --footer-muted: #cbd5e1;
+  --footer-border: rgba(255, 255, 255, 0.12);
+  --footer-divider: rgba(255, 255, 255, 0.18);
+
+  /* Text Colors */
+  --text-heading: #0f1724;
+  --text-paragraph: #6b7280;
+  --text-menu: #374151;
+  --text-light: #9ca3af;
+
+  /* Design Tokens */
+  --radius: 16px;
+  --radius-btn: 12px;
+  --radius-badge: 999px;
+  --shadow-card: 0 14px 40px rgba(2,6,23,0.06);
+  --shadow-button: 0 8px 20px rgba(244, 67, 54, 0.18);
+  --transition: 0.3s ease;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--text-heading);
+  --font-sans: "Poppins", "Inter", var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-paragraph);
+  font-family: "Poppins", "Inter", sans-serif;
+}
+
+/* app/globals.css or component CSS module */
+
+/* app/globals.css or component CSS module */
+
+/* Base styles for mobile first */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Prevent horizontal scroll on mobile */
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Improve touch scrolling */
+  .scroll-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom scrollbar for desktop */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+  }
+}
+
+/* Red scrollbar utility (use class `scrollbar-red`) */
+.scrollbar-red {
+  scrollbar-color: var(--primary) var(--background);
+}
+
+@media (min-width: 768px) {
+  .scrollbar-red::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  .scrollbar-red::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  .scrollbar-red::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+  }
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch-friendly buttons */
+button {
+  touch-action: manipulation;
+}
+
+/* Prevent text selection on interactive elements */
+.floating-element,
+.slider-handle {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Loading animation for images */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Optimize animations for mobile */
+@media (max-width: 767px) {
+  .floating-element {
+    will-change: transform, opacity;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .floating-element,
+    .scroll-indicator {
+      animation: none;
+    }
+  }
+}
+
+/* Ensure proper spacing on very small screens */
+@media (max-width: 360px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem !important;
+  }
+  
+  .text-base {
+    font-size: 0.875rem;
+  }
+}
+
+/* Improve font rendering */
+h1, h2, h3, h4, p {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Safe area insets for iPhone X and newer */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+
+/* Add to your globals.css or component CSS module */
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes slow-clouds {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes swirling-clouds {
+  0% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(180deg) translateX(50px); }
+  100% { transform: rotate(360deg) translateX(0); }
+}
+
+@keyframes lightning-storm {
+  0%, 90% { opacity: 0.1; }
+  95%, 100% { opacity: 1; }
+}
+
+@keyframes aurora-waves {
+  0%, 100% { 
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+  50% { 
+    transform: translateY(-20px) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes twinkling-stars {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes rainbow-pulse {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(180deg); }
+}
+
+@keyframes rolling-fog {
+  0% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-10px) scale(1.2); opacity: 0.6; }
+  100% { transform: translateY(0) scale(1); opacity: 0.3; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Sky particle animations */
+.sky-particle {
+  will-change: transform, opacity;
+}
+
+.sky-particle.star {
+  animation: twinkling-stars 3s infinite alternate;
+}
+
+.sky-particle.aurora {
+  width: 40px;
+  height: 4px;
+  background: linear-gradient(90deg, #00F260, #0575E6, #8A2387);
+  border-radius: 2px;
+  animation: aurora-waves 4s infinite ease-in-out;
+}
+
+.sky-particle.cloud {
+  font-size: 24px;
+  opacity: 0.8;
+  animation: slow-clouds 20s infinite linear;
+}
+
+.sky-particle.lightning {
+  animation: lightning-storm 2s infinite;
+}
+
+.sky-particle.sun-ray {
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, #FFD700, transparent);
+  animation: pulse 2s infinite;
+}
+
+.sky-particle.rainbow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+  animation: rainbow-pulse 3s infinite;
+}
+
+/* Smooth transitions */
+.sky-canvas {
+  transition: background 0.8s ease;
+}
+
+.sky-overlay {
+  transition: opacity 0.5s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sky-particle {
+    font-size: 16px !important;
+  }
+  
+  .sun {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+/* Touch improvements */
+.sky-particle {
+  touch-action: none;
+}
+
+/* Performance optimizations */
+.sky-canvas {
+  will-change: background;
+  transform: translateZ(0);
+}
+.input {
+  @apply w-full rounded-xl px-3 py-2 text-sm;
+  border: 1px solid var(--border);
+}
+
+.input:focus {
+  border-color: var(--primary);
+  outline: none;
+  ring: 1px solid var(--primary);
+}
+
+/* Hide browser-injected password reveal icons */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
