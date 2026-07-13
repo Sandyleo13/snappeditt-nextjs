@@ -151,18 +151,18 @@ export default function ArchitectureRetouchPage() {
             className="absolute right-[30%] bottom-[18%] w-3 h-3 rounded-full bg-[#E8352A]/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
             {/* ── LEFT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0 w-full max-w-3xl px-2 sm:px-0"
               initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}>
 
             
 
               {/* Heading */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight">
                 <motion.span className="block text-[#1A1A1A]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.55 }}>
                   Architecture
@@ -174,23 +174,23 @@ export default function ArchitectureRetouchPage() {
               </h1>
 
               {/* Subheading */}
-              <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug"
+              <motion.p className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#333] leading-snug max-w-2xl"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
                 Professional Building Enhancement
               </motion.p>
 
               {/* Description */}
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.54, duration: 0.5 }}>
                 Transform architectural photography into stunning visual presentations. Enhance building
                 aesthetics, correct perspectives, and create professional architectural visuals.
               </motion.p>
 
               {/* CTAs */}
-              <motion.div className="flex flex-wrap gap-3 pt-1"
+              <motion.div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1 justify-center lg:justify-start w-full"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.66, duration: 0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
+                  className="inline-flex justify-center items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105 w-full sm:w-auto">
            
                 Get Start For Free
               
@@ -222,7 +222,7 @@ export default function ArchitectureRetouchPage() {
             </motion.div>
 
             {/* ── RIGHT: slider + toolbar + floating tool panel ── */}
-            <motion.div className="relative flex flex-col items-center lg:pr-16"
+            <motion.div className="relative flex flex-col items-center lg:pr-16 w-full max-w-full"
               initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
 
@@ -246,7 +246,7 @@ export default function ArchitectureRetouchPage() {
 
               {/* Before/After card */}
               <div ref={sliderRef}
-                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full"
+                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full max-w-full"
                 style={{ aspectRatio: '4/3', border: '2px solid rgba(255,255,255,0.9)' }}
                 onMouseMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
@@ -282,10 +282,10 @@ export default function ArchitectureRetouchPage() {
               </div>
 
               {/* Editor toolbar */}
-              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-3 py-3 flex items-center justify-between gap-1">
+              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-3 py-3 flex flex-wrap items-center justify-center gap-2">
                 {editorTabs.map(tab => (
                   <button key={tab} onClick={() => setActiveTab(tab)}
-                    className={`flex flex-col items-center gap-1 flex-1 py-1.5 rounded-lg transition-all ${
+                    className={`flex flex-col items-center gap-1 flex-1 min-w-[96px] py-1.5 rounded-lg transition-all ${
                       activeTab === tab ? 'bg-[#E8352A]/10 text-[#E8352A]' : 'text-[#888] hover:text-[#555]'
                     }`}>
                     {tab === 'Perspective' && <Grid    className="w-4 h-4" />}
@@ -300,7 +300,7 @@ export default function ArchitectureRetouchPage() {
           </div>
 
           {/* Stats bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto px-2 sm:px-0"
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
             {stats.map((s, i) => (
               <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
@@ -336,11 +336,11 @@ export default function ArchitectureRetouchPage() {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch px-4 sm:px-0">
             {/* Slider */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col w-full max-w-full">
               <div ref={sliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px]"
+                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px] w-full max-w-full"
                 onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
@@ -365,7 +365,7 @@ export default function ArchitectureRetouchPage() {
                 <span className="absolute bottom-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">Original</span>
                 <span className="absolute bottom-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1 rounded-full">Enhanced</span>
               </div>
-              <div className="flex items-center justify-center gap-3 mt-5">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-5 w-full">
                 <button onClick={() => changeImage((currentImageIndex - 1 + imageExamples.length) % imageExamples.length)}
                   className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow">
                   <ChevronLeft className="w-4 h-4" /> Prev
@@ -378,7 +378,7 @@ export default function ArchitectureRetouchPage() {
             </div>
 
             {/* Service card */}
-            <div className="w-full lg:w-80 xl:w-96 bg-white rounded-2xl border border-[#E5E7EB] shadow-md p-6 flex flex-col">
+            <div className="w-full lg:w-80 xl:w-96 max-w-xl bg-white rounded-2xl border border-[#E5E7EB] shadow-md p-6 flex flex-col mx-auto lg:mx-0">
               <h3 className="text-xl sm:text-2xl font-bold text-[#E8352A] mb-2">Architecture Retouching</h3>
               <p className="text-[#555] text-sm mb-5 leading-relaxed">
                 Professional enhancement of architectural photography for stunning visual presentations.
@@ -387,7 +387,7 @@ export default function ArchitectureRetouchPage() {
                 $0.20 <span className="text-base font-normal text-[#555]">/ image</span>
               </div>
               <button onClick={addToCart}
-                className="w-full bg-[#E8352A] hover:bg-[#C62B20] text-white font-semibold py-2.5 rounded-lg transition-all mb-5 shadow-sm text-sm">
+                className="w-full bg-[#E8352A] hover:bg-[#C62B20] text-white font-semibold py-3 rounded-lg transition-all mb-5 shadow-sm text-sm">
                 Add to Cart
               </button>
               <ul className="flex flex-col gap-2.5 mb-6 flex-1">

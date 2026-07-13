@@ -232,7 +232,7 @@ export default function ThreeDFloorPlansPage() {
           @keyframes fpCCW3 { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 py-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-12 xl:px-16 py-20 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
 
             {/* ── LEFT TEXT ── */}
@@ -244,9 +244,9 @@ export default function ThreeDFloorPlansPage() {
               <div>
                 <motion.h1 className="font-extrabold leading-[1.06] tracking-tight"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
-                  <span className="text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">3D</span>
-                  <span className="text-5xl md:text-6xl lg:text-7xl text-[#1A1A1A]"> Floor </span>
-                  <span className="text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">Plans</span>
+                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">3D</span>
+                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#1A1A1A]"> Floor </span>
+                  <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">Plans</span>
                 </motion.h1>
                 <motion.p className="text-2xl md:text-3xl font-bold text-[#1A1A1A] leading-snug mt-2"
                   initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>

@@ -475,7 +475,7 @@ export default function HRDBasicPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
-                <button className="text-[#F44336] font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                <button className="text-[#F44336] font-semibold flex items-center gap-2 whitespace-nowrap transition-all">
                   Learn more
                   <ArrowRight className="w-4 h-4" />
                 </button>

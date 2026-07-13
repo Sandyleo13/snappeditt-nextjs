@@ -177,11 +177,11 @@ export default function DigitalDeclutterPage() {
           @keyframes ddCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
             {/* ── LEFT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left w-full max-w-xl mx-auto lg:max-w-none lg:mx-0"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }}
               transition={{ duration:0.7, ease:'easeOut' }}>
 
@@ -193,31 +193,30 @@ export default function DigitalDeclutterPage() {
               </motion.div>
 
               {/* Heading */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight">
-                
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight max-w-xl mx-auto lg:mx-0">
                 <motion.span className="block text-[#E8352A]"
-               
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.30, duration:0.55 }}>
-                   De-
-                </motion.span>clutter
+                  De-
+                </motion.span>
+                clutter
               </h1>
 
-              <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug"
+              <motion.p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#333] leading-snug max-w-xl mx-auto lg:mx-0"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.42, duration:0.5 }}>
                 Organization & Cleanup Magic
               </motion.p>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.54, duration:0.5 }}>
                 Transform digital chaos into organized perfection. Watch as AI magically organizes files,
                 removes duplicates, and creates order from digital mess.
               </motion.p>
 
               {/* CTAs */}
-              <motion.div className="flex flex-wrap gap-3 pt-1"
+              <motion.div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1 justify-center lg:justify-start w-full max-w-xl mx-auto lg:mx-0"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.66, duration:0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
+                  className="inline-flex justify-center items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105 w-full sm:w-auto">
                   Get Start For Free
                 </Link>
               </motion.div>
@@ -338,10 +337,10 @@ export default function DigitalDeclutterPage() {
             </p>
           </div>
 
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
-            <div className="flex-1 flex flex-col">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch px-4 sm:px-0">
+            <div className="flex-1 flex flex-col w-full max-w-full">
               <div ref={gallerySliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px]"
+                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px] w-full max-w-full"
                 onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
@@ -366,19 +365,19 @@ export default function DigitalDeclutterPage() {
                 <span className="absolute bottom-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">Cluttered</span>
                 <span className="absolute bottom-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1 rounded-full">Decluttered</span>
               </div>
-              <div className="flex items-center justify-center gap-3 mt-5">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-5 w-full">
                 <button onClick={() => changeImage((currentImageIndex-1+imageExamples.length)%imageExamples.length)}
-                  className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow">
+                  className="flex items-center justify-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow w-full sm:w-auto">
                   <ChevronLeft className="w-4 h-4"/> Prev
                 </button>
                 <button onClick={() => changeImage((currentImageIndex+1)%imageExamples.length)}
-                  className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow">
+                  className="flex items-center justify-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow w-full sm:w-auto">
                   Next <ChevronRight className="w-4 h-4"/>
                 </button>
               </div>
             </div>
 
-            <div className="w-full lg:w-80 xl:w-96 bg-white rounded-2xl border border-[#E5E7EB] shadow-md p-6 flex flex-col">
+            <div className="w-full lg:w-80 xl:w-96 max-w-xl bg-white rounded-2xl border border-[#E5E7EB] shadow-md p-6 flex flex-col mx-auto lg:mx-0">
               <h3 className="text-xl sm:text-2xl font-bold text-[#E8352A] mb-2">De-Clutter Objects</h3>
               <p className="text-[#555] text-sm mb-5 leading-relaxed">
                 Professional removal of clutter and unwanted objects from real estate photos.
@@ -418,7 +417,7 @@ export default function DigitalDeclutterPage() {
               Comprehensive digital cleanup for photographers and real estate studios.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 sm:px-0">
             {services.map((service, i) => (
               <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
                 <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">

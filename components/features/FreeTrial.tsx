@@ -263,59 +263,37 @@ export function FreeTrialUpload() {
   }, []);
 
   return (
-    <section
+       <section
       ref={sectionRef}
-     className="relative w-full min-h-screen flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#f3f4f6]"
+      className="relative w-full min-h-screen flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#f3f4f6]"
     >
-      {/* Background Elements */}
       <div className="absolute inset-0 bg-[#f3f4f6]" />
 
       <div className="relative max-w-7xl mx-auto py-12">
-        {/* Header */}
         <div className="text-center mb-16 animate-on-scroll">
-          {/* <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", duration: 0.8 }}
-            className="inline-flex items-center justify-center w-20 h-20 mb-8 rounded-3xl bg-gradient-to-r from-white-500 to-red-500 shadow-2xl shadow-blue-500/30"
-          >
-            <Wand2 className="w-10 h-10 text-white" />
-          </motion.div> */}
-          
           <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">
-            Try{" "}
-            <span className="text-[#F44336]">
-              SnappEditt AI
-            </span>{" "}
-            Free
+            Try <span className="text-[#F44336]">SnappEditt AI</span> Free
           </h2>
-          
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Upload your photos and experience professional AI editing. No sign-up required.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 items-start lg:items-center">
-          {/* Left Column - Features */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 items-start">
           <div className="space-y-8">
             <div className="features-grid space-y-6">
               {features.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
                   <div key={index} className="feature-card">
-                    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200
-                     hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-red-50 flex items-center justify-center">
                           <Icon className="w-7 h-7 text-[#F44336]" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-slate-900 mb-2">
-                            {feature.title}
-                          </h3>
-                          <p className="text-slate-600">
-                            {feature.description}
-                          </p>
+                          <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
+                          <p className="text-slate-600">{feature.description}</p>
                         </div>
                       </div>
                     </div>
@@ -324,72 +302,35 @@ export function FreeTrialUpload() {
               })}
             </div>
 
-            {/* Stats */}
             <div className="bg-red-50 rounded-2xl p-6 shadow-sm border border-red-200">
               <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <Star className="w-5 h-5 text-red-600" />
-                Free Trial Includes
+                <Star className="w-5 h-5 text-red-600" /> Free Trial Includes
               </h3>
               <ul className="space-y-3">
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#F44336]" />
-                  <span className="text-slate-600">Up to 5 images</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#F44336]" />
-                  <span className="text-slate-600">All editing services</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#F44336]" />
-                  <span className="text-slate-600">7-day access</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#F44336]" />
-                  <span className="text-slate-600">No watermark</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#F44336]" />
-                  <span className="text-slate-600">Full resolution</span>
-                </li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#F44336]" /><span className="text-slate-600">Up to 5 images</span></li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#F44336]" /><span className="text-slate-600">All editing services</span></li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#F44336]" /><span className="text-slate-600">7-day access</span></li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#F44336]" /><span className="text-slate-600">No watermark</span></li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#F44336]" /><span className="text-slate-600">Full resolution</span></li>
               </ul>
             </div>
           </div>
 
-          {/* Center Column - Upload Area */}
-          <div className="lg:col-span-2">
+          <div>
             <div className="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden">
-              {/* Progress Steps */}
               <div className="p-6 border-b border-slate-200">
                 <div className="flex items-center justify-between">
                   {['Upload', 'Edit', 'Download'].map((step, index) => (
-                    <div key={step} className="flex items-center">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center 
-                      bg-gradient-to-r from-[#F44336] to-[#F44336] text-white">
-                        {index === 0 ? (
-                          <Upload className="w-5 h-5 text-white" />
-                        ) : index === 1 ? (
-                          <Wand2 className="w-5 h-5 text-white" />
-                        ) : (
-                          <Download className="w-5 h-5 text-white" />
-                        )}
-                      </div>
-                      {index < 2 && (
-                        <div className="w-16 h-1 mx-2 bg-gradient-to-r from-[#F44336] to-[#F44336]" />
-                      )}
-                    </div>
+                    <div key={step} className="flex items-center" />
                   ))}
                 </div>
               </div>
 
-              {/* Main Content */}
               <div className="p-6 md:p-8">
                 {processedImages.length === 0 ? (
                   <>
-                    {/* Service Selection */}
                     <div className="mb-8">
-                      <h3 className="text-lg font-bold text-slate-900 mb-4">
-                        Select Editing Service
-                      </h3>
+                      <h3 className="text-lg font-bold text-slate-900 mb-4">Select Editing Service</h3>
                       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                         {services.map((service) => {
                           const IconComponent = service.icon;
@@ -397,107 +338,46 @@ export function FreeTrialUpload() {
                             <button
                               key={service.id}
                               onClick={() => setSelectedService(service.id)}
-                              className={`group p-3 rounded-xl border-2 transition-all duration-300 ${
-                                selectedService === service.id
-                                  ? `border-red-600 bg-[#F44336]-50`
-                                  : 'border-slate-300 bg-white hover:border-red-400 hover:bg-red-50'
-                              }`}
-                            >
+                              className={`group p-3 rounded-xl border-2 transition-all duration-300 ${selectedService === service.id ? 'border-red-600 bg-red-50' : 'border-slate-300 bg-white hover:border-red-400 hover:bg-red-50'}`}>
                               <div className="mb-2 flex justify-center">
-                                <IconComponent className={`w-6 h-6 transition-colors duration-300 
-                                  ${selectedService === service.id ? 'text-[#F44336]' : 'text-[#F44336]'}`} />
+                                <IconComponent className="w-6 h-6 text-[#F44336]" />
                               </div>
-                              <div className={`text-sm font-medium ${selectedService === service.id ? 
-                                'text-red-700' : 'text-slate-900'}`}>
-                                {service.name}
-                              </div>
-                              <div className="text-xs text-slate-600 mt-1">
-                                {service.estimatedTime}
-                              </div>
+                              <div className={`text-sm font-medium ${selectedService === service.id ? 'text-red-700' : 'text-slate-900'}`}>{service.name}</div>
+                              <div className="text-xs text-slate-600 mt-1">{service.estimatedTime}</div>
                             </button>
                           );
                         })}
                       </div>
                     </div>
 
-                    {/* Upload Area */}
                     <div
                       ref={uploadAreaRef}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                       onClick={() => fileInputRef.current?.click()}
-                      className={`relative mb-8 rounded-2xl border-3 border-dashed transition-all duration-300 cursor-pointer ${
-                        isDragging
-                          ? 'border-[#F44336] bg-[#F44336] scale-105'
-                          : 'border-slate-300 hover:border-[#F44336] hover:bg-slate-50'
-                      } ${uploadedFiles.length > 0 ? 'h-auto' : 'h-64'}`}
+                      className={`relative mb-8 rounded-2xl border-3 border-dashed transition-all duration-300 cursor-pointer ${isDragging ? 'border-[#F44336] bg-[#F44336] scale-105' : 'border-slate-300 hover:border-[#F44336] hover:bg-slate-50'} ${uploadedFiles.length > 0 ? 'h-auto' : 'h-64'}`}
                     >
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        multiple
-                        accept="image/*"
-                        onChange={handleFileInput}
-                        className="hidden"
-                      />
-
+                      <input ref={fileInputRef} type="file" multiple accept="image/*" onChange={handleFileInput} className="hidden" />
                       {uploadedFiles.length === 0 ? (
                         <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-                          <div className="w-20 h-20 rounded-full bg-[#F44336]/10 flex items-center justify-center mb-4">
-                            <Upload className="w-10 h-10 text-[#F44336]" />
-                          </div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">
-                            Drag & Drop Your Images
-                          </h3>
-                          <p className="text-slate-600 text-center mb-4">
-                            or click to browse. Supports JPG, PNG, WEBP
-                          </p>
-                          <div className="flex items-center gap-2 text-sm text-slate-600">
-                            <MousePointerClick className="w-4 h-4" />
-                            <span>Max 5 images • Up to 10MB each</span>
-                          </div>
+                          <div className="w-20 h-20 rounded-full bg-[#F44336]/10 flex items-center justify-center mb-4"><Upload className="w-10 h-10 text-[#F44336]" /></div>
+                          <h3 className="text-xl font-bold text-slate-900 mb-2">Drag & Drop Your Images</h3>
+                          <p className="text-slate-600 text-center mb-4">or click to browse. Supports JPG, PNG, WEBP</p>
+                          <div className="flex items-center gap-2 text-sm text-slate-600"><MousePointerClick className="w-4 h-4" /><span>Max 5 images • Up to 10MB each</span></div>
                         </div>
                       ) : (
                         <div className="p-6">
                           <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-bold text-slate-900">
-                              Selected Images ({uploadedFiles.length}/5)
-                            </h3>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                fileInputRef.current?.click();
-                              }}
-                              className="text-sm text-red-600 hover:text-[#F44336] font-medium"
-                            >
-                              + Add More
-                            </button>
+                            <h3 className="text-lg font-bold text-slate-900">Selected Images ({uploadedFiles.length}/5)</h3>
+                            <button onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }} className="text-sm text-red-600 hover:text-[#F44336] font-medium">+ Add More</button>
                           </div>
-                          
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                             {uploadedFiles.map((file, index) => (
                               <div key={index} className="relative group">
-                                <div className="aspect-square rounded-xl overflow-hidden bg-slate-100">
-                                  <div className="w-full h-full flex items-center justify-center">
-                                    <ImageIcon className="w-12 h-12 text-slate-400" />
-                                  </div>
-                                </div>
-                                <div className="mt-2 text-xs text-slate-600 truncate">
-                                  {file.name.length > 15 
-                                    ? `${file.name.substring(0, 12)}...` 
-                                    : file.name}
-                                </div>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    removeFile(index);
-                                  }}
-                                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full
-                                  bg-white border-2 border-[#F44336] text-[#F44336] bg-[#F44336] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
+                                <div className="aspect-square rounded-xl overflow-hidden bg-slate-100"><div className="w-full h-full flex items-center justify-center"><ImageIcon className="w-12 h-12 text-slate-400" /></div></div>
+                                <div className="mt-2 text-xs text-slate-600 truncate">{file.name.length > 15 ? `${file.name.substring(0,12)}...` : file.name}</div>
+                                <button onClick={(e)=>{ e.stopPropagation(); removeFile(index); }} className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border-2 border-[#F44336] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X className="w-3 h-3 text-[#F44336]" /></button>
                               </div>
                             ))}
                           </div>
@@ -505,161 +385,58 @@ export function FreeTrialUpload() {
                       )}
                     </div>
 
-                    {/* Email Input (Optional) */}
                     <div className="mb-8">
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Email for results (optional)
-                      </label>
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="your@email.com"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900
-                        focus:border-[#F44336]-500 focus:ring-2 focus:ring-[#F44336]/20 outline-none transition-all"
-                      />
-                      <p className="text-sm text-slate-600 mt-2">
-                        We'll send your edited photos here. No spam, ever.
-                      </p>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Email for results (optional)</label>
+                      <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="your@email.com" className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 focus:border-[#F44336] focus:ring-2 focus:ring-[#F44336]/20 outline-none transition-all" />
+                      <p className="text-sm text-slate-600 mt-2">We'll send your edited photos here. No spam, ever.</p>
                     </div>
 
-                    {/* Submit Button */}
-                    <button
-                      onClick={handleSubmit}
-                      disabled={uploadedFiles.length === 0 || isProcessing}
-                      className="group relative w-full py-4 bg-[#F44336] text-white 
-                      font-bold rounded-xl hover:shadow-lg hover:shadow-[#F44336]/30 transition-all 
-                      duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#E53935]"
-                    >
-                      {isProcessing ? (
-                        <div className="flex items-center justify-center gap-3">
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          <span>Processing {processingProgress}%</span>
-                        </div>
-                      ) : (
-                        <span className="relative z-10 flex items-center justify-center gap-3">
-                          <Sparkles className="w-5 h-5" />
-                          Process {uploadedFiles.length} Image{uploadedFiles.length !== 1 ? 's' : ''} Free
-                        </span>
-                      )}
+                    <button onClick={handleSubmit} disabled={uploadedFiles.length === 0 || isProcessing} className="group relative w-full py-4 bg-[#F44336] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#F44336]/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#E53935]">
+                      {isProcessing ? (<div className="flex items-center justify-center gap-3"><Loader2 className="w-5 h-5 animate-spin" /> <span>Processing {processingProgress}%</span></div>) : (<span className="relative z-10 flex items-center justify-center gap-3"><Sparkles className="w-5 h-5" /> Process {uploadedFiles.length} Image{uploadedFiles.length !== 1 ? 's' : ''} Free</span>)}
                     </button>
                   </>
                 ) : (
-                  /* Results Section */
                   <div className="animate-on-scroll">
                     <div className="text-center mb-8">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F44336] mb-4">
-                        <CheckCircle className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                        Your Photos Are Ready!
-                      </h3>
-                      <p className="text-slate-600">
-                        AI has transformed your {uploadedFiles.length} image{uploadedFiles.length !== 1 ? 's' : ''}
-                      </p>
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F44336] mb-4"><CheckCircle className="w-8 h-8 text-white" /></div>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-2">Your Photos Are Ready!</h3>
+                      <p className="text-slate-600">AI has transformed your {uploadedFiles.length} image{uploadedFiles.length !== 1 ? 's' : ''}</p>
                     </div>
 
-                    {/* Processed Images Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
                       {processedImages.map((img, index) => (
                         <div key={index} className="group relative">
-                          <div 
-                            onClick={() => openPreview(img)}
-                            className="aspect-square rounded-xl overflow-hidden bg-[#F44336]/10 cursor-pointer hover:scale-105 transition-transform duration-300"
-                          >
-                            <div className="w-full h-full flex items-center justify-center">
-                              <div className="text-center">
-                                <div className="w-12 h-12 rounded-full bg-[#F44336] flex items-center justify-center mx-auto mb-2">
-                                  <Eye className="w-6 h-6 text-white" />
-                                </div>
-                                <span className="text-sm font-medium text-slate-900">
-                                  Edited
-                                </span>
-                              </div>
-                            </div>
+                          <div onClick={() => openPreview(img)} className="aspect-square rounded-xl overflow-hidden bg-[#F44336]/10 cursor-pointer hover:scale-105 transition-transform duration-300">
+                            <div className="w-full h-full flex items-center justify-center"><div className="text-center"><div className="w-12 h-12 rounded-full bg-[#F44336] flex items-center justify-center mx-auto mb-2"><Eye className="w-6 h-6 text-white" /></div><span className="text-sm font-medium text-slate-900">Edited</span></div></div>
                           </div>
-                          <div className="mt-2 text-xs text-slate-600 text-center">
-                            {uploadedFiles[index]?.name.length > 15 
-                              ? `${uploadedFiles[index]?.name.substring(0, 12)}...` 
-                              : uploadedFiles[index]?.name}
-                          </div>
+                          <div className="mt-2 text-xs text-slate-600 text-center">{uploadedFiles[index]?.name.length > 15 ? `${uploadedFiles[index]?.name.substring(0,12)}...` : uploadedFiles[index]?.name}</div>
                         </div>
                       ))}
                     </div>
 
-                    {/* Action Buttons */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <button
-                        onClick={downloadAllImages}
-                        className="group relative py-3 px-6 bg-[#F44336] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#F44336]/30 transition-all hover:bg-[#E53935]"
-                      >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          <Download className="w-4 h-4" />
-                          Download All
-                        </span>
-                      </button>
-                      
-                      <button
-                        onClick={shareResults}
-                        className="py-3 px-6 bg-white text-slate-900 font-semibold rounded-xl border-2 border-slate-300 hover:border-[#F44336] transition-all"
-                      >
-                        <span className="flex items-center justify-center gap-2">
-                          <Share2 className="w-4 h-4" />
-                          Share Results
-                        </span>
-                      </button>
-                      
-                      <button
-                        onClick={() => {
-                          setUploadedFiles([]);
-                          setProcessedImages([]);
-                          setEmail("");
-                        }}
-                        className="py-3 px-6 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all"
-                      >
-                        <span className="flex items-center justify-center gap-2">
-                          <Upload className="w-4 h-4" />
-                          Edit More
-                        </span>
-                      </button>
+                      <button onClick={downloadAllImages} className="group relative py-3 px-6 bg-[#F44336] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#F44336]/30 transition-all hover:bg-[#E53935]"><span className="relative z-10 flex items-center justify-center gap-2"><Download className="w-4 h-4" /> Download All</span></button>
+                      <button onClick={shareResults} className="py-3 px-6 bg-white text-slate-900 font-semibold rounded-xl border-2 border-slate-300 hover:border-[#F44336] transition-all"><span className="flex items-center justify-center gap-2"><Share2 className="w-4 h-4" /> Share Results</span></button>
+                      <button onClick={() => { setUploadedFiles([]); setProcessedImages([]); setEmail(""); }} className="py-3 px-6 bg-slate-100 text-slate-700 font-semibold rounded-xl hover:bg-slate-200 transition-all"><span className="flex items-center justify-center gap-2"><Upload className="w-4 h-4" /> Edit More</span></button>
                     </div>
                   </div>
                 )}
 
-                {/* Processing Progress Bar */}
                 {isProcessing && (
                   <div className="mt-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-slate-700">
-                        AI is processing your images...
-                      </span>
-                      <span className="text-sm font-bold text-[#F44336]">
-                        {processingProgress}%
-                      </span>
-                    </div>
-                    <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-[#F44336] transition-all duration-300"
-                        style={{ width: `${processingProgress}%` }}
-                      />
-                    </div>
-                    <div className="flex items-center gap-2 mt-3 text-sm text-slate-600">
-                      <Sparkles className="w-4 h-4" />
-                      <span>Applying {services.find(s => s.id === selectedService)?.name} magic</span>
-                    </div>
+                    <div className="flex items-center justify-between mb-2"><span className="text-sm font-medium text-slate-700">AI is processing your images...</span><span className="text-sm font-bold text-[#F44336]">{processingProgress}%</span></div>
+                    <div className="h-3 bg-slate-200 rounded-full overflow-hidden"><div className="h-full bg-[#F44336] transition-all duration-300" style={{ width: `${processingProgress}%` }} /></div>
+                    <div className="flex items-center gap-2 mt-3 text-sm text-slate-600"><Sparkles className="w-4 h-4" /><span>Applying {services.find(s => s.id === selectedService)?.name} magic</span></div>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Info Box */}
             <div className="mt-6 bg-[#F44336]/10 rounded-2xl p-6 border border-[#F44336]/30">
               <div className="flex items-start gap-4">
                 <AlertCircle className="w-6 h-6 text-[#F44336] flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-bold text-slate-900 mb-2">
-                    How Our Free Trial Works
-                  </h4>
+                  <h4 className="font-bold text-slate-900 mb-2">How Our Free Trial Works</h4>
                   <ul className="text-slate-600 space-y-1">
                     <li>• Upload up to 5 images (max 10MB each)</li>
                     <li>• Choose any editing service</li>
@@ -673,63 +450,36 @@ export function FreeTrialUpload() {
           </div>
         </div>
 
-      {/* Trust Badges */}  
         <div className="text-center mt-16 animate-on-scroll">
           <p className="text-slate-700 mb-6">Trusted by professionals worldwide</p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {[
-              { icon: Camera, label: 'Photographers' },
-              { icon: Home, label: 'Real Estate Agents' },
-              { icon: Briefcase, label: 'Businesses' },
-              { icon: Smartphone, label: 'Social Media Creators' },
-              { icon: GraduationCap, label: 'Students' },
-            ].map((badge) => {
+            {[{ icon: Camera, label: 'Photographers' },{ icon: Home, label: 'Real Estate Agents' },{ icon: Briefcase, label: 'Businesses' },{ icon: Smartphone, label: 'Social Media Creators' },{ icon: GraduationCap, label: 'Students' }].map((badge) => {
               const BadgeIcon = badge.icon;
               return (
-                <div key={badge.label} className="flex items-center gap-2 text-slate-700">
-                  <BadgeIcon className="w-4 h-4 text-[#F44336]" />
-                  <span>{badge.label}</span>
-                </div>
+                <div key={badge.label} className="flex items-center gap-2 text-slate-700"><BadgeIcon className="w-4 h-4 text-[#F44336]" /><span>{badge.label}</span></div>
               );
             })}
           </div>
         </div>
       </div>
 
-      {/* Image Preview Modal */}
       {showPreview && previewImage && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="relative max-w-4xl w-full max-h-[90vh] rounded-2xl overflow-hidden bg-white">
             <div className="absolute top-4 right-4 z-10 flex gap-2">
-              <button
-                onClick={() => setShowPreview(false)}
-                className="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center hover:bg-slate-700 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button onClick={() => setShowPreview(false)} className="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center hover:bg-slate-700 transition-colors"><X className="w-5 h-5" /></button>
             </div>
             <div className="h-full flex items-center justify-center p-8">
               <div className="text-center">
-                <div className="w-32 h-32 rounded-2xl bg-[#F44336] flex items-center justify-center mx-auto mb-6 hover:bg-[#E53935] hover:scale-110 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#F44336]/50">
-                  <FileImage className="w-16 h-16 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                  Edited Image Preview
-                </h3>
-                <p className="text-slate-600 mb-6">
-                  In the full version, you would see the actual edited image here
-                </p>
-                <button
-                  onClick={() => setShowPreview(false)}
-                  className="px-6 py-3 bg-[#F44336] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#F44336]/30 transition-all hover:bg-[#E53935]"
-                >
-                  Close Preview
-                </button>
+                <div className="w-32 h-32 rounded-2xl bg-[#F44336] flex items-center justify-center mx-auto mb-6 hover:bg-[#E53935] hover:scale-110 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[#F44336]/50"><FileImage className="w-16 h-16 text-white" /></div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Edited Image Preview</h3>
+                <p className="text-slate-600 mb-6">In the full version, you would see the actual edited image here</p>
+                <button onClick={() => setShowPreview(false)} className="px-6 py-3 bg-[#F44336] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#F44336]/30 transition-all hover:bg-[#E53935]">Close Preview</button>
               </div>
             </div>
           </div>
         </div>
       )}
-    </section>
+    </section> 
   );
 }

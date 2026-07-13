@@ -172,57 +172,54 @@ export default function PerfectColorBalancePlusCullingPage() {
           @keyframes cpcCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 pt-16 sm:pt-20 pb-10 lg:pt-28 lg:pb-16">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
             {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col gap-5 sm:gap-6"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
 
-             
               {/* Heading */}
               <div>
-                <motion.h1 className="text-5xl text-[#F44336] md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
+                <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#F44336] font-extrabold leading-[1.06] tracking-tight"
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.55 }}>
-                  Color Balance + Culling
+                  Color Balance<br/>+ Culling
                 </motion.h1>
-               <motion.h1 className='text-5xl text-grey/900 mt-5  md:text-4xl lg:text-2xl font-bold leading-[1.06] tracking-tight'>
-                Complete Photo WorkFlow
-               </motion.h1>
-                
-               
+                <motion.p className="text-lg sm:text-xl md:text-2xl font-semibold text-[#333] leading-snug mt-2"
+                  initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3, duration:0.5 }}>
+                  Complete Photo WorkFlow
+                </motion.p>
               </div>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="text-sm sm:text-base md:text-lg text-[#666] leading-relaxed max-w-md"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.42, duration:0.5 }}>
                 The complete solution — AI corrects color imbalances across your entire shoot, then
                 intelligently culls duplicates and selects the best images, all in one pass.
               </motion.p>
 
-            
               {/* CTAs */}
               <motion.div className="flex flex-wrap gap-3 pt-1"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-                  <Zap className="w-4 h-4" /> Start Now <ArrowRight className="w-4 h-4" />
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
+                  Get Started For Free
                 </Link>
                 <button
                   onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  <Eye className="w-4 h-4" /> View Examples
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
+                  View Examples
                 </button>
               </motion.div>
-
-            
             </motion.div>
 
             {/* ── RIGHT: Slider + culling badge + feature badges ── */}
-            <motion.div className="flex flex-col gap-3 relative"
+            <motion.div className="flex flex-col gap-3 relative mt-8 lg:mt-0"
               initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
 
-              {/* Culling counter badge */}
-              <CullingBadge total={currentExample.total} selected={currentExample.selected} />
+              {/* Culling counter badge — hidden on smallest screens to avoid clip */}
+              <div className="hidden sm:block">
+                <CullingBadge total={currentExample.total} selected={currentExample.selected} />
+              </div>
 
               {/* Before/After slider */}
               <div ref={heroSliderRef}
@@ -256,8 +253,8 @@ export default function PerfectColorBalancePlusCullingPage() {
                 </div>
 
                 {/* Labels */}
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">Before</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">After</span>
+                <span className="absolute top-3 left-3 z-10 bg-[#1A1A1A]/75 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-lg backdrop-blur-sm">Before</span>
+                <span className="absolute top-3 right-3 z-10 bg-[#E8352A] text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-lg">After</span>
 
                 {/* Culling mini-cards overlay at bottom */}
                 <div className="absolute bottom-4 left-4 right-4 z-10 flex gap-2">
@@ -279,8 +276,8 @@ export default function PerfectColorBalancePlusCullingPage() {
                 </div>
               </div>
 
-              {/* Feature badges */}
-              <motion.div className="grid grid-cols-4 gap-2"
+              {/* Feature badges — 2-col on mobile, 4-col on sm+ */}
+              <motion.div className="grid grid-cols-2 sm:grid-cols-4 gap-2"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.9 }}>
                 {[
                   { icon:<Sun className="w-4 h-4"/>,              label:'White Balance',    sub:'Correction' },

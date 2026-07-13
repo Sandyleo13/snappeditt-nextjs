@@ -49,7 +49,7 @@ export default function PerfectColorBalancePage() {
     { title:'Tonal Balancing',          description:'Fine-tune shadows, midtones, and highlights for perfect tonal balance.',       icon:<Contrast className="w-6 h-6"/> },
   ];
 
-  /* ── Auto-animate slider ── */
+  /* -- Auto-animate slider -- */
   useEffect(() => {
     if (isDragging || isHoveringSlider) return;
     const id = window.setInterval(() => {
@@ -98,10 +98,10 @@ export default function PerfectColorBalancePage() {
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
 
-      {/* ══════════════════════════════════════  HERO  ══════════════════════════════════════ */}
+      {/* --------------------------------------  HERO  -------------------------------------- */}
       <section className="relative bg-[#F8F9FB] overflow-hidden">
 
-        {/* ── Animated background ── */}
+        {/* -- Animated background -- */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
             style={{ background:'radial-gradient(circle, rgba(232,53,42,0.09) 0%, transparent 70%)' }} />
@@ -146,10 +146,10 @@ export default function PerfectColorBalancePage() {
           @keyframes cbCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
-            {/* ── LEFT TEXT ── */}
+            {/* -- LEFT TEXT -- */}
             <motion.div className="flex flex-col gap-6"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
 
@@ -161,7 +161,7 @@ export default function PerfectColorBalancePage() {
                   initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.5 }}>
                   What is
                 </motion.p>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight mt-1"
+                <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight mt-1"
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.28, duration:0.55 }}>
                   <span className="text-[#E8352A]">Perfect</span> Color Balance?
                 </motion.h1>
@@ -192,7 +192,7 @@ export default function PerfectColorBalancePage() {
              
             </motion.div>
 
-            {/* ── RIGHT: Before/After Slider + floating badge + feature badges ── */}
+            {/* -- RIGHT: Before/After Slider + floating badge + feature badges -- */}
             <motion.div className="flex flex-col gap-3 relative"
               initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
 
@@ -207,7 +207,7 @@ export default function PerfectColorBalancePage() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold text-[#1A1A1A] leading-none">Color Balance Perfected!</p>
-                  <p className="text-[9px] text-[#999] mt-0.5">Natural • Vibrant • Balanced</p>
+                  <p className="text-[9px] text-[#999] mt-0.5">Natural � Vibrant � Balanced</p>
                 </div>
               </motion.div>
 
@@ -220,10 +220,10 @@ export default function PerfectColorBalancePage() {
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
                 onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
 
-                {/* AFTER — base */}
+                {/* AFTER � base */}
                 <div className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage:`url(${currentExample.afterImage})` }} />
-                {/* BEFORE — clipped */}
+                {/* BEFORE � clipped */}
                 <div className="absolute inset-0 overflow-hidden" style={{ width:`${sliderPosition}%` }}>
                   <div className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage:`url(${currentExample.beforeImage})`,
@@ -281,7 +281,7 @@ export default function PerfectColorBalancePage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════  GALLERY  ══════════════════════════════════════ */}
+      {/* --------------------------------------  GALLERY  -------------------------------------- */}
       <section id="gallery" className="py-16 sm:py-20 bg-[#F7F8FA]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
@@ -361,7 +361,7 @@ export default function PerfectColorBalancePage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════  SERVICES  ══════════════════════════════════════ */}
+      {/* --------------------------------------  SERVICES  -------------------------------------- */}
       <section id="services" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">

@@ -351,7 +351,7 @@ export default function AboutUsPage() {
                   >
                     <span className="flex items-center gap-2">
                       Try Free Trial
-                      <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                      <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </Link>
                   {/* <button className="inline-flex items-center justify-center rounded-3xl border border-slate-200 bg-white/90 px-8 py-4 text-[var(--text-heading)] transition-all duration-300 hover:border-[var(--primary)] hover:bg-white">

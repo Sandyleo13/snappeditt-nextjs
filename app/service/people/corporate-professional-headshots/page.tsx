@@ -218,11 +218,11 @@ export default function CorporateHeadshotPage() {
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
                 <Link href="/free-trial"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-                 Get Start For Free
+              Get Start For Free
                 </Link>
                 <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                   View Examples
+                  View Examples
                 </button>
               </motion.div>
 

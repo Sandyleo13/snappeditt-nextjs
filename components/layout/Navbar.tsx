@@ -138,13 +138,13 @@ export default function Navbar() {
             <nav className="hidden lg:flex items-center gap-8">
               <Link
                 href="/"
-                className="text-lm font-medium text-gray-600 hover:text-red-500 transition-colors duration-200"
+                className="text-lm font-medium text-gray-900 hover:text-red-500 transition-colors duration-200"
               >
                 Home
               </Link>
               <Link
                 href="/about-us"
-                className="text-lm font-medium text-gray-600 hover:text-red-500 transition-colors duration-200"
+                className="text-lm font-medium text-gray-900 hover:text-red-500 transition-colors duration-200"
               >
                 About Us
               </Link>
@@ -153,7 +153,7 @@ export default function Navbar() {
               <li className="list-none relative" ref={serviceRef}>
                 <button
                   onClick={() => { setServiceOpen(!serviceOpen); setActiveService(null); }}
-                  className="flex items-center gap-1 text-lm font-medium text-gray-600 hover:text-red-500 transition-colors duration-200"
+                  className="flex items-center gap-1 text-lm font-medium text-gray-900 hover:text-red-500 transition-colors duration-200"
                 >
                   Services
                   <ChevronDown
@@ -235,7 +235,7 @@ export default function Navbar() {
 
               <Link
                 href="/contact-us"
-                className="text-lm font-medium text-gray-600 hover:text-red-500 transition-colors duration-200"
+                className="text-lm font-medium text-gray-900 hover:text-red-500 transition-colors duration-200"
               >
                 Contact Us
               </Link>
@@ -245,7 +245,7 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-4">
               <Link
                 href="/cart"
-                className="relative p-2 text-gray-500 hover:text-red-500 transition-colors duration-200"
+                className="relative p-2 text-gray-900 hover:text-red-500 transition-colors duration-200"
                 aria-label="Cart"
               >
                 <ShoppingCart size={20} />
@@ -263,7 +263,7 @@ export default function Navbar() {
 
             {/* ── Mobile Hamburger ── */}
             <button
-              className="lg:hidden p-2 text-gray-600 hover:text-black transition-colors"
+              className="lg:hidden p-2 text-gray-900 hover:text-black transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -282,14 +282,14 @@ export default function Navbar() {
             <Link
               href="/"
               onClick={closeAll}
-              className="py-3 text-sm font-medium text-gray-700 hover:text-red-500 border-b border-gray-50 transition-colors"
+              className="py-3 text-sm font-medium text-gray-900 hover:text-red-500 border-b border-gray-50 transition-colors"
             >
               Home
             </Link>
             <Link
               href="/about-us"
               onClick={closeAll}
-              className="py-3 text-sm font-medium text-gray-700 hover:text-red-500 border-b border-gray-50 transition-colors"
+              className="py-3 text-sm font-medium text-gray-900 hover:text-red-500 border-b border-gray-50 transition-colors"
             >
               About Us
             </Link>
@@ -351,7 +351,7 @@ export default function Navbar() {
                 <Link
                   href="/cart"
                   onClick={closeAll}
-                  className="p-2 text-gray-500 hover:text-red-500 transition-colors"
+                  className="p-2 text-gray-900 hover:text-red-500 transition-colors"
                 >
                   <ShoppingCart size={20} />
                 </Link>
@@ -485,7 +485,7 @@ function FreeTrialModal({ open, onClose }: { open: boolean; onClose: () => void 
               Create free account
             </button>
 
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-gray-900">
               Already have an account?{" "}
               <Link href="/login" onClick={onClose} className="text-red-500 hover:underline font-medium">
                 Sign in

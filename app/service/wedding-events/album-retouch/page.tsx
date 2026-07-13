@@ -11,7 +11,7 @@ import {
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 
-/* ── Animated album pages counter ── */
+/* -- Animated album pages counter -- */
 function AlbumBadge({ pages }: { pages: number }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function AlbumRetouchPage() {
     { title:'Event Albums',    description:'Complete retouching for corporate and social event photo albums.',       icon:<Sparkles className="w-6 h-6"/> },
   ];
 
-  /* ── Auto-animate slider ── */
+  /* -- Auto-animate slider -- */
   useEffect(() => {
     if (isDragging || isHoveringSlider) return;
     const id = window.setInterval(() => {
@@ -124,7 +124,7 @@ export default function AlbumRetouchPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
 
-      {/* ══════════════════════════════════════  HERO  ══════════════════════════════════════ */}
+      {/* --------------------------------------  HERO  -------------------------------------- */}
       <section className="relative bg-[#F8F9FB] overflow-hidden">
 
         {/* Animated background */}
@@ -172,10 +172,10 @@ export default function AlbumRetouchPage() {
           @keyframes arCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
-            {/* ── LEFT TEXT ── */}
+            {/* -- LEFT TEXT -- */}
             <motion.div className="flex flex-col gap-6"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
 
@@ -183,7 +183,7 @@ export default function AlbumRetouchPage() {
 
               {/* Heading */}
               <div>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
+                <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.55 }}>
                   Album <span className="text-[#E8352A]">Retouch</span>
                 </motion.h1>
@@ -218,7 +218,7 @@ export default function AlbumRetouchPage() {
             
             </motion.div>
 
-            {/* ── RIGHT: Slider + album badge + feature badges ── */}
+            {/* -- RIGHT: Slider + album badge + feature badges -- */}
             <motion.div className="flex flex-col gap-3 relative"
               initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
 
@@ -234,10 +234,10 @@ export default function AlbumRetouchPage() {
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
                 onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
 
-                {/* AFTER — base */}
+                {/* AFTER � base */}
                 <div className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage:`url(${currentExample.afterImage})` }} />
-                {/* BEFORE — clipped */}
+                {/* BEFORE � clipped */}
                 <div className="absolute inset-0 overflow-hidden" style={{ width:`${sliderPosition}%` }}>
                   <div className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage:`url(${currentExample.beforeImage})`,
@@ -273,7 +273,7 @@ export default function AlbumRetouchPage() {
                   </div>
                   <div className="flex-1">
                     <p className="text-[9px] font-bold text-[#1A1A1A] leading-none">Page Layout Preview</p>
-                    <p className="text-[8px] text-[#999] mt-0.5">{currentExample.pages} pages • Consistent grading</p>
+                    <p className="text-[8px] text-[#999] mt-0.5">{currentExample.pages} pages � Consistent grading</p>
                   </div>
                 </motion.div>
               </div>
@@ -312,7 +312,7 @@ export default function AlbumRetouchPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════  GALLERY  ══════════════════════════════════════ */}
+      {/* --------------------------------------  GALLERY  -------------------------------------- */}
       <section id="gallery" className="py-16 sm:py-20 bg-[#F7F8FA]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
@@ -392,7 +392,7 @@ export default function AlbumRetouchPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════  SERVICES  ══════════════════════════════════════ */}
+      {/* --------------------------------------  SERVICES  -------------------------------------- */}
       <section id="services" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">

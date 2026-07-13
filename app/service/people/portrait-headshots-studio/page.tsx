@@ -214,7 +214,7 @@ export default function PortraitHeadshotsStudioPage() {
             
 
               {/* CTAs */}
-              <motion.div className="flex flex-wrap gap-3 pt-1"
+           <motion.div className="flex flex-wrap gap-3 pt-1"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
                 <Link href="/free-trial"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">

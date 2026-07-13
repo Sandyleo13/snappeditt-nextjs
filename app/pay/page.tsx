@@ -128,9 +128,9 @@ export default function PayLaterPage() {
 
           {/* ── Demo banner ── */}
           {isDemo && showBanner && !loading && (
-            <div className="flex items-center justify-between gap-3 bg-[#FFF8F0] border border-amber-200 rounded-2xl px-5 py-4">
-              <div className="flex items-center gap-3">
-                <span className="text-lg">🔔</span>
+            <div className="flex items-start sm:items-center justify-between gap-3 bg-[#FFF8F0] border border-amber-200 rounded-2xl px-4 sm:px-5 py-4">
+              <div className="flex items-start sm:items-center gap-3">
+                <span className="text-lg flex-shrink-0">🔔</span>
                 <p className="text-sm text-amber-900">
                   <span className="font-bold">Demo mode —</span>{' '}
                   No real pay-later orders found. Showing sample data so you can preview the layout.
@@ -138,7 +138,7 @@ export default function PayLaterPage() {
               </div>
               <button
                 onClick={() => setShowBanner(false)}
-                className="text-amber-400 hover:text-amber-600 transition-colors flex-shrink-0"
+                className="text-amber-400 hover:text-amber-600 transition-colors flex-shrink-0 mt-0.5"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -147,18 +147,18 @@ export default function PayLaterPage() {
 
           {/* ── Summary stats ── */}
           {!loading && (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {[
                 { label: 'Total Orders',      value: orders.length,              icon: <ShoppingBag className="w-5 h-5" />, iconBg: 'bg-[#FFF0EE] text-[#E8352A]' },
                 { label: 'Pending Payment',   value: pendingOrders.length,       icon: <Clock        className="w-5 h-5" />, iconBg: 'bg-amber-50 text-amber-500'  },
                 { label: 'Amount Due',        value: `$${totalDue.toFixed(2)}`,  icon: <CreditCard   className="w-5 h-5" />, iconBg: 'bg-green-50 text-green-600'  },
               ].map(stat => (
-                <div key={stat.label} className="bg-white border border-gray-200 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
+                <div key={stat.label} className="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 flex items-center gap-4 shadow-sm">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${stat.iconBg}`}>
                     {stat.icon}
                   </div>
                   <div>
-                    <p className="text-2xl font-extrabold text-gray-900">{stat.value}</p>
+                    <p className="text-xl sm:text-2xl font-extrabold text-gray-900">{stat.value}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
                   </div>
                 </div>
@@ -195,84 +195,88 @@ export default function PayLaterPage() {
                     <div className="flex">
                       <div className={`w-1 flex-shrink-0 ${isPending ? 'bg-[#E8352A]' : 'bg-green-400'}`} />
 
-                      <div className="flex-1 p-5 sm:p-6">
-                        <div className="flex items-start justify-between gap-4">
-
-                          {/* Left: icon + order info */}
-                          <div className="flex items-start gap-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${isPending ? 'bg-[#FFF0EE]' : 'bg-green-50'}`}>
-                              <ShoppingBag className={`w-5 h-5 ${isPending ? 'text-[#E8352A]' : 'text-green-500'}`} />
-                            </div>
-                            <div>
-                              <p className="font-bold text-gray-900 text-[15px]">Order #{order.id}</p>
-                              <p className="text-sm text-gray-500">{order.service_name}</p>
-                              {/* Pills */}
-                              <div className="flex flex-wrap items-center gap-2 mt-2.5">
-                                <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
-                                  <ImageIcon className="w-3 h-3" />
-                                  {order.order_images} image{order.order_images !== 1 ? 's' : ''}
-                                </span>
-                                <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
-                                  <Calendar className="w-3 h-3" />
-                                  {new Date(order.created_at).toLocaleDateString('en-US', {
-                                    month: 'short', day: 'numeric', year: 'numeric'
-                                  })}
-                                </span>
-                              </div>
-                              {isPending && (
-                                <p className="text-xs text-gray-400 mt-2">
-                                  Complete your payment securely via PayPal.
-                                </p>
-                              )}
-                            </div>
+                      <div className="flex-1 p-4 sm:p-6">
+                        {/* Top row: icon + order info */}
+                        <div className="flex items-start gap-4">
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${isPending ? 'bg-[#FFF0EE]' : 'bg-green-50'}`}>
+                            <ShoppingBag className={`w-5 h-5 ${isPending ? 'text-[#E8352A]' : 'text-green-500'}`} />
                           </div>
-
-                          {/* Right: amount + status + PayPal */}
-                          <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                            <p className="text-2xl font-extrabold text-gray-900">
-                              ${Number(order.total).toFixed(2)}
-                            </p>
-                            {isPending ? (
-                              <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#E8352A]">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] inline-block" />
-                                Pending
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-green-600">
-                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-                                Paid
-                              </span>
-                            )}
-                            {isPending && (
-                              <div className="mt-1 w-44">
-                                <PayPalButtons
-                                  style={{ layout: "horizontal", height: 40, tagline: false, label: "pay" }}
-                                  createOrder={async (_d, actions) => {
-                                    if (!actions.order) throw new Error("PayPal actions.order is undefined");
-                                    return actions.order.create({
-                                      intent: "CAPTURE",
-                                      purchase_units: [{
-                                        amount: {
-                                          currency_code: "USD",
-                                          value: Number(order.total || 0).toFixed(2),
-                                        },
-                                      }],
-                                    });
-                                  }}
-                                  onApprove={async (_d, actions) => {
-                                    const details = await actions.order?.capture();
-                                    await fetch("/api/paylater-pay", {
-                                      method: "POST",
-                                      headers: { "Content-Type": "application/json" },
-                                      body: JSON.stringify({ orderId: order.id, paypalOrderId: details?.id }),
-                                    });
-                                    fetchOrders();
-                                  }}
-                                />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <p className="font-bold text-gray-900 text-[15px]">Order #{order.id}</p>
+                                <p className="text-sm text-gray-500">{order.service_name}</p>
                               </div>
+                              {/* Amount + status — top-right on all sizes */}
+                              <div className="flex flex-col items-end flex-shrink-0">
+                                <p className="text-xl font-extrabold text-gray-900">
+                                  ${Number(order.total).toFixed(2)}
+                                </p>
+                                {isPending ? (
+                                  <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#E8352A] mt-0.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] inline-block" />
+                                    Pending
+                                  </span>
+                                ) : (
+                                  <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-green-600 mt-0.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+                                    Paid
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Pills */}
+                            <div className="flex flex-wrap items-center gap-2 mt-2.5">
+                              <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
+                                <ImageIcon className="w-3 h-3" />
+                                {order.order_images} image{order.order_images !== 1 ? 's' : ''}
+                              </span>
+                              <span className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
+                                <Calendar className="w-3 h-3" />
+                                {new Date(order.created_at).toLocaleDateString('en-US', {
+                                  month: 'short', day: 'numeric', year: 'numeric'
+                                })}
+                              </span>
+                            </div>
+
+                            {isPending && (
+                              <p className="text-xs text-gray-400 mt-2">
+                                Complete your payment securely via PayPal.
+                              </p>
                             )}
                           </div>
                         </div>
+
+                        {/* PayPal button — full width below, only for pending */}
+                        {isPending && (
+                          <div className="mt-4 w-full max-w-xs">
+                            <PayPalButtons
+                              style={{ layout: "horizontal", height: 44, tagline: false, label: "pay" }}
+                              createOrder={async (_d, actions) => {
+                                if (!actions.order) throw new Error("PayPal actions.order is undefined");
+                                return actions.order.create({
+                                  intent: "CAPTURE",
+                                  purchase_units: [{
+                                    amount: {
+                                      currency_code: "USD",
+                                      value: Number(order.total || 0).toFixed(2),
+                                    },
+                                  }],
+                                });
+                              }}
+                              onApprove={async (_d, actions) => {
+                                const details = await actions.order?.capture();
+                                await fetch("/api/paylater-pay", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ orderId: order.id, paypalOrderId: details?.id }),
+                                });
+                                fetchOrders();
+                              }}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

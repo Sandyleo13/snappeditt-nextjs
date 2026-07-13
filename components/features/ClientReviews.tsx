@@ -345,112 +345,7 @@ export const ClientReviewsSection = forwardRef<HTMLElement, ClientReviewsSection
           </p>
         </div>
 
-     
-
-        <div className="grid grid-cols-1 lg:grid-cols-[360px_minmax(0,1fr)] gap-10 mb-10">
-          {/* <div className="space-y-8">
-            <div ref={statsRef} className="bg-white rounded-3xl p-8 border border-slate-200 shadow-md">
-              <h3 className="text-2xl font-bold text-slate-900 mb-8">Our Numbers Speak</h3>
-              <div className="space-y-6">
-                {stats.map((stat, index) => {
-                  const Icon = stat.icon;
-                  return (
-                    <div key={index} className="flex items-center justify-between gap-4">
-                      <div>
-                        <div className="text-3xl font-bold text-slate-900 flex items-baseline gap-1">
-                          {stat.value}
-                          {stat.suffix && <span className="text-lg text-red-600">{stat.suffix}</span>}
-                        </div>
-                        <div className="text-sm text-slate-600">{stat.label}</div>
-                      </div>
-                      <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-600">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            
-          </div> */}
-
-          {/* <div>
-            <div className={`bg-white rounded-3xl p-8 border border-slate-200 shadow-md transition-all duration-500 ${
-              isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-            }`}> */}
-              {/* <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-6">
-                <div className="flex items-center gap-4">
-                  <div className={`w-16 h-16 rounded-3xl bg-gradient-to-r ${currentReview.avatarColor} flex items-center justify-center text-white text-xl font-bold`}>
-                    {currentReview.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-900">{currentReview.name}</h3>
-                    <p className="text-sm text-slate-600">{currentReview.role}</p>
-                    {currentReview.company && (
-                      <p className="text-sm text-red-600">{currentReview.company}</p>
-                    )}
-                  </div>
-                </div> */}
-                {/* <div className="bg-red-50 rounded-3xl p-3 text-red-600">
-                  <Quote className="w-6 h-6" />
-                </div> */}
-              {/* </div>
-
-              <div className="flex items-center gap-1 mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < currentReview.rating
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-slate-300'
-                    }`}
-                  />
-                ))}
-              </div> */}
-
-              {/* <p className="text-slate-700 leading-relaxed italic mb-8">
-                "{currentReview.content}"
-              </p> */}
-
-              {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-slate-600 border-t pt-6">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4" />
-                  <span>{currentReview.service}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span>{currentReview.date}</span>
-                </div>
-                <div className="flex items-center gap-2 justify-start sm:justify-end">
-                  <span>{currentReview.location}</span>
-                </div>
-              </div> */}
-            {/* </div> */}
-
-            {/* <div className="flex items-center justify-between mt-8">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={prevReview}
-                  className="w-12 h-12 rounded-full bg-white border border-slate-300 text-slate-900 shadow-sm hover:bg-slate-50 transition"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={nextReview}
-                  className="w-12 h-12 rounded-full bg-white border border-slate-300 text-slate-900 shadow-sm hover:bg-slate-50 transition"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="text-sm font-semibold text-slate-900">
-                <span className="text-red-600">{activeReview + 1}</span> / {reviews.length}
-              </div>
-            </div> */}
-          </div>
-        {/* </div> */}
-
-     
+  
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-14">
           {reviews.slice(0, 3).map((review) => {
@@ -468,7 +363,7 @@ export const ClientReviewsSection = forwardRef<HTMLElement, ClientReviewsSection
                     </div>
                   </div>
                   <div className="text-[#F44336]">
-                    <Icon className="w-5 h-5" />
+                    {/* <Icon className="w-5 h-5" /> */}
                   </div>
                 </div>
                 <p className="text-slate-700 text-sm leading-relaxed line-clamp-4">
@@ -490,7 +385,7 @@ export const ClientReviewsSection = forwardRef<HTMLElement, ClientReviewsSection
             Start Your Free Trial
           </Link>
           <p className="mt-4 text-sm text-slate-600">
-            No credit card required • 7-day free trial • Cancel anytime
+            No credit card required 
           </p>
         </div>
 

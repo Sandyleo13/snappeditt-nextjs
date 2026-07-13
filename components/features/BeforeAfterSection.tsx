@@ -8,7 +8,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Zap, Sparkles, Layers,
-  Home, Building, Camera, Sunset, Award, TrendingUp, Timer
+  Home, Building, Camera, Sunset, Award, TrendingUp, Timer,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import Image from 'next/image';
 import CountUp from 'react-countup';
@@ -24,7 +25,9 @@ interface ComparisonImage {
   | 'product-retouching'
   | 'people-retouching'
   | 'cliping-path'
+  | '3D-services'
   | 'day-to-dusk'
+  | 'wedding-retouching'
   | 'de-clutter-objects';
 
   content: {
@@ -171,6 +174,44 @@ const comparisonExamples: ComparisonImage[] = [
     tags: ['portrait', 'beauty', 'fashion', 'newborn']
   },
 
+  // WEDDING RETOUCHING
+  {
+    id: 'wedding-retouching-1',
+    title: 'Wedding Retouching',
+    category: 'wedding-retouching',
+
+    content: {
+      description:
+        'Create timeless wedding photos with natural skin tone enhancements, color grading, and flawless detail work for every bride and groom.',
+      services: [
+        '💍 Wedding Retouching',
+        '📸 Bridal Portrait Enhancements',
+        '🤵 Groom Retouching',
+        '👰 Skin Smoothing',
+        '🌸 Event Color Correction',
+        '📷 Album-Ready Output'
+      ]
+    },
+
+    before: {
+      title: 'Before: Raw Wedding Photo',
+      description: 'Unedited wedding portrait with uneven skin tones and color shifts',
+      imageUrl: '/images/wedding-raw.jpg',
+      stats: ['Low Contrast', 'Uneven Skin Tone', 'Muted Colors']
+    },
+
+    after: {
+      title: 'After: Wedding-Ready',
+      description: 'Bright, balanced wedding photography with polished details and natural warmth',
+      imageUrl: '/images/wedding-corrected.jpg',
+      stats: ['Balanced Exposure', 'Natural Skin', 'Crisp Detail']
+    },
+
+    difficulty: 'Medium',
+    timeSaved: '3 hours',
+    tags: ['wedding', 'events', 'portrait', 'retouch']
+  },
+
   // CLIPPING PATH
   {
     id: 'cliping-path-extraction',
@@ -213,7 +254,7 @@ const comparisonExamples: ComparisonImage[] = [
   {
     id: '3d-rendering',
     title: '3D Rendering',
-    category: 'day-to-dusk',
+    category: '3D-services',
 
     content: {
       description:
@@ -243,42 +284,7 @@ const comparisonExamples: ComparisonImage[] = [
     tags: ['3d', 'architecture', 'rendering', 'floor-plan']
   },
 
-  // OBJECT REMOVAL / DE-CLUTTER
-  // {
-  //   id: 'de-clutter-example',
-  //   title: 'Object Removal',
-  //   category: 'de-clutter-objects',
-
-  //   content: {
-  //     description:
-  //       'Remove unwanted objects, distractions, and clutter from your images quickly and professionally while maintaining natural appearance.',
-  //     services: [
-  //       '🗑️ Object Removal',
-  //       '🧹 Decluttering',
-  //       '👥 People Removal',
-  //       '🌳 Background Cleanup'
-  //     ]
-  //   },
-
-  //   before: {
-  //     title: 'Before: Cluttered Scene',
-  //     description: 'Image with unwanted objects and distractions',
-  //     imageUrl: '/images/real-estate-raw.jpg',
-  //     stats: ['Busy Scene', 'Unwanted Objects', 'Distracting Elements']
-  //   },
-
-  //   after: {
-  //     title: 'After: Clean & Professional',
-  //     description: 'Clean image with all distractions removed',
-  //     imageUrl: '/images/real-estate-corrected.jpg',
-  //     stats: ['Objects Removed', 'Clean Background', 'Professional Look']
-  //   },
-
-  //   difficulty: 'Medium',
-  //   timeSaved: '20 min',
-  //   tags: ['object-removal', 'declutter', 'cleanup']
-  // }
-];
+]
 
 // Category configurations
 const categories = [
@@ -289,16 +295,34 @@ const categories = [
     description: 'Property photography enhancements',
     color: ' from-white-500 to-red-600 ',
     bgColor: 'bg-red-500/10',
-    route: '/service/real-estate/hdr-basic',
+    route: '/service/real-estate',
+  },
+   {
+    id: '3D-services',
+    name: '3D Services',
+    icon: Building,
+    description: '3D visualization and rendering',
+    color: ' from-white-500 to-red-600 ',
+    bgColor: 'bg-red-500/10',
+    route: '/service/3d-services',
+  },
+   {
+    id: 'wedding-retouching',
+    name: 'Wedding Retouching',
+    icon: Building,
+    description: 'Wedding photo enhancements',
+    color: ' from-white-500 to-red-600 ',
+    bgColor: 'bg-red-500/10',
+    route: '/service/wedding-events',
   },
   {
     id: 'product-retouching',
-    name: 'Product Retouching',
+    name: 'Product Ecommerce',
     icon: Building,
     description: 'E-commerce product enhancements',
     color: ' from-white-500 to-red-600 ',
     bgColor: 'bg-red-500/10',
-    route: '/service/commercial/products-apparel-footwear-furniture',
+    route: '/service/commercial',
   },
   {
     id: 'people-retouching',
@@ -307,16 +331,16 @@ const categories = [
     description: 'Professional portrait retouching',
     color: ' from-white-500 to-red-600 ',
     bgColor: 'bg-red-500/10',
-    route: '/service/people/portrait-headshots-studio',
+    route: '/service/people',
   },
   {
     id: 'cliping-path',
-    name: 'Clipping Path Extraction',
+    name: 'Clipping Path ',
     icon: Layers,
     description: 'Background removal & extraction',
     color: ' from-white-500 to-red-600 ',
     bgColor: 'bg-red-500/10',
-    route: '/service/clipping-path-extraction/clipping-path',
+    route: '/service/clipping-path-extraction',
   },
   {
     id: 'day-to-dusk',
@@ -325,7 +349,7 @@ const categories = [
     description: 'Daytime to sunset transformations',
     color: ' from-white-500 to-red-600 ',
     bgColor: 'bg-red-500/10',
-    route: '/service/real-estate/day-to-dusk',
+    route: '/service/real-estate',
   },
 ];
 
@@ -364,7 +388,15 @@ const BeforeAfterSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const beforeRef = useRef<HTMLDivElement>(null);
   const afterRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const sliderDirectionRef = useRef<1 | -1>(1);
+
+  useEffect(() => {
+    const activeButton = scrollRef.current?.querySelector('.active-category') as HTMLElement | null;
+    if (activeButton) {
+      activeButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, [selectedCategory]);
 
   // Filter examples by category
   const filteredExamples = selectedCategory === 'all'
@@ -392,6 +424,8 @@ const BeforeAfterSection = () => {
 
   // Current example - fallback to first example if none found
   const currentExample = filteredExamples[activeExample] || filteredExamples[0] || comparisonExamples[0];
+
+  const currentCategoryRoute = categories.find((cat) => cat.id === currentExample.category)?.route ?? '/packages/';
 
   // Safety check - if no data loaded, don't render
   if (!currentExample) {
@@ -511,6 +545,16 @@ const BeforeAfterSection = () => {
     resetSlider();
   };
 
+  const showPreviousExample = () => {
+    setActiveExample(prev => (prev - 1 + filteredExamples.length) % filteredExamples.length);
+    resetSlider();
+  };
+
+  const showNextExample = () => {
+    setActiveExample(prev => (prev + 1) % filteredExamples.length);
+    resetSlider();
+  };
+
   // Render comparison slider
   const renderComparisonSlider = () => {
     return (
@@ -546,7 +590,7 @@ const BeforeAfterSection = () => {
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-[#f3f4f6] py-16 md:py-24"
     >
-      <div className="relative container mx-auto px-6">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
        
@@ -565,7 +609,7 @@ const BeforeAfterSection = () => {
         </div>
 
         {/* Stats Grid - Horizontal Layout */}
-        <div className="stats-grid mb-16 flex flex-wrap lg:flex-nowrap gap-4 animate-fadeIn">
+        <div className="stats-grid mb-16 flex flex-col sm:flex-row flex-wrap lg:flex-nowrap gap-4 justify-center animate-fadeIn">
           {improvementStats.map((stat, index) => {
             const Icon = stat.icon;
 
@@ -602,13 +646,17 @@ const BeforeAfterSection = () => {
 
         {/* Category Filters */}
         <div className="category-filters mb-12 animate-fadeIn">
-          <div className="flex gap-3 justify-start overflow-x-auto scrollbar-none py-2">
+          <div
+            ref={scrollRef}
+            className="max-w-full flex items-center gap-3 overflow-x-auto scrollbar-none scroll-smooth whitespace-nowrap px-2 py-2 sm:px-1"
+          >
             <button
               onClick={() => handleCategorySelect('all')}
-              className={`category-filter px-6 py-3 rounded-full font-medium transition-all duration-300 border ${selectedCategory === 'all'
-                ? 'bg-[#F44336] text-white border-red-600'
-                : 'bg-white text-slate-800 hover:bg-slate-50 hover:border-red-400 border-slate-300'
-                }`}
+              className={`category-filter active:scale-95 flex-shrink-0 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium transition-all duration-300 border ${
+                selectedCategory === 'all'
+                  ? 'active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20'
+                  : 'bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]'
+              }`}
             >
               All Categories
             </button>
@@ -616,104 +664,70 @@ const BeforeAfterSection = () => {
             {categories.map((category) => {
               const Icon = category.icon;
               const isActive = selectedCategory === category.id;
-              const examplesCount = comparisonExamples.filter(
-                ex => category.id === 'all' || ex.category === category.id
-              ).length;
 
               return (
                 <button
                   key={category.id}
                   onClick={() => handleCategorySelect(category.id)}
-                  className={`category-filter group px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2 border ${isActive
-                    ? 'bg-[#F44336] text-white border-red-600'
-                    : 'bg-white text-slate-800 hover:bg-white-50 hover:border-red-400 border-slate-300'
-                    }`}
+                  className={`category-filter active:scale-95 flex-shrink-0 flex items-center gap-2 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium transition-all duration-300 border ${
+                    isActive
+                      ? 'active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20'
+                      : 'bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]'
+                  }`}
                 >
                   <Icon className="w-4 h-4" />
-                  {category.name}
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${isActive}`}>
-                    {/* {examplesCount} */}
-                  </span>
+                  <span>{category.name}</span>
                 </button>
               );
             })}
           </div>
-
-          {/* <div className="flex flex-wrap items-center justify-between gap-3 px-2 py-1">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveExample(prev => (prev - 1 + filteredExamples.length) % filteredExamples.length);
-                  setSliderPosition(50);
-                }}
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-red-400 hover:text-red-600"
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveExample(prev => (prev + 1) % filteredExamples.length);
-                  setSliderPosition(50);
-                }}
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-red-400 hover:text-red-600"
-              >
-                Next
-              </button>
-            </div>
-
-            <div className="text-sm text-slate-600">
-              Slide {activeExample + 1} of {filteredExamples.length}
-            </div>
-          </div> */}
         </div>
 
         <div className="relative rounded-[2rem] bg-white p-1 border border-slate-200">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-8 lg:gap-12 rounded-[1.7rem] p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-5 lg:gap-12 rounded-[1.7rem] p-4 sm:p-8">
             {/* Left Hero Content */}
-            <div className="flex flex-col justify-center gap-8">
-              <div className="rounded-2xl bg-white border border-slate-200 p-8 hover:border-red-300 transition-all duration-300">
+            <div className="flex flex-col justify-center gap-6">
+              <div className="rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 hover:border-red-300 transition-all duration-300">
                 {/* <div className="text-xs uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">Featured Example</div> */}
-                <div className="text-3xl font-bold text-slate-900 mb-4">{currentExample.title}</div>
-                <p className="text-slate-600 mb-6 leading-relaxed">{currentExample.content.description}</p>
+                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">{currentExample.title}</div>
+                <p className="text-base sm:text-lg text-slate-600 mb-5 leading-relaxed">{currentExample.content.description}</p>
 
-                <div className="mb-6 flex flex-wrap gap-2">
+                <div className="mb-6 flex flex-wrap gap-2 text-xs">
                   {currentExample.content.services.slice(0, 4).map((service, index) => (
                     <span
                       key={index}
-                      className="rounded-full bg-red-50 px-3 py-1.5 text-xs text-red-700 border border-red-200"
+                      className="rounded-full bg-red-50 px-2.5 py-1 text-xs text-red-700 border border-red-200"
                     >
                       {service}
                     </span>
                   ))}
                 </div>
 
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     <div className="flex flex-col">
                       <span className="text-sm text-slate-600">Difficulty</span>
                       <span className="text-lg font-semibold text-slate-900">{currentExample.difficulty}</span>
                     </div>
-                    <div className="w-px h-8 bg-slate-200" />
+                    <div className="hidden sm:block w-px h-8 bg-slate-200" />
                     <div className="flex flex-col">
                       <span className="text-sm text-slate-600">Time Saved</span>
                       <span className="text-lg font-semibold text-slate-900">{currentExample.timeSaved}</span>
                     </div>
                   </div>
-                  <a
-                    href="/packages"
-                    className="inline-flex items-center justify-center rounded-xl bg-[#F44336] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#E53935] duration-300 hover:shadow-lg hover:shadow-[#F44336]/30"
+                  <Link
+                    href={currentCategoryRoute}
+                    className="inline-flex w-full items-center justify-center rounded-xl bg-[#F44336] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#E53935] duration-300 hover:shadow-lg hover:shadow-[#F44336]/30 sm:w-auto"
                   >
-                    Check Our Package
-                  </a>
+                    Explore Our Packages
+                  </Link>
                 </div>
               </div>
             </div>
 
             {/* Right Comparison Panel */}
             <div
-              className="relative h-[400px] md:h-[480px] rounded-xl overflow-hidden bg-slate-800 mb-4 border border-slate-300 shadow-md"
+              className="relative h-[240px] sm:h-[300px] md:h-[360px] rounded-xl overflow-hidden bg-slate-800 mb-4 border border-slate-300 shadow-md"
               onMouseEnter={() => {
                 setIsPaused(true);
                 setIsPlaying(false);
@@ -781,6 +795,23 @@ const BeforeAfterSection = () => {
                   </div>
                 </div>
 
+                <div className="absolute inset-x-0 bottom-3 z-40 flex items-center justify-between px-3 sm:px-4">
+                  <button
+                    onClick={showPreviousExample}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg shadow-slate-900/10 transition hover:bg-white sm:h-11 sm:w-11"
+                    aria-label="Previous example"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={showNextExample}
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-lg shadow-slate-900/10 transition hover:bg-white sm:h-12 sm:w-12"
+                    aria-label="Next example"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+
                 {/* SLIDER */}
                 {renderComparisonSlider()}
 
@@ -791,21 +822,7 @@ const BeforeAfterSection = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
-        {/* <div className="text-center mt-16">
-          <div className="inline-flex flex-col items-center gap-6 p-8 bg-red-50 rounded-3xl border border-red-200 max-w-2xl mx-auto">
-            <div className="text-center">
-              <h4 className="text-2xl font-bold text-slate-900 mb-2">
-                Want to Add Your Own Images?
-              </h4>
-              <div className="text-slate-600 space-y-1">
-                <p>1. Add your images to the public/images folder</p>
-                <p>2. Update the image paths in the code above</p>
-                <p>3. Add more examples following the existing format</p>
-              </div>
-            </div>
-          </div>
-        </div> */}
+     
       </div>
     </section>
   );

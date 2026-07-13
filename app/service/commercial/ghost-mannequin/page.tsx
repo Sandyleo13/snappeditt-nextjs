@@ -222,56 +222,53 @@ export default function GhostMannequinPage() {
           @keyframes gmCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-4 sm:px-4 sm:px-6 lg:px-12 xl:px-16 pt-16 sm:pt-20 pb-10 lg:pt-28 lg:pb-16">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
             {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col gap-5 sm:gap-6"
               initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
-
 
               {/* Heading */}
               <div>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
+                <motion.h1 className="text-4xl sm:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
                   Ghost <span className="text-[#E8352A]">Mannequin</span>
                 </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
+                <motion.p className="text-lg sm:text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
                   initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
                   The Invisible Mannequin Effect
                 </motion.p>
               </div>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="text-sm sm:text-base md:text-lg text-[#666] leading-relaxed max-w-md"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
                 Make your mannequin disappear. Our ghost mannequin service creates a clean,
                 hollow 3D shape effect that shows off garments professionally for e-commerce.
               </motion.p>
 
-
-
               {/* CTAs */}
               <motion.div className="flex flex-wrap gap-3 pt-1"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.64, duration: 0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
                   Get Start For Free
                 </Link>
                 <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                   View Examples
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
+                  View Examples
                 </button>
               </motion.div>
-
-             
             </motion.div>
 
             {/* ── RIGHT: Slider + ghost badge + process strip + feature badges ── */}
-            <motion.div className="flex flex-col gap-3 relative"
+            <motion.div className="flex flex-col gap-3 relative mt-8 lg:mt-0"
               initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
 
-              {/* Animated ghost removal badge */}
-              <GhostBadge />
+              {/* Animated ghost removal badge — hidden on smallest screens to avoid clip */}
+              <div className="hidden sm:block">
+                <GhostBadge />
+              </div>
 
               {/* Before/After slider */}
               <div ref={heroSliderRef}
@@ -307,36 +304,36 @@ export default function GhostMannequinPage() {
                 </div>
 
                 {/* Labels */}
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">With Mannequin</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">Ghost Effect</span>
+                <span className="absolute top-3 left-3 z-10 bg-[#1A1A1A]/75 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-lg backdrop-blur-sm">With Mannequin</span>
+                <span className="absolute top-3 right-3 z-10 bg-[#E8352A] text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-lg">Ghost Effect</span>
 
                 {/* Process steps overlay */}
                 <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.3 }}
-                  className="absolute bottom-4 left-4 right-4 z-10 bg-white/92 backdrop-blur-sm rounded-xl px-3 py-2 flex items-center gap-2">
+                  className="absolute bottom-3 left-3 right-3 z-10 bg-white/92 backdrop-blur-sm rounded-xl px-2.5 py-2 flex items-center gap-1.5 sm:gap-2">
                   {[
-                    { step: '1', label: 'Detect', done: true },
-                    { step: '2', label: 'Remove', done: true },
-                    { step: '3', label: 'Fill', done: true },
-                    { step: '4', label: 'Polish', done: true },
+                    { step: '1', label: 'Detect' },
+                    { step: '2', label: 'Remove' },
+                    { step: '3', label: 'Fill' },
+                    { step: '4', label: 'Polish' },
                   ].map((s, i) => (
                     <React.Fragment key={s.step}>
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
                         transition={{ delay: 1.4 + i * 0.12 }}
                         className="flex flex-col items-center gap-0.5 flex-1">
-                        <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-                          <CheckCircle className="w-3 h-3 text-white" />
+                        <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-green-500 flex items-center justify-center">
+                          <CheckCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" />
                         </div>
                         <span className="text-[8px] font-semibold text-[#555]">{s.label}</span>
                       </motion.div>
-                      {i < 3 && <div className="w-4 h-0.5 bg-green-300 flex-shrink-0" />}
+                      {i < 3 && <div className="w-3 sm:w-4 h-0.5 bg-green-300 flex-shrink-0" />}
                     </React.Fragment>
                   ))}
                 </motion.div>
               </div>
 
-              {/* Feature badges */}
-              <motion.div className="grid grid-cols-4 gap-2"
+              {/* Feature badges — 2-col on mobile, 4-col on sm+ */}
+              <motion.div className="grid grid-cols-2 sm:grid-cols-4 gap-2"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
                 {[
                   { icon: <EyeOff className="w-4 h-4" />, label: 'Invisible', sub: 'Mannequin' },
@@ -347,8 +344,8 @@ export default function GhostMannequinPage() {
                   <div key={i} className="bg-white rounded-xl border border-[#F0F0F0] shadow-sm px-2.5 py-2.5 flex items-center gap-2">
                     <div className="text-[#E8352A] flex-shrink-0">{b.icon}</div>
                     <div>
-                      <p className="text-[9px] font-bold text-[#1A1A1A] leading-tight">{b.label}</p>
-                      <p className="text-[9px] text-[#999] leading-tight">{b.sub}</p>
+                      <p className="text-[9px] sm:text-[10px] font-bold text-[#1A1A1A] leading-tight">{b.label}</p>
+                      <p className="text-[9px] sm:text-[10px] text-[#999] leading-tight">{b.sub}</p>
                     </div>
                   </div>
                 ))}

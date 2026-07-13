@@ -137,11 +137,11 @@ export default function SingleExposurePage() {
             className="absolute left-[15%] bottom-[28%] w-2 h-2 rounded-full bg-[#E8352A]/35" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
             {/* ── LEFT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left"
               initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}>
 
@@ -149,7 +149,7 @@ export default function SingleExposurePage() {
            
 
               {/* Heading */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.04] tracking-tight max-w-full">
                 <motion.span className="block text-[#1A1A1A]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.55 }}>
                   Single
@@ -161,13 +161,13 @@ export default function SingleExposurePage() {
               </h1>
 
               {/* Subheading */}
-              <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug"
+              <motion.p className="text-xl md:text-2xl font-semibold text-[#333] leading-snug max-w-2xl"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
                 Real Estate Photo Enhancement
               </motion.p>
 
               {/* Description */}
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.54, duration: 0.5 }}>
                 Transform property photographs with expert manual editing. Our retouchers carefully
                 adjust lighting, colors, contrast, and perspective to deliver bright, natural,
@@ -175,14 +175,14 @@ export default function SingleExposurePage() {
               </motion.p>
 
               {/* CTA Buttons */}
-              <motion.div className="flex flex-wrap gap-3 pt-1"
+              <motion.div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1 justify-center lg:justify-start"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.66, duration: 0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
+                  className="inline-flex justify-center items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105 w-full sm:w-auto">
                   Get Start For Free
                 </Link>
                  <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
+                  className="inline-flex justify-center items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all w-full sm:w-auto">
                   View Examples
                 </button>
               </motion.div>
@@ -191,7 +191,7 @@ export default function SingleExposurePage() {
             </motion.div>
 
             {/* ── RIGHT: Before/After + Editor toolbar ── */}
-            <motion.div className="relative flex flex-col items-center gap-0"
+            <motion.div className="relative flex flex-col items-center gap-6 w-full max-w-[760px] mx-auto lg:mx-0"
               initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
 
@@ -208,7 +208,7 @@ export default function SingleExposurePage() {
               {/* Before/After card */}
               <div
                 ref={sliderRef}
-                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full"
+                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full max-w-full"
                 style={{ aspectRatio: '4/3', border: '2px solid rgba(255,255,255,0.9)' }}
                 onMouseMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
@@ -244,7 +244,7 @@ export default function SingleExposurePage() {
               </div>
 
               {/* Editor toolbar */}
-              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-4 py-3 flex items-center justify-between gap-2">
+              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-4 py-3 flex flex-wrap items-center justify-center md:justify-between gap-2">
                 {editorTabs.map(tab => (
                   <button key={tab} onClick={() => setActiveTab(tab)}
                     className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg transition-all text-center ${

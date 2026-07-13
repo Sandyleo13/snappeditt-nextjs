@@ -11,27 +11,6 @@ import {
   Globe, Cpu, Star,
 } from 'lucide-react';
 
-/* ── Floating feature badge connected by a line ── */
-function FeatureBadge({
-  icon, title, sub, delay, className,
-}: { icon: React.ReactNode; title: string; sub: string; delay: number; className: string }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay, duration: 0.5, ease: 'easeOut' }}
-      className={`absolute z-20 bg-white rounded-2xl shadow-lg border border-[#F0F0F0] px-4 py-3 flex items-center gap-3 min-w-[190px] ${className}`}>
-      <div className="w-9 h-9 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A]">
-        {icon}
-      </div>
-      <div>
-        <p className="text-[11px] font-bold text-[#1A1A1A] leading-none">{title}</p>
-        <p className="text-[9px] text-[#999] mt-0.5">{sub}</p>
-      </div>
-    </motion.div>
-  );
-}
-
 /* ── Floating 3D cube ── */
 function FloatingCube({ size, x, y, delay, color = '#E8352A' }: {
   size: number; x: string; y: string; delay: number; color?: string;
@@ -146,12 +125,14 @@ export default function ThreeDRenderingPage() {
               strokeDasharray="180 1900" style={{ animation:'r3CW 9s linear infinite', transformOrigin:'680px 350px' }}/>
           </svg>
 
-          {/* Floating 3D cubes */}
-          <FloatingCube size={48} x="4%"   y="12%" delay={0}  />
-          <FloatingCube size={36} x="88%"  y="8%"  delay={0.5}/>
-          <FloatingCube size={28} x="3%"   y="66%" delay={1.0}/>
-          <FloatingCube size={56} x="1%"   y="38%" delay={0.3} color="#E8352A"/>
-          <FloatingCube size={24} x="44%"  y="3%"  delay={0.7}/>
+          {/* Floating 3D cubes — desktop only */}
+          <div className="hidden md:block">
+            <FloatingCube size={48} x="4%"   y="12%" delay={0}  />
+            <FloatingCube size={36} x="88%"  y="8%"  delay={0.5}/>
+            <FloatingCube size={28} x="3%"   y="66%" delay={1.0}/>
+            <FloatingCube size={56} x="1%"   y="38%" delay={0.3} color="#E8352A"/>
+            <FloatingCube size={24} x="44%"  y="3%"  delay={0.7}/>
+          </div>
 
           {/* Floating red spheres */}
           <motion.div animate={{ y:[-12,12,-12] }} transition={{ repeat:Infinity, duration:5, ease:'easeInOut' }}
@@ -187,48 +168,45 @@ export default function ThreeDRenderingPage() {
           @keyframes r3CW { to { stroke-dashoffset: -2080; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-20 w-full">
-          <div className="grid lg:grid-cols-[1fr_1.3fr] gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-16 sm:py-20 w-full">
+          <div className="grid lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-10 items-center">
 
             {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col gap-5 sm:gap-6"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
 
-
-              {/* Heading — matches screenshot */}
+              {/* Heading */}
               <div>
                 <motion.h1 className="font-extrabold leading-[1.06] tracking-tight"
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.55 }}>
-                  <span className="text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">3D</span>
-                  <span className="text-5xl md:text-6xl lg:text-7xl text-[#1A1A1A]"> Rendering</span>
+                  <span className="text-4xl sm:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">3D</span>
+                  <span className="text-4xl sm:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#1A1A1A]"> Rendering</span>
                 </motion.h1>
                 <motion.div className="mt-2"
                   initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3, duration:0.5 }}>
-                  <span className="text-2xl md:text-3xl font-bold text-[#1A1A1A]">Cinematic </span>
-                  <span className="text-2xl md:text-3xl font-bold text-[#E8352A]">Visual Excellence</span>
+                  <span className="text-lg sm:text-2xl md:text-3xl font-bold text-[#1A1A1A]">Cinematic </span>
+                  <span className="text-lg sm:text-2xl md:text-3xl font-bold text-[#E8352A]">Visual Excellence</span>
                 </motion.div>
-              
               </div>
 
-              <motion.p className="text-base text-[#666] leading-relaxed max-w-sm"
+              <motion.p className="text-sm sm:text-base text-[#666] leading-relaxed max-w-sm"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.46, duration:0.5 }}>
                 Transform 3D models into photorealistic masterpieces with advanced ray tracing
                 and global illumination.
               </motion.p>
 
               {/* CTAs */}
-               <motion.div className="flex flex-wrap gap-3 pt-1"
+              <motion.div className="flex flex-wrap gap-3"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-                  Get Start For Free
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
+                  Get Started For Free
                 </Link>
                 <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                View Examples
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
+                  View Examples
                 </button>
               </motion.div>
-
 
               {/* Social proof */}
               <motion.div className="flex items-center gap-3"
@@ -236,12 +214,12 @@ export default function ThreeDRenderingPage() {
                 <div className="flex -space-x-2">
                   {['photo-1507003211169-0a1dd7228f2d','photo-1544005313-94ddf0286df2',
                     'photo-1560250097-0b93528c311a','photo-1519085360753-af0119f7cbe7'].map((id, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden"
+                    <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white overflow-hidden"
                       style={{ backgroundImage:`url(https://images.unsplash.com/${id}?w=60&q=70&auto=format&fit=crop)`,
                         backgroundSize:'cover', backgroundPosition:'center' }}/>
                   ))}
-                  <div className="w-8 h-8 rounded-full border-2 border-white bg-[#E8352A] flex items-center justify-center">
-                    <span className="text-[9px] font-bold text-white">+2k</span>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white bg-[#E8352A] flex items-center justify-center">
+                    <span className="text-[8px] sm:text-[9px] font-bold text-white">+2k</span>
                   </div>
                 </div>
                 <div>
@@ -255,35 +233,19 @@ export default function ThreeDRenderingPage() {
             </motion.div>
 
             {/* ── RIGHT: Floating 3D render + feature badges ── */}
-            <motion.div className="relative flex items-center justify-center"
+            <motion.div className="relative flex flex-col items-center justify-center mt-8 lg:mt-0"
               initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
 
-              {/* Feature badges with connector lines */}
-              {featureBadges.map((b, i) => (
-                <FeatureBadge key={i} {...b} className={badgePositions[i]} />
-              ))}
-
-              {/* Connector lines from image to badges */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none z-10"
-                viewBox="0 0 500 500" preserveAspectRatio="none">
-                {[108, 203, 298, 393].map((y, i) => (
-                  <motion.line key={i} x1="330" y1={y} x2="370" y2={y}
-                    stroke="#E8352A" strokeWidth="1" opacity="0.4" strokeDasharray="4 3"
-                    initial={{ pathLength:0 }} animate={{ pathLength:1 }}
-                    transition={{ delay:1.0 + i * 0.12, duration:0.5 }}/>
-                ))}
-              </svg>
-
-              {/* Main floating 3D render */}
-              <div className="relative w-full mx-auto" style={{ aspectRatio: '4/3', maxWidth: 'calc(100vw - 4rem)' }}>
+              {/* Main image — full column width on all sizes */}
+              <div className="relative w-full">
                 {/* Glow base */}
-                <div className="absolute inset-x-8 bottom-0 h-16 blur-2xl rounded-full"
+                <div className="absolute inset-x-8 bottom-0 h-16 blur-2xl rounded-full pointer-events-none"
                   style={{ background:'radial-gradient(ellipse, rgba(232,53,42,0.30) 0%, transparent 70%)' }}/>
 
                 <motion.div
                   animate={{ y:[-10, 10, -10] }}
                   transition={{ repeat:Infinity, duration:5.5, ease:'easeInOut' }}
-                  className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#E8E8E8]"
+                  className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E8E8E8]"
                   onMouseEnter={() => setIsHovering(true)}
                   onMouseLeave={() => setIsHovering(false)}>
                   <motion.img
@@ -293,13 +255,13 @@ export default function ThreeDRenderingPage() {
                     initial={{ opacity:0, scale:1.03 }}
                     animate={{ opacity:1, scale:1 }}
                     transition={{ duration:0.5 }}
-                    className="block"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    className="block w-full object-cover"
+                    style={{ aspectRatio: '4/3' }} />
 
                   {/* 360° badge */}
                   <motion.div
                     animate={{ rotate:[0, 360] }} transition={{ repeat:Infinity, duration:8, ease:'linear' }}
-                    className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-[#E8352A]/20 z-10">
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-[#E8352A]/20 z-10">
                     <div className="w-3 h-3 rounded-full border border-[#E8352A] flex items-center justify-center">
                       <div className="w-1 h-1 rounded-full bg-[#E8352A]"/>
                     </div>
@@ -323,11 +285,12 @@ export default function ThreeDRenderingPage() {
                   ))}
                 </div>
               </div>
+
             </motion.div>
           </div>
 
-          {/* ── Stats bar ── */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 max-w-4xl mx-auto"
+          {/* ── Stats bar — desktop only ── */}
+          <motion.div className="hidden md:grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 max-w-4xl mx-auto"
             initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:1.0 }}>
             {stats.map((s,i) => (
               <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">

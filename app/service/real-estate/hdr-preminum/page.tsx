@@ -663,9 +663,9 @@ export default function HRDPremiumPage() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#F44336] transition-colors">{service.title}</h3>
                   <p className="text-gray-600 mb-4 group-hover:text-gray-700 transition-colors">{service.description}</p>
-                  <button className="text-[#F44336] font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+                  <button className="text-[#F44336] font-semibold flex items-center gap-2 whitespace-nowrap transition-all">
                     Explore feature
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
               </div>
@@ -693,15 +693,15 @@ export default function HRDPremiumPage() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-white text-red-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-3 group">
+                <button className="bg-white text-red-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-3 whitespace-nowrap group">
                   <Crown className="w-5 h-5" />
                   Schedule Enterprise Demo
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
                 </button>
-                <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all shadow-lg flex items-center justify-center gap-3 group">
+                <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all shadow-lg flex items-center justify-center gap-3 whitespace-nowrap group">
                   <Play className="w-5 h-5" />
                   View Case Studies
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
                 </button>
               </div>
               
