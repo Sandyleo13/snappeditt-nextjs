@@ -9,8 +9,6 @@ import {
   Play, CheckCircle2, Zap, Calendar, Lock, Workflow, BadgeCheck,
   Check
 } from 'lucide-react';
-import UnbreakableTrust from './UnbreakableTrust';
-import TrustSection from './TrustSection';
 
 const greatVibes = Great_Vibes({ subsets: ['latin'], weight: '400' });
 
