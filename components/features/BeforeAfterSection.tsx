@@ -69,12 +69,12 @@ const comparisonExamples: ComparisonImage[] = [
       description:
         'Successful real estate sales rely heavily on great photographs with turnaround times of less than 12 hours and consistent results.',
       services: [
-        '✨ HDR Editing',
-        '🤝 Manual Blending',
-        '🖌️ Retouching',
-        '📐 Floor Plans',
-        '🏠 Virtual Staging',
-        '🌇 Day to Dusk'
+        ' HDR Editing',
+        ' Manual Blending',
+        ' Retouching',
+        ' Floor Plans',
+        ' Virtual Staging',
+        ' Day to Dusk'
       ]
     },
 
@@ -107,12 +107,12 @@ const comparisonExamples: ComparisonImage[] = [
       description:
         'Our Product Retouching services help your business showcase products beautifully for eCommerce portals—driving more sales.',
       services: [
-        '🛒 eCommerce Retouching',
-        '👕 Apparel Retouching',
-        '💎 Jewelry Retouching',
-        '💅 Fashion Retouching',
-        '📟 Composite Retouching',
-        '👔 Ghost Mannequin'
+        ' eCommerce Retouching',
+        ' Apparel Retouching',
+        ' Jewelry Retouching',
+        ' Fashion Retouching',
+        ' Composite Retouching',
+        ' Ghost Mannequin'
       ],
       cta: 'Check Our Packages →'
     },
@@ -146,12 +146,12 @@ const comparisonExamples: ComparisonImage[] = [
       description:
         'Reduce your workload with professional people retouching that matches your studio’s style perfectly.',
       services: [
-        '🤰 Pregnancy Retouching',
-        '👶 Newborn Retouching',
-        '⚽ Sports Retouching',
-        '📷 Portrait Retouching',
-        '💄 Composite Retouching',
-        '👩 Fashion Retouching'
+        ' Pregnancy Retouching',
+        ' Newborn Retouching',
+        ' Sports Retouching',
+        ' Portrait Retouching',
+        ' Composite Retouching',
+        ' Fashion Retouching'
       ]
     },
 
@@ -184,26 +184,26 @@ const comparisonExamples: ComparisonImage[] = [
       description:
         'Create timeless wedding photos with natural skin tone enhancements, color grading, and flawless detail work for every bride and groom.',
       services: [
-        '💍 Wedding Retouching',
-        '📸 Bridal Portrait Enhancements',
-        '🤵 Groom Retouching',
-        '👰 Skin Smoothing',
-        '🌸 Event Color Correction',
-        '📷 Album-Ready Output'
+        ' Wedding Retouching',
+        ' Bridal Portrait Enhancements',
+        ' Groom Retouching',
+        ' Skin Smoothing',
+        ' Event Color Correction',
+        ' Album-Ready Output'
       ]
     },
 
     before: {
       title: 'Before: Raw Wedding Photo',
       description: 'Unedited wedding portrait with uneven skin tones and color shifts',
-      imageUrl: '/images/wedding-raw.jpg',
+      imageUrl: '/images/real-estate-raw.jpg',
       stats: ['Low Contrast', 'Uneven Skin Tone', 'Muted Colors']
     },
 
     after: {
       title: 'After: Wedding-Ready',
       description: 'Bright, balanced wedding photography with polished details and natural warmth',
-      imageUrl: '/images/wedding-corrected.jpg',
+      imageUrl: '/images/real-estate-corrected.jpg',
       stats: ['Balanced Exposure', 'Natural Skin', 'Crisp Detail']
     },
 
@@ -222,12 +222,12 @@ const comparisonExamples: ComparisonImage[] = [
       description:
         'We deliver background removals, transparent images, and path clippings for jewelry and product photos efficiently.',
       services: [
-        '✂ Background Removal',
-        '🟦 Blue Screen Removal',
-        '🟩 Green Screen Removal',
-        '📤 Extraction',
-        '🔗 Clipping Path',
-        '👥 CP with Shadows & Reflection'
+        ' Background Removal',
+        ' Blue Screen Removal',
+        ' Green Screen Removal',
+        ' Extraction',
+        'Clipping Path',
+        'CP with Shadows & Reflection'
       ]
     },
 
@@ -260,8 +260,8 @@ const comparisonExamples: ComparisonImage[] = [
       description:
         'We specialize in creating high-quality Architectural 3D Rendering, Interior Rendering and 3D Floor Plans delivered quickly and cost-effectively.',
       services: [
-        '🖌️ 3D Floor Plans',
-        '📐 3D Rendering'
+        '3D Floor Plans',
+        '3D Rendering'
       ]
     },
 
@@ -391,12 +391,19 @@ const BeforeAfterSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const sliderDirectionRef = useRef<1 | -1>(1);
 
-  useEffect(() => {
-    const activeButton = scrollRef.current?.querySelector('.active-category') as HTMLElement | null;
-    if (activeButton) {
-      activeButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    }
-  }, [selectedCategory]);
+
+  const categoryButtons = [
+    {
+      id: 'all',
+      name: 'All Categories',
+      icon: Home,
+      description: 'Show all services',
+      color: ' from-white-500 to-red-600 ',
+      bgColor: 'bg-red-500/10',
+      route: '/service',
+    },
+    ...categories,
+  ];
 
   // Filter examples by category
   const filteredExamples = selectedCategory === 'all'
@@ -590,21 +597,21 @@ const BeforeAfterSection = () => {
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-[#f3f4f6] py-16 md:py-24"
     >
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative w-full max-w-full px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
        
 
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-slate-900">
-            See Your Photos
-            <br />
+            Real Edits.
+           
             <span className="text-red-600">
-              Transformed
+              Real Results.
             </span>
           </h2>
 
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Explore real-world examples of how our AI technology enhances photos across different categories.
+           Explore professional photo enhancements across different editing categories.
           </p>
         </div>
 
@@ -616,7 +623,7 @@ const BeforeAfterSection = () => {
             return (
               <div
                 key={index}
-                className="flex-1 min-w-[200px] stat-card bg-white rounded-2xl border border-slate-200 p-5 hover:border-red-300 transition-all duration-300 hover:scale-105 shadow-sm"
+                className="flex-1 min-w-[250px]  stat-card bg-white rounded-2xl border border-slate-200 p-5 hover:border-red-300 transition-all duration-300 hover:scale-105 shadow-sm"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0">
@@ -645,58 +652,49 @@ const BeforeAfterSection = () => {
         </div>
 
         {/* Category Filters */}
-        <div className="category-filters mb-12 animate-fadeIn">
+        <div className="category-filters mb-12 ml-25 animate-fadeIn">
           <div
             ref={scrollRef}
-            className="max-w-full flex items-center gap-3 overflow-x-auto scrollbar-none scroll-smooth whitespace-nowrap px-2 py-2 sm:px-1"
+            className="max-w-full overflow-x-auto scrollbar-none px-2 py-2 sm:px-1"
           >
-            <button
-              onClick={() => handleCategorySelect('all')}
-              className={`category-filter active:scale-95 flex-shrink-0 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium transition-all duration-300 border ${
-                selectedCategory === 'all'
-                  ? 'active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20'
-                  : 'bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]'
-              }`}
-            >
-              All Categories
-            </button>
+            <div className="flex items-center gap-3 whitespace-nowrap">
+              {categoryButtons.map((category) => {
+                const Icon = category.icon;
+                const isActive = selectedCategory === category.id;
 
-            {categories.map((category) => {
-              const Icon = category.icon;
-              const isActive = selectedCategory === category.id;
-
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategorySelect(category.id)}
-                  className={`category-filter active:scale-95 flex-shrink-0 flex items-center gap-2 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm font-medium transition-all duration-300 border ${
-                    isActive
-                      ? 'active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20'
-                      : 'bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{category.name}</span>
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategorySelect(category.id)}
+                    className={`category-filter active:scale-95 flex-shrink-0 flex items-center gap-2 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-2xl sm:text-xl font-medium transition-all duration-300 border ${
+                      isActive
+                        ? 'active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20'
+                        : 'bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{category.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        <div className="relative rounded-[2rem] bg-white p-1 border border-slate-200">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-5 lg:gap-12 rounded-[1.7rem] p-4 sm:p-8">
+        <div className="relative rounded-[2rem] w-full h-[600px] bg-white p-1 border border-slate-200">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] items-stretch gap-5 lg:gap-12 rounded-[1.7rem] p-4 sm:p-8">
             {/* Left Hero Content */}
-            <div className="flex flex-col justify-center gap-6">
+            <div className="flex flex-col justify-center w-full h-full gap-6">
               <div className="rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 hover:border-red-300 transition-all duration-300">
                 {/* <div className="text-xs uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">Featured Example</div> */}
-                <div className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">{currentExample.title}</div>
-                <p className="text-base sm:text-lg text-slate-600 mb-5 leading-relaxed">{currentExample.content.description}</p>
+                <div className="text-5xl sm:text-5xl font-bold text-slate-900 mb-3">{currentExample.title}</div>
+                <p className="text-base sm:text-2xl text-slate-600 mb-5 leading-relaxed">{currentExample.content.description}</p>
 
                 <div className="mb-6 flex flex-wrap gap-2 text-xs">
                   {currentExample.content.services.slice(0, 4).map((service, index) => (
                     <span
                       key={index}
-                      className="rounded-full bg-red-50 px-2.5 py-1 text-xs text-red-700 border border-red-200"
+                      className="rounded-full bg-red-50 px-2.5 py-1 text-xl text-red-700 border border-red-200"
                     >
                       {service}
                     </span>
@@ -704,7 +702,7 @@ const BeforeAfterSection = () => {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                  {/* <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     <div className="flex flex-col">
                       <span className="text-sm text-slate-600">Difficulty</span>
                       <span className="text-lg font-semibold text-slate-900">{currentExample.difficulty}</span>
@@ -714,7 +712,7 @@ const BeforeAfterSection = () => {
                       <span className="text-sm text-slate-600">Time Saved</span>
                       <span className="text-lg font-semibold text-slate-900">{currentExample.timeSaved}</span>
                     </div>
-                  </div>
+                  </div> */}
                   <Link
                     href={currentCategoryRoute}
                     className="inline-flex w-full items-center justify-center rounded-xl bg-[#F44336] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#E53935] duration-300 hover:shadow-lg hover:shadow-[#F44336]/30 sm:w-auto"
@@ -727,7 +725,7 @@ const BeforeAfterSection = () => {
 
             {/* Right Comparison Panel */}
             <div
-              className="relative h-[240px] sm:h-[300px] md:h-[360px] rounded-xl overflow-hidden bg-slate-800 mb-4 border border-slate-300 shadow-md"
+              className="relative min-h-[240px] h-full rounded-xl overflow-hidden bg-slate-800 mb-4 border border-slate-300 shadow-md"
               onMouseEnter={() => {
                 setIsPaused(true);
                 setIsPlaying(false);

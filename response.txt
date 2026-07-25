@@ -1,0 +1,11 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     21   0     21   0      0    148      0                              0100     21   0     21   0      0    147      0                              0100     21   0     21   0      0    146      0                              0
+HTTP/1.1 500 Internal Server Error
+Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+Date: Fri, 24 Jul 2026 11:46:18 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+Internal Server Error

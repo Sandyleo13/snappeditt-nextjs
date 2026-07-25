@@ -78,9 +78,9 @@ export function Footer() {
     { name: "Instagram", icon: Instagram, href: "https://instagram.com", color: "text-[var(--primary)]" },
     { name: "Twitter", icon: Twitter, href: "https://twitter.com", color: "text-[var(--primary)]" },
     { name: "YouTube", icon: Youtube, href: "https://youtube.com", color: "text-[var(--primary)]" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", color: "text-[var(--primary)]" },
+    // { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", color: "text-[var(--primary)]" },
     { name: "Facebook", icon: Facebook, href: "https://facebook.com", color: "text-[var(--primary)]" },
-    { name: "GitHub", icon: Github, href: "https://github.com", color: "text-[var(--primary)]" },
+    // { name: "GitHub", icon: Github, href: "https://github.com", color: "text-[var(--primary)]" },
   ];
 
   return (
@@ -89,18 +89,18 @@ export function Footer() {
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:50px_50px]" />
       </div>
-      
+
       {/* Gradient Blobs */}
       <div className="absolute -top-36 -left-36 w-80 h-80 bg-[var(--primary)]/10 rounded-full mix-blend-screen filter blur-3xl opacity-40" />
       <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-[var(--primary-dark)]/10 rounded-full mix-blend-screen filter blur-3xl opacity-40" />
 
       {/* Main Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Top Section */}
         <div className="pt-20 pb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
-            
+
             {/* Brand Column */}
             <div className="lg:col-span-1 space-y-6">
               <Link href="/" className="inline-flex items-center gap-3 group">
@@ -113,15 +113,14 @@ export function Footer() {
                   />
                 </div>
                 <div>
-                  <div className="text-xl font-bold tracking-tight text-white">SnappEdit</div>
-                  <div className="text-xs text-[var(--footer-muted)] font-medium">AI Photo Editor</div>
+                  <div className="text-xl font-bold tracking-tight text-white">SnappEditt</div>
+
                 </div>
               </Link>
-              
               <p className="text-[var(--footer-muted)] text-sm leading-relaxed max-w-xs">
-                Professional AI-powered photo editing for photographers and creative professionals worldwide.
+                Professional photo editing and retouching services trusted by photographers, studios, brands, and creative professionals worldwide.
               </p>
-              
+
               {/* Newsletter Subscription */}
               <div className="pt-4 space-y-3">
                 <h4 className="text-sm font-semibold text-white flex items-center gap-2">
@@ -255,7 +254,7 @@ export function Footer() {
         {/* Middle Section - Trust & Security */}
         <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
+
             {/* Security Badges */}
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -278,28 +277,30 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Awards */}
-            <div className="space-y-4">
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <Award className="w-4 h-4 text-yellow-500" />
-                Recognition
-              </h4>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-sm">
-                  <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                  <span className="text-slate-300">AI Photo Editor 2023</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                  <span className="text-slate-300">Top 100 SaaS</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                  <span className="text-slate-300">Best in Tech</span>
-                </div>
-              </div>
-            </div>
+    {/* Why Choose Us */}
+<div className="space-y-4">
+  <h4 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+    {/* <Award className="w-4 h-4 text-yellow-500" /> */}
+    Why Choose Us
+  </h4>
 
+  <div className="space-y-3">
+    <div className="flex items-center gap-3 text-sm">
+      {/* <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" /> */}
+      <span className="text-slate-300">Professional Photo Editing</span>
+    </div>
+
+    <div className="flex items-center gap-3 text-sm">
+      {/* <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" /> */}
+      <span className="text-slate-300">Fast Turnaround Time</span>
+    </div>
+
+    <div className="flex items-center gap-3 text-sm">
+      {/* <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" /> */}
+      <span className="text-slate-300">High-Quality Results</span>
+    </div>
+  </div>
+</div>
             {/* Social Links */}
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider">
@@ -333,7 +334,7 @@ export function Footer() {
         {/* Bottom Section */}
         <div className="py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            
+
             {/* Copyright */}
             <div className="text-center md:text-left space-y-4">
               <div className="text-sm text-slate-300">

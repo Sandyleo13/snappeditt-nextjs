@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import {
   Camera, User, Star, Users,
   Sparkles, Zap, CheckCircle,
-  ArrowRight, Eye, Shield,
+  ArrowRight, Eye, Shield, Sun, Contrast, Layers,
   Wand2, Palette, Award,
   ChevronLeft, ChevronRight
 } from 'lucide-react';
@@ -68,277 +68,246 @@ const portraitStyles = [
 ];
 
 export default function PortraitHeadshotsStudioPage() {
-  const [activeStyle, setActiveStyle] = useState('corporate');
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging]         = useState(false);
-  const [isHoveringSlider, setIsHoveringSlider] = useState(false);
-  const sliderDirectionRef = useRef<1 | -1>(1);
-  const heroSliderRef      = useRef<HTMLDivElement>(null);
-  const gallerySliderRef   = useRef<HTMLDivElement>(null);
-
+  // design-only: continuously animated auto slider
+  const activeStyle = 'corporate';
+  const [designSliderPercent, setDesignSliderPercent] = useState(40);
   const currentStyle = portraitStyles.find(s => s.id === activeStyle) ?? portraitStyles[0];
 
+  useEffect(() => {
+    let direction = 1;
+    const interval = setInterval(() => {
+      setDesignSliderPercent(prev => {
+        const next = prev + direction * 0.6;
+        if (next >= 70) {
+          direction = -1;
+          return 70;
+        }
+        if (next <= 30) {
+          direction = 1;
+          return 30;
+        }
+        return next;
+      });
+    }, 40);
+    return () => clearInterval(interval);
+  }, []);
+
   const stats = [
-    { value:'100K+', label:'Portraits Done',    sub:'Trusted worldwide',              icon:<Camera className="w-5 h-5"/> },
-    { value:'24h',   label:'Turnaround Time',   sub:'Fast, reliable delivery',        icon:<Zap className="w-5 h-5"/> },
-    { value:'5★',    label:'Client Rating',     sub:'Based on 3,000+ reviews',        icon:<Star className="w-5 h-5"/> },
-    { value:'100%',  label:'Natural Results',   sub:'No over-retouched look',         icon:<Eye className="w-5 h-5"/> },
+    { value:'100K+', label:'Portraits Done',    sub:'Trusted worldwide',              icon:<Camera className="w-5 h-5 text-[#E8352A]"/> },
+    { value:'24h',   label:'Turnaround Time',   sub:'Fast, reliable delivery',        icon:<Zap className="w-5 h-5 text-[#E8352A]"/> },
+    { value:'5★',    label:'Client Rating',     sub:'Based on 3,000+ reviews',        icon:<Star className="w-5 h-5 text-[#E8352A]"/> },
+    { value:'100%',  label:'Natural Results',   sub:'No over-retouched look',         icon:<Eye className="w-5 h-5 text-[#E8352A]"/> },
   ];
 
   const services = [
-    { title:'Corporate Headshots', description:'Polished headshots for business profiles, teams, and websites.',      icon:<Award className="w-6 h-6"/> },
-    { title:'LinkedIn Profiles',   description:'Profile-ready photos for LinkedIn and professional networks.',        icon:<User className="w-6 h-6"/> },
-    { title:'Actor Portraits',     description:'Portfolio headshots for actors, models, and creative professionals.', icon:<Camera className="w-6 h-6"/> },
-    { title:'Team Photos',         description:'Consistent retouching across entire team or group headshot sets.',    icon:<Users className="w-6 h-6"/> },
+    { title:'Corporate Headshots', description:'Polished headshots for business profiles, teams, and websites.',      icon:<Award className="w-8 h-8"/>, color: '#E8352A', bg: '#FFF0EE' },
+    { title:'LinkedIn Profiles',   description:'Profile-ready photos for LinkedIn and professional networks.',        icon:<User className="w-8 h-8"/>, color: '#7C3AED', bg: '#F5F0FF' },
+    { title:'Actor Portraits',     description:'Portfolio headshots for actors, models, and creative professionals.', icon:<Camera className="w-8 h-8"/>, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title:'Team Photos',         description:'Consistent retouching across entire team or group headshot sets.',    icon:<Users className="w-8 h-8"/>, color: '#10B981', bg: '#ECFDF5' },
   ];
 
-  useEffect(() => { sliderDirectionRef.current = 1; setSliderPosition(50); }, [activeStyle]);
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isDragging || isHoveringSlider) return;
-    const id = window.setInterval(() => {
-      setSliderPosition(prev => {
-        const next = prev + sliderDirectionRef.current * 0.7;
-        if (next >= 100) { sliderDirectionRef.current = -1; return 100; }
-        if (next <= 0)   { sliderDirectionRef.current =  1; return 0;   }
-        return next;
-      });
-    }, 30);
-    return () => window.clearInterval(id);
-  }, [isDragging, isHoveringSlider, activeStyle]);
+  // design-only hero: no interactive image carousel or slider ref
 
-  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-    const activeRef = heroSliderRef.current?.contains(e.target as Node) ? heroSliderRef : gallerySliderRef;
-    if (!activeRef.current) return;
-    e.preventDefault();
-    const rect = activeRef.current.getBoundingClientRect();
-    const x = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-    setSliderPosition(Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100)));
-  };
-
-  const selectStyle = (id: string) => { setActiveStyle(id); setSliderPosition(50); };
-
-  const addToCart = () => {
-    const pricePerImage = 0.20, imageCount = 50;
-    const total = parseFloat((pricePerImage * imageCount).toFixed(2));
-    const cartItem = { service_name:'Portrait & Headshots', qty:1, price:pricePerImage,
-      retouching:'Portrait & Headshots', order_name:'Portrait & Headshots',
-      order_images:imageCount, order_details:currentStyle.desc, addons:[], total };
-    try {
-      const existing = document.cookie.match(/(^| )cart=([^;]+)/);
-      const currentCart = existing ? JSON.parse(decodeURIComponent(existing[2])) : [];
-      const updatedCart = Array.isArray(currentCart) ? [...currentCart, cartItem] : [currentCart, cartItem];
-      document.cookie = 'cart=' + encodeURIComponent(JSON.stringify(updatedCart)) + '; path=/';
-    } catch { document.cookie = 'cart=' + encodeURIComponent(JSON.stringify([cartItem])) + '; path=/'; }
-    window.location.href = '/cart';
-  };
+  // interactive behavior removed for design-only hero
 
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
 
       {/* ══════════════════════════════════════  HERO  ══════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#0D0D0F]">
 
-        {/* Animated background */}
+        {/* ── Animated mesh background ── */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background:'radial-gradient(circle, rgba(232,53,42,0.09) 0%, transparent 70%)' }} />
-          <div className="absolute -right-24 -top-24 w-[440px] h-[440px] rounded-full"
-            style={{ background:'radial-gradient(circle, rgba(232,53,42,0.07) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[240px] rounded-full"
-            style={{ background:'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid meet">
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="0.8" opacity="0.10"/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="0.6" opacity="0.08"/>
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="1.6" opacity="0.38"
-              strokeDasharray="200 1600" style={{ animation:'phCW 8s linear infinite', transformOrigin:'820px 340px' }}/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="1.0" opacity="0.22"
-              strokeDasharray="140 1200" style={{ animation:'phCCW 12s linear infinite', transformOrigin:'820px 340px' }}/>
+          {/* base noise texture via SVG filter */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#noise)"/>
           </svg>
-          <motion.div animate={{ y:[-13,13,-13] }} transition={{ repeat:Infinity, duration:5.8, ease:'easeInOut' }}
-            style={{ position:'absolute', right:'6%', top:'7%', width:52, height:52, borderRadius:'50%',
-              background:'radial-gradient(circle at 35% 28%,#ff7b6e 0%,#E8352A 52%,#8b1a0f 100%)',
-              boxShadow:'0 10px 30px rgba(232,53,42,0.32)' }} />
-          <motion.div animate={{ y:[9,-9,9] }} transition={{ repeat:Infinity, duration:3.8, ease:'easeInOut', delay:0.8 }}
-            style={{ position:'absolute', right:'8%', top:'50%', width:24, height:24, borderRadius:'50%',
-              background:'radial-gradient(circle at 35% 28%,#ff9a80 0%,#E8352A 60%,#a31808 100%)',
-              boxShadow:'0 5px 16px rgba(232,53,42,0.26)' }} />
-          <motion.div animate={{ y:[-11,11,-11] }} transition={{ repeat:Infinity, duration:6.4, ease:'easeInOut' }}
-            style={{ position:'absolute', left:'5%', top:'46%', width:60, height:60, borderRadius:'50%',
-              background:'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.98) 0%,rgba(228,233,245,0.50) 58%,rgba(198,208,228,0.18) 100%)',
-              boxShadow:'0 6px 28px rgba(15,23,42,0.08),inset 0 1px 2px rgba(255,255,255,0.9)',
-              border:'1px solid rgba(208,218,234,0.40)' }} />
-          <motion.div animate={{ y:[8,-8,8] }} transition={{ repeat:Infinity, duration:4.7, ease:'easeInOut', delay:0.7 }}
-            style={{ position:'absolute', left:'12%', bottom:'28%', width:28, height:28, borderRadius:'50%',
-              background:'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.97) 0%,rgba(224,230,244,0.45) 65%)',
-              boxShadow:'0 3px 12px rgba(15,23,42,0.07)', border:'1px solid rgba(208,218,234,0.35)' }} />
-          <motion.div animate={{ y:[-8,8,-8] }} transition={{ repeat:Infinity, duration:4, ease:'easeInOut' }}
-            className="absolute left-[43%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y:[8,-8,8] }} transition={{ repeat:Infinity, duration:5.2, ease:'easeInOut', delay:0.8 }}
-            className="absolute right-[18%] top-[22%] w-3 h-3 rounded-full bg-[#E8352A]/38" />
-          <motion.div animate={{ y:[-6,6,-6] }} transition={{ repeat:Infinity, duration:3.6, ease:'easeInOut', delay:0.4 }}
-            className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
+          {/* large red glow — left */}
+          <motion.div
+            animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute -left-40 top-1/3 w-[700px] h-[700px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }}
+          />
+          {/* subtle glow — right */}
+          <motion.div
+            animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }}
+            transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }}
+            className="absolute -right-32 -bottom-20 w-[500px] h-[500px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }}
+          />
+          {/* grid lines */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)"/>
+          </svg>
+          {/* floating particles */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div key={i}
+              animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }}
+              transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }}
+              className="absolute rounded-full bg-[#E8352A]"
+              style={{
+                width: [6,4,8,5,3,7][i], height: [6,4,8,5,3,7][i],
+                left: `${[12,28,45,62,75,88][i]}%`,
+                top: `${[20,65,15,75,35,55][i]}%`,
+                filter: 'blur(1px)',
+              }}
+            />
+          ))}
         </div>
+
         <style>{`
-          @keyframes phCW  { to { stroke-dashoffset: -1800; } }
-          @keyframes phCCW { to { stroke-dashoffset:  1348; } }
+          @keyframes portraitReveal {
+            0%, 10% { width: 0%; }
+            45%, 55% { width: 100%; }
+            90%, 100% { width: 0%; }
+          }
+          @keyframes portraitDivider {
+            0%, 10% { left: 0%; }
+            45%, 55% { left: 100%; }
+            90%, 100% { left: 0%; }
+          }
+          .portrait-motion {
+            animation-duration: 8s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-play-state: running;
+          }
+          .portrait-stage:hover .portrait-motion {
+            animation-play-state: paused;
+          }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        {/* ── Main content grid ── */}
+        <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-2 min-h-screen">
 
-            {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
-              initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
+          {/* LEFT PANEL */}
+          <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
 
-         
-              {/* Heading */}
-              <div>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
-                  initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.55 }}>
-                  Portrait <span className="text-[#E8352A]">Headshots</span>
-                </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
-                  initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3, duration:0.5 }}>
-                  Studio-Quality Retouching
-                </motion.p>
-              </div>
-
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.42, duration:0.5 }}>
-                Turn any photo into a professional headshot. Natural skin retouching, background
-                replacement, and perfect lighting — ready for LinkedIn, corporate, or portfolio.
-              </motion.p>
-
-            
-
-              {/* CTAs */}
-           <motion.div className="flex flex-wrap gap-3 pt-1"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-              Get Start For Free
-                </Link>
-                <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  View Examples
-                </button>
-              </motion.div>
-
-           
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 self-start mb-8 px-4 py-1.5 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] animate-pulse" />
+              <span className="text-[#E8352A] text-xs font-semibold tracking-widest uppercase">Portrait Headshot Editing</span>
             </motion.div>
 
-            {/* ── RIGHT: Slider + profile badge + style strip ── */}
-            <motion.div className="flex flex-col gap-3 relative"
-              initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
+            {/* Heading */}
+            <h1 className="font-extrabold leading-[0.95] tracking-tight mb-6">
+              {['Portrait', 'Headshots', 'Retouching'].map((word, i) => (
+                <motion.span key={word} className={`block ${
+                  i === 1 ? 'text-[#E8352A]' : 'text-white'
+                } text-[clamp(3rem,8vw,7rem)]`}
+                  initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+                  {word}
+                </motion.span>
+              ))}
+            </h1>
 
-              {/* Profile ready badge */}
-              <ProfileBadge />
+            {/* Description */}
+            <motion.p
+              className="text-[#A0A0B0] text-base md:text-lg leading-relaxed max-w-md mb-10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>
+              Create polished, natural headshots for LinkedIn, corporate profiles, portfolios, and personal brands with expert portrait retouching.
+            </motion.p>
 
-              {/* Before/After slider */}
-              <div ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio:'4/3' }}
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+            {/* CTAs */}
+            <motion.div className="flex flex-wrap gap-4"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}>
+              <Link href="/free-trial"
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all shadow-[0_0_40px_rgba(232,53,42,0.45)] hover:shadow-[0_0_60px_rgba(232,53,42,0.65)] hover:scale-105">
+                Get Started Free
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <button
+                onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 text-white/80 font-semibold text-sm hover:border-[#E8352A]/50 hover:text-white hover:bg-white/5 transition-all">
+                View Examples
+              </button>
+            </motion.div>
 
-                {/* AFTER — base */}
-                <motion.div key={`after-${activeStyle}`}
-                  initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ duration:0.35 }}
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage:`url(${currentStyle.after})` }} />
-
-                {/* BEFORE — clipped */}
-                <div className="absolute inset-0 overflow-hidden" style={{ width:`${sliderPosition}%` }}>
-                  <motion.div key={`before-${activeStyle}`}
-                    initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ duration:0.35 }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage:`url(${currentStyle.before})`,
-                      width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-
-                {/* Divider + handle */}
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
-                  style={{ left:`${sliderPosition}%`, transform:'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
-                    <div className="flex items-center gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Labels */}
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">Before</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">After</span>
-              </div>
-
-              {/* Portrait style thumbnail strip */}
-              <motion.div
-                className="bg-white rounded-2xl border border-[#F0F0F0] shadow-lg px-3 py-3 flex items-center gap-1"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.85 }}>
-                <button
-                  onClick={() => { const i = portraitStyles.findIndex(s => s.id === activeStyle); selectStyle(portraitStyles[(i-1+portraitStyles.length)%portraitStyles.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-
-                <div className="flex gap-2 flex-1 justify-around">
-                  {portraitStyles.map(style => (
-                    <button key={style.id} onClick={() => selectStyle(style.id)}
-                      className="flex flex-col items-center gap-1.5 flex-shrink-0 transition-all">
-                      <div className={`w-12 h-12 rounded-full overflow-hidden border-2 transition-all ${
-                        activeStyle === style.id ? 'border-[#E8352A] shadow-md' : 'border-transparent hover:border-[#E8352A]/40'}`}>
-                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage:`url(${style.img})` }} />
-                      </div>
-                      <span className={`text-[9px] font-semibold ${activeStyle === style.id ? 'text-[#E8352A]' : 'text-[#999]'}`}>
-                        {style.label}
-                      </span>
-                      {activeStyle === style.id && (
-                        <motion.div layoutId="portStyleDot" className="w-4 h-0.5 bg-[#E8352A] rounded-full"
-                          transition={{ type:'spring', stiffness:400, damping:30 }} />
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => { const i = portraitStyles.findIndex(s => s.id === activeStyle); selectStyle(portraitStyles[(i+1)%portraitStyles.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </motion.div>
-
-              {/* Caption */}
-              <motion.p key={activeStyle} initial={{ opacity:0, y:4 }} animate={{ opacity:1, y:0 }}
-                className="text-center text-xs text-[#888] leading-snug px-4">
-                {currentStyle.desc}
-              </motion.p>
+            {/* Stats strip */}
+            <motion.div
+              className="grid grid-cols-4 gap-4 mt-14 pt-10 border-t border-white/10"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>
+              {stats.map((s, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 + i * 0.08, duration: 0.4 }}>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-white">{s.value}</p>
+                  <p className="text-[11px] text-[#666] mt-0.5 uppercase tracking-wider">{s.label}</p>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
 
-          {/* Stats bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
-            initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:1.0 }}>
-            {stats.map((s,i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors mt-0.5">
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#E8352A]">{s.value}</p>
-                  <p className="text-xs font-semibold text-[#1A1A1A] leading-tight">{s.label}</p>
-                  <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
-                  <svg viewBox="0 0 60 14" className="w-14 mt-1.5 opacity-50" fill="none">
-                    <polyline points="0,11 10,7 22,9 34,3 44,6 60,2" stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+          {/* RIGHT PANEL — full-height before/after */}
+          <motion.div
+            className="relative flex flex-col lg:h-screen"
+            initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+
+            {/* Before/After fills the entire right column and pauses while hovered */}
+            <div className="portrait-stage relative flex-1 select-none overflow-hidden lg:rounded-none rounded-2xl mx-4 lg:mx-0 mt-4 lg:mt-0" style={{ minHeight: 340 }}>
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${currentStyle.before})`, filter: 'brightness(0.7) saturate(0.6)' }} />
+              <div
+                className="portrait-motion absolute inset-0 overflow-hidden"
+                style={{ animationName: 'portraitReveal' }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${currentStyle.after})`, width: '100%' }} />
+              </div>
+
+              {/* Divider follows the reveal from left to right */}
+              <div
+                className="portrait-motion absolute bottom-0 top-0 z-10"
+                style={{ animationName: 'portraitDivider', transform: 'translateX(-50%)' }}>
+                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/60" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 bg-white rounded-full shadow-2xl flex items-center justify-center border-2 border-[#E8352A]" style={{ boxShadow: '0 0 0 4px rgba(232,53,42,0.20), 0 8px 24px rgba(0,0,0,0.4)' }}>
+                  <div className="flex gap-0.5">
+                    <ChevronLeft className="w-3.5 h-3.5 text-[#E8352A]" />
+                    <ChevronRight className="w-3.5 h-3.5 text-[#E8352A]" />
+                  </div>
                 </div>
               </div>
-            ))}
+
+              {/* Labels */}
+              <span className="absolute top-5 left-5 z-10 bg-black/60 text-white text-[11px] font-bold px-3 py-1.5 rounded-full backdrop-blur-md tracking-wider uppercase">Before</span>
+              <span className="absolute top-5 right-5 z-10 bg-[#E8352A] text-white text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider uppercase">After</span>
+
+              {/* Bottom overlay: toolbar (design-only, non-interactive) */}
+              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                <div className="flex items-center justify-between gap-2">
+                  {['Exposure','Contrast','Highlights','Shadows','Color'].map(tab => (
+                    <div key={tab} className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl text-white/50">
+                      <div className="w-4 h-4 opacity-90" />
+                      <span className="text-[9px] font-semibold">{tab}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Floating AI badge */}
+              <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#E8352A]" />
+                <span className="text-white text-[11px] font-semibold">AI-Assisted Manual Edit</span>
+              </motion.div>
+            </div>
+
+            {/* Image selector dots (design-only) */}
+            <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
+              <div className="w-8 h-2.5 bg-[#E8352A] rounded-full" />
+              <div className="w-2.5 h-2.5 bg-white/25 rounded-full" />
+              <div className="w-2.5 h-2.5 bg-white/25 rounded-full" />
+            </div>
           </motion.div>
         </div>
       </section>
@@ -354,22 +323,12 @@ export default function PortraitHeadshotsStudioPage() {
           </div>
           <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
             <div className="flex-1 flex flex-col">
-              <div ref={gallerySliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px]"
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
-                <div className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage:`url(${currentStyle.after})` }} />
-                <div className="absolute inset-0 overflow-hidden" style={{ width:`${sliderPosition}%` }}>
-                  <div className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage:`url(${currentStyle.before})`,
-                      width: gallerySliderRef.current ? `${gallerySliderRef.current.offsetWidth}px` : '100%' }} />
+              <div className="relative rounded-2xl overflow-hidden shadow-xl select-none flex-1 min-h-[320px] sm:min-h-[420px]">
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage:`url(${currentStyle.after})` }} />
+                <div className="absolute inset-0 overflow-hidden" style={{ width:`${designSliderPercent}%` }}>
+                  <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage:`url(${currentStyle.before})`, width:'100%' }} />
                 </div>
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10"
-                  style={{ left:`${sliderPosition}%`, transform:'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10" style={{ left:`${designSliderPercent}%`, transform:'translateX(-50%)' }}>
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
                     <div className="flex items-center gap-0.5">
                       <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
@@ -382,13 +341,12 @@ export default function PortraitHeadshotsStudioPage() {
               </div>
               <div className="flex items-center justify-center gap-2 mt-5 flex-wrap">
                 {portraitStyles.map(style => (
-                  <button key={style.id} onClick={() => selectStyle(style.id)}
+                  <div key={style.id}
                     className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
                       activeStyle === style.id
                         ? 'bg-[#E8352A] text-white shadow'
-                        : 'bg-white border border-[#E5E7EB] text-[#555] hover:border-[#E8352A] hover:text-[#E8352A]'}`}>
-                    {style.label}
-                  </button>
+                        : 'bg-white border border-[#E5E7EB] text-[#555]'
+                    }`}> {style.label}</div>
                 ))}
               </div>
             </div>
@@ -402,7 +360,7 @@ export default function PortraitHeadshotsStudioPage() {
               <div className="text-2xl font-bold text-[#111] mb-4">
                 $0.20 <span className="text-base font-normal text-[#555]">/ image</span>
               </div>
-              <button onClick={addToCart}
+              <button
                 className="w-full bg-[#E8352A] hover:bg-[#C62B20] text-white font-semibold py-2.5 rounded-lg transition-all mb-5 shadow-sm text-sm">
                 Add to Cart
               </button>
@@ -433,15 +391,33 @@ export default function PortraitHeadshotsStudioPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service,i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: service.bg, color: service.color }}>
+                  <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5"/>
-                </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                {(() => {
+                  const slug = slugify(service.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} aria-expanded={openServiceSlug === slug} className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: service.color }}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{service.description} More details, pricing examples, and typical turnaround info.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/people/portrait-headshots-studio/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>

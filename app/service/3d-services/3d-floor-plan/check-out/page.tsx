@@ -4,9 +4,9 @@ import { Shield, Users, CheckCircle } from "lucide-react";
 import CheckoutClient from "./CheckoutClient";
 
 export const metadata = {
-  title: "Checkout – Single Exposure | Snappeditt",
+  title: "Checkout – 3D Floor Plan | Snappeditt",
   description:
-    "Customize your Single Exposure photo editing order with add-ons.",
+    "Customize your 3D Floor Plan design order with add-ons.",
 };
 
 export default async function CheckoutPage() {
@@ -33,7 +33,7 @@ export default async function CheckoutPage() {
           <div className="relative z-10 space-y-6">
             <div className="space-y-3">
               <span className="inline-block rounded-full bg-[#FFEBE8] text-[#E8352A] px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
-                📌 Single Exposure Checkout
+                📌 3D Floor Plan Checkout
               </span>
               <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
                 Professional Edits.<br />
@@ -67,7 +67,7 @@ export default async function CheckoutPage() {
               <div className="relative h-64">
                 <Image
                   src="/images/real-estate-basic-sky-explosure-after.webp"
-                  alt="Single Exposure preview"
+                    alt="3D floor plan preview"
                   fill
                   className="object-cover"
                 />
@@ -77,7 +77,7 @@ export default async function CheckoutPage() {
                   <span className="text-xl">⏱️</span>
                   <p className="text-sm font-bold">24-48h Estimated Delivery</p>
                 </div>
-                <p className="text-xs text-gray-600">High-quality single exposure editing with fast turnaround.</p>
+                <p className="text-xs text-gray-600">High-quality 3D floor plan design with fast turnaround.</p>
               </div>
             </div>
 

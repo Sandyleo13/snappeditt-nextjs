@@ -354,22 +354,22 @@ export const ClientReviewsSection = forwardRef<HTMLElement, ClientReviewsSection
               <div key={review.id} className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-4">
-                    <div className="relative w-14 h-14 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
-                      <User className="w-8 h-8 text-slate-500" />
+                    <div className="relative w-15 h-15 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
+                      <User className="w-10 h-10 text-slate-500" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900">{review.name}</h3>
-                      <p className="text-sm text-[#F44336]">{review.role}</p>
+                      <h3 className="font-semibold text-3xl text-slate-900">{review.name}</h3>
+                      <p className="text-xl text-[#F44336]">{review.role}</p>
                     </div>
                   </div>
                   <div className="text-[#F44336]">
                     {/* <Icon className="w-5 h-5" /> */}
                   </div>
                 </div>
-                <p className="text-slate-700 text-sm leading-relaxed line-clamp-4">
+                <p className="text-slate-700 text-lg leading-relaxed line-clamp-4">
                   {review.content}
                 </p>
-                <div className="mt-4 text-xs text-red-600">
+                <div className="mt-4 text-xl text-red-600">
                   {review.service} • {review.date}
                 </div>
               </div>

@@ -61,19 +61,19 @@ function StepCard({
 }) {
   return (
     <div
-      className={`rounded-[2rem] border p-5 sm:p-7 shadow-xl transition-all duration-300 ${
+      className={`rounded-[2rem] border p-5 sm:p-7 shadow-xl transition-all duration-300 w-full ${
         isActive
           ? 'border-[#F44336] bg-[#FFF1EF] shadow-[#F44336]/10'
           : 'border-slate-200 bg-white'
       }`}
     >
-      <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+      <p className="text-2xl uppercase tracking-[0.3em] text-slate-400">
         Step {item.step}
       </p>
-      <h3 className="mt-3 text-2xl font-semibold leading-tight text-slate-900">
+      <h3 className="mt-3 text-3xl font-semibold leading-tight text-slate-900">
         {item.title}
       </h3>
-      <p className="mt-3 text-sm leading-relaxed text-slate-600">
+      <p className="mt-3 text-lg leading-relaxed text-slate-600">
         {item.description}
       </p>
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -84,7 +84,7 @@ function StepCard({
           <button
             type="button"
             onClick={onNext}
-            className="inline-flex w-full items-center justify-center rounded-full bg-[#F44336] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#E53935] sm:w-auto"
+            className="inline-flex w-full items-center justify-center rounded-full bg-[#F44336] px-4 py-3 text-lg font-semibold text-white transition hover:bg-[#E53935] sm:w-auto"
           >
             Next step
             <ChevronRight className="ml-2 h-4 w-4" />
@@ -153,10 +153,12 @@ export default function EnrollStep() {
             Scroll through the steps or tap a dot to jump straight to it.
           </p>
         </div>
+      </div>
 
+      <div className="relative w-full px-4 sm:px-6 lg:px-0">
         <div className="sticky top-4 z-20 mb-10">
-          <div className="mx-auto flex w-full max-w-[40rem] overflow-x-auto rounded-2xl border border-slate-100 bg-white/90 backdrop-blur-md px-3 py-3 shadow-md scrollbar-none">
-            <div className="flex min-w-full items-center justify-center gap-2">
+          <div className="flex w-full max-w-full overflow-x-auto rounded-2xl border border-slate-100 bg-white/90 backdrop-blur-md px-3 py-3 shadow-md scrollbar-none">
+            <div className="flex min-w-full h-full items-center justify-center gap-2">
               {steps.map((item, index) => {
                 const isActive = index === activeStep;
                 const isVisited = index < activeStep;
@@ -166,9 +168,9 @@ export default function EnrollStep() {
                     type="button"
                     onClick={() => goToStep(index)}
                     aria-label={`Step ${item.step}`}
-                    className={`inline-flex min-w-[44px] h-11 items-center justify-center rounded-full border px-3 text-sm font-semibold transition-all duration-300 ${
+                    className={`inline-flex min-w-[48px] h-11 items-center justify-center rounded-full border px-3 text-sm font-semibold transition-all duration-300 ${
                       isActive
-                        ? 'border-[#F44336] bg-[#F44336] text-white shadow-lg shadow-[#F44336]/20 scale-110'
+                        ? 'min-w-[70px] h-14 border-[#F44336] bg-[#F44336] text-white shadow-lg shadow-[#F44336]/20 scale-110'
                         : isVisited
                         ? 'border-[#F44336] bg-[#FEE2E2] text-[#B91C1C]'
                         : 'border-slate-200 bg-white text-slate-500 hover:border-[#F44336]/50 hover:bg-slate-50'
@@ -182,7 +184,7 @@ export default function EnrollStep() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-6xl px-4">
+        <div className="relative mx-auto w-full max-w-full px-0 lg:px-0">
           <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-slate-200 hidden lg:block" />
 
           <div
@@ -202,16 +204,18 @@ export default function EnrollStep() {
                     stepRefs.current[index] = el;
                   }}
                   key={item.step}
-                  className="grid gap-6 lg:grid-cols-[1fr_80px_1fr] items-center"
+                  className="grid gap-6 lg:grid-cols-[1fr_80px_1fr] items-center lg:gap-10"
                 >
                   <div className={isLeft ? 'block' : 'hidden lg:block lg:invisible'}>
                     {isLeft && (
-                      <StepCard
-                        item={item}
-                        isActive={isActive}
-                        onNext={nextStep}
-                        isLast={index === steps.length - 1}
-                      />
+                      <div className="lg:ml-10 lg:max-w-full">
+                        <StepCard
+                          item={item}
+                          isActive={isActive}
+                          onNext={nextStep}
+                          isLast={index === steps.length - 1}
+                        />
+                      </div>
                     )}
                   </div>
 
@@ -221,7 +225,7 @@ export default function EnrollStep() {
                       onClick={() => goToStep(index)}
                       className={`flex h-14 w-14 items-center justify-center rounded-full border-2 text-base font-bold transition-all duration-300 z-10 relative ${
                         isActive
-                          ? 'border-[#F44336] bg-[#F44336] text-white shadow-xl shadow-[#F44336]/30 scale-115'
+                          ? 'h-16 w-16 border-[#F44336] bg-[#F44336] text-white shadow-xl shadow-[#F44336]/30 scale-125'
                           : isComplete
                           ? 'border-[#F44336] bg-[#FEE2E2] text-[#B91C1C]'
                           : 'border-slate-200 bg-white text-slate-600'
@@ -233,12 +237,14 @@ export default function EnrollStep() {
 
                   <div className={!isLeft ? 'block' : 'hidden lg:block lg:invisible'}>
                     {!isLeft && (
-                      <StepCard
-                        item={item}
-                        isActive={isActive}
-                        onNext={nextStep}
-                        isLast={index === steps.length - 1}
-                      />
+                      <div className="lg:mr-10 lg:max-w-full">
+                        <StepCard
+                          item={item}
+                          isActive={isActive}
+                          onNext={nextStep}
+                          isLast={index === steps.length - 1}
+                        />
+                      </div>
                     )}
                   </div>
 
@@ -259,7 +265,7 @@ export default function EnrollStep() {
         <div className="mt-14 text-center">
           <a
             href="/register"
-            className="inline-flex w-full max-w-[18rem] items-center justify-center rounded-full bg-[#F44336] px-8 py-4 text-sm font-semibold text-white transition hover:bg-[#E53935] mx-auto"
+            className="inline-flex w-full max-w-[18rem] items-center justify-center rounded-full bg-[#F44336] px-8 py-4 text-xl font-semibold text-white transition hover:bg-[#E53935] mx-auto"
           >
             Start Enrollment
           </a>

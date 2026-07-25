@@ -1,41 +1,16 @@
 // app/school-retouching/page.tsx
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   GraduationCap, BookOpen, Users, Trophy,
-  ArrowRight, Zap, Eye, Shield, CheckCircle,
-  Camera, Wand2, Sparkles, Star,
+  ArrowRight, Zap, CheckCircle,
+  Camera, Star,
+  Sun, Contrast, Layers, Wand2, Sparkles,
   ChevronLeft, ChevronRight
 } from 'lucide-react';
-
-/* ── Yearbook Ready badge with animated batch counter ── */
-function YearbookBadge({ count }: { count: number }) {
-  const [displayed, setDisplayed] = useState(0);
-  useEffect(() => {
-    setDisplayed(0);
-    const step = Math.ceil(count / 30);
-    const id = setInterval(() => setDisplayed(c => { if (c >= count) { clearInterval(id); return count; } return c + step; }), 50);
-    return () => clearInterval(id);
-  }, [count]);
-  return (
-    <motion.div initial={{ opacity: 0, y: -12, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 1.0, duration: 0.5, ease: 'easeOut' }}
-      className="absolute -top-5 right-2 z-20 flex items-center gap-2.5 bg-white rounded-xl shadow-lg border border-[#F0F0F0] px-3 py-2">
-      <div className="w-9 h-9 rounded-lg bg-[#FFF0EE] flex items-center justify-center flex-shrink-0">
-        <GraduationCap className="w-5 h-5 text-[#E8352A]" />
-      </div>
-      <div>
-        <p className="text-[10px] font-bold text-[#1A1A1A] leading-none">Yearbook Ready!</p>
-        <p className="text-[9px] text-[#999] mt-0.5">
-          <span className="text-[#E8352A] font-bold">{displayed}</span> photos enhanced
-        </p>
-      </div>
-    </motion.div>
-  );
-}
 
 /* ── School photo category tabs ── */
 const schoolCategories = [
@@ -63,55 +38,42 @@ const schoolCategories = [
 
 export default function SchoolRetouchingPage() {
   const [activeCategory, setActiveCategory] = useState('yearbook');
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging]         = useState(false);
-  const [isHoveringSlider, setIsHoveringSlider] = useState(false);
-  const sliderDirectionRef = useRef<1 | -1>(1);
-  const heroSliderRef      = useRef<HTMLDivElement>(null);
-  const gallerySliderRef   = useRef<HTMLDivElement>(null);
 
   const currentCat = schoolCategories.find(c => c.id === activeCategory) ?? schoolCategories[0];
 
+  const editorTabs = ['Exposure', 'Contrast', 'Highlights', 'Shadows', 'Color'];
+  const imageExamples = schoolCategories.map(cat => ({
+    beforeImage: cat.before,
+    afterImage: cat.after,
+    label: cat.label,
+  }));
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState(editorTabs[0]);
+  const currentImage = imageExamples[currentImageIndex];
+
+  const changeImage = (index: number) => {
+    const nextIndex = (index + imageExamples.length) % imageExamples.length;
+    setCurrentImageIndex(nextIndex);
+  };
+
   const stats = [
-    { value: '1M+',  label: 'School Photos',    sub: 'Processed every year',       icon: <Camera className="w-5 h-5" /> },
-    { value: '24h',  label: 'Batch Delivery',   sub: 'Entire school in one day',   icon: <Zap className="w-5 h-5" /> },
-    { value: '100%', label: 'Consistent Style', sub: 'Uniform across all students',icon: <Users className="w-5 h-5" /> },
-    { value: '4.9★', label: 'School Rating',    sub: 'Trusted by 500+ schools',    icon: <Star className="w-5 h-5" /> },
+    { value: '1M+',  label: 'School Photos',    sub: 'Processed every year',       icon: <Camera className="w-5 h-5 text-[#E8352A]" /> },
+    { value: '24h',  label: 'Batch Delivery',   sub: 'Entire school in one day',   icon: <Zap className="w-5 h-5 text-[#E8352A]" /> },
+    { value: '100%', label: 'Consistent Style', sub: 'Uniform across all students',icon: <Users className="w-5 h-5 text-[#E8352A]" /> },
+    { value: '4.9★', label: 'School Rating',    sub: 'Trusted by 500+ schools',    icon: <Star className="w-5 h-5 text-[#E8352A]" /> },
   ];
 
   const services = [
-    { title: 'Yearbook Portraits',  description: 'Batch-process hundreds of student portraits for yearbooks.',        icon: <BookOpen className="w-6 h-6" /> },
-    { title: 'Class & Group',       description: 'Enhance class photos — everyone bright, sharp and smiling.',        icon: <Users className="w-6 h-6" /> },
-    { title: 'Graduation Photos',   description: 'Timeless grad portraits for every cap, gown and proud smile.',      icon: <GraduationCap className="w-6 h-6" /> },
-    { title: 'Sports & Activities', description: 'Championship-ready sports team and club activity portraits.',       icon: <Trophy className="w-6 h-6" /> },
+    { title: 'Yearbook Portraits',  description: 'Batch-process hundreds of student portraits for yearbooks.',        icon: <BookOpen className="w-8 h-8" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Class & Group',       description: 'Enhance class photos — everyone bright, sharp and smiling.',        icon: <Users className="w-8 h-8" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Graduation Photos',   description: 'Timeless grad portraits for every cap, gown and proud smile.',      icon: <GraduationCap className="w-8 h-8" />, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: 'Sports & Activities', description: 'Championship-ready sports team and club activity portraits.',       icon: <Trophy className="w-8 h-8" />, color: '#10B981', bg: '#ECFDF5' },
   ];
 
-  useEffect(() => { sliderDirectionRef.current = 1; setSliderPosition(50); }, [activeCategory]);
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isDragging || isHoveringSlider) return;
-    const id = window.setInterval(() => {
-      setSliderPosition(prev => {
-        const next = prev + sliderDirectionRef.current * 0.7;
-        if (next >= 100) { sliderDirectionRef.current = -1; return 100; }
-        if (next <= 0)   { sliderDirectionRef.current =  1; return 0; }
-        return next;
-      });
-    }, 30);
-    return () => window.clearInterval(id);
-  }, [isDragging, isHoveringSlider, activeCategory]);
-
-  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-    const activeRef = heroSliderRef.current?.contains(e.target as Node) ? heroSliderRef : gallerySliderRef;
-    if (!activeRef.current) return;
-    e.preventDefault();
-    const rect = activeRef.current.getBoundingClientRect();
-    const x = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-    setSliderPosition(Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100)));
-  };
-
-  const selectCategory = (id: string) => { setActiveCategory(id); setSliderPosition(50); };
+  const selectCategory = (id: string) => { setActiveCategory(id); };
 
   const addToCart = () => {
     const pricePerImage = 0.10, imageCount = 100;
@@ -132,188 +94,100 @@ export default function SchoolRetouchingPage() {
     <div className="min-h-screen bg-[#F8F9FB]">
 
       {/* ══════════════════════════════════  HERO  ══════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
-
-        {/* ── Animated background ── */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.09) 0%, transparent 70%)' }} />
-          <div className="absolute -right-24 -top-24 w-[440px] h-[440px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.07) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[240px] rounded-full"
-            style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid meet">
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="0.8" opacity="0.10"/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="0.6" opacity="0.08"/>
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="1.6" opacity="0.38"
-              strokeDasharray="200 1600" style={{ animation: 'scCW 8s linear infinite', transformOrigin: '820px 340px' }}/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="1.0" opacity="0.22"
-              strokeDasharray="140 1200" style={{ animation: 'scCCW 12s linear infinite', transformOrigin: '820px 340px' }}/>
+      <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0D0D0F] text-white">
+        <div className="pointer-events-none absolute inset-0">
+          <svg className="absolute inset-0 h-full w-full opacity-[0.035]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="school-noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#school-noise)"/>
           </svg>
-          <motion.div animate={{ y: [-13, 13, -13] }} transition={{ repeat: Infinity, duration: 5.8, ease: 'easeInOut' }}
-            style={{ position: 'absolute', right: '6%', top: '7%', width: 52, height: 52, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff7b6e 0%,#E8352A 52%,#8b1a0f 100%)',
-              boxShadow: '0 10px 30px rgba(232,53,42,0.32)' }} />
-          <motion.div animate={{ y: [9, -9, 9] }} transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.8 }}
-            style={{ position: 'absolute', right: '8%', top: '50%', width: 24, height: 24, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff9a80 0%,#E8352A 60%,#a31808 100%)',
-              boxShadow: '0 5px 16px rgba(232,53,42,0.26)' }} />
-          <motion.div animate={{ y: [-11, 11, -11] }} transition={{ repeat: Infinity, duration: 6.4, ease: 'easeInOut' }}
-            style={{ position: 'absolute', left: '5%', top: '46%', width: 60, height: 60, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.98) 0%,rgba(228,233,245,0.50) 58%,rgba(198,208,228,0.18) 100%)',
-              boxShadow: '0 6px 28px rgba(15,23,42,0.08),inset 0 1px 2px rgba(255,255,255,0.9)',
-              border: '1px solid rgba(208,218,234,0.40)' }} />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 4.7, ease: 'easeInOut', delay: 0.7 }}
-            style={{ position: 'absolute', left: '12%', bottom: '28%', width: 28, height: 28, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.97) 0%,rgba(224,230,244,0.45) 65%)',
-              boxShadow: '0 3px 12px rgba(15,23,42,0.07)', border: '1px solid rgba(208,218,234,0.35)' }} />
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[43%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5.2, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[18%] top-[22%] w-3 h-3 rounded-full bg-[#E8352A]/38" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.6, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.16, 0.26, 0.16] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.1, 0.18, 0.1] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }}
+            className="absolute -bottom-20 -right-32 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 h-full w-full opacity-[0.055]" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="school-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5"/></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#school-grid)"/>
+          </svg>
+          {schoolCategories.slice(0, 5).map((_, i) => (
+            <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.35, 0.8, 0.35] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }}
+              className="absolute h-1.5 w-1.5 rounded-full bg-[#E8352A]" style={{ left: `${[12, 28, 45, 62, 82][i]}%`, top: `${[20, 65, 15, 75, 35][i]}%` }} />
+          ))}
         </div>
+
         <style>{`
-          @keyframes scCW  { to { stroke-dashoffset: -1800; } }
-          @keyframes scCCW { to { stroke-dashoffset:  1348; } }
+          @keyframes schoolReveal {
+            0%, 10% { width: 0%; }
+            45%, 55% { width: 100%; }
+            90%, 100% { width: 0%; }
+          }
+          @keyframes schoolDivider {
+            0%, 10% { left: 0%; }
+            45%, 55% { left: 100%; }
+            90%, 100% { left: 0%; }
+          }
+          .school-motion {
+            animation-duration: 8s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-play-state: running;
+          }
+          .school-stage:hover .school-motion {
+            animation-play-state: paused;
+          }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-
-            {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
-              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
-
-           
-              {/* Heading */}
-              <div>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
-                  School <span className="text-[#E8352A]">Photo</span>
-                </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
-                  Retouching & Yearbooks
-                </motion.p>
-              </div>
-
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
-                Batch-process hundreds of student portraits with consistent, professional quality.
-                From individual yearbook photos to full class shots and graduation portraits — we handle
-                any volume, delivered in 24 hours.
-              </motion.p>
-
-
-              {/* CTAs */}
-    <motion.div className="flex flex-wrap gap-3 pt-1"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-              Get Start For Free
-                </Link>
-                <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  View Examples
-                </button>
-              </motion.div>
-
-  
+        <div className="relative z-10 flex min-h-screen flex-1 flex-col lg:grid lg:grid-cols-2">
+          <div className="flex flex-col justify-center px-8 pb-12 pt-24 sm:px-12 lg:px-16 lg:py-0 xl:px-24">
+            <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="mb-8 inline-flex self-start items-center gap-2 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#E8352A]" />
+              <span className="text-xs font-semibold uppercase tracking-widest text-[#E8352A]">School Photo Editing</span>
             </motion.div>
-
-            {/* ── RIGHT: Slider + yearbook badge + category strip ── */}
-            <motion.div className="flex flex-col gap-3 relative"
-              initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
-
-              {/* Yearbook batch counter badge */}
-              <YearbookBadge count={currentCat.count} />
-
-              {/* Before/After slider */}
-              <div ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3' }}
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
-
-                {/* AFTER */}
-                <motion.div key={`after-${activeCategory}`}
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${currentCat.after})` }} />
-                {/* BEFORE clipped */}
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
-                  <motion.div key={`before-${activeCategory}`}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentCat.before})`,
-                      width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-
-                {/* Divider + handle */}
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
-                    <div className="flex items-center gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Labels */}
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">Before</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">After</span>
-              </div>
-
-              {/* Category thumbnail strip */}
-              <motion.div className="bg-white rounded-2xl border border-[#F0F0F0] shadow-lg px-3 py-3 flex items-center gap-1"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}>
-                <button
-                  onClick={() => { const i = schoolCategories.findIndex(c => c.id === activeCategory); selectCategory(schoolCategories[(i - 1 + schoolCategories.length) % schoolCategories.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-
-                <div className="flex gap-2 flex-1 justify-around">
-                  {schoolCategories.map(cat => (
-                    <button key={cat.id} onClick={() => selectCategory(cat.id)}
-                      className="flex flex-col items-center gap-1.5 flex-shrink-0 transition-all">
-                      <div className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
-                        activeCategory === cat.id ? 'border-[#E8352A] shadow-md' : 'border-transparent hover:border-[#E8352A]/40'}`}>
-                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${cat.img})` }} />
-                      </div>
-                      <span className={`text-[9px] font-semibold ${activeCategory === cat.id ? 'text-[#E8352A]' : 'text-[#999]'}`}>
-                        {cat.label}
-                      </span>
-                      {activeCategory === cat.id && (
-                        <motion.div layoutId="scCatDot" className="w-4 h-0.5 bg-[#E8352A] rounded-full"
-                          transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => { const i = schoolCategories.findIndex(c => c.id === activeCategory); selectCategory(schoolCategories[(i + 1) % schoolCategories.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </motion.div>
-
-              {/* Caption */}
-              <motion.p key={activeCategory} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
-                className="text-center text-xs text-[#888] leading-snug px-4">
-                {currentCat.desc}
-              </motion.p>
+            <h1 className="mb-6 font-extrabold leading-[0.95] tracking-tight">
+              {['School', 'Photo', 'Editing'].map((word, i) => (
+                <motion.span key={word} className={`block text-[clamp(3rem,8vw,7rem)] ${i === 1 ? 'text-[#E8352A]' : 'text-white'}`}
+                  initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>{word}</motion.span>
+              ))}
+            </h1>
+            <motion.p className="mb-10 max-w-md text-base leading-relaxed text-[#A0A0B0] md:text-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>
+              Batch-process yearbooks, class photos, sports portraits and graduation galleries with consistent, professional quality delivered in 24 hours.
+            </motion.p>
+            <motion.div className="flex flex-wrap gap-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}>
+              <Link href="/free-trial" className="group inline-flex items-center gap-2 rounded-2xl bg-[#E8352A] px-8 py-4 text-sm font-bold text-white shadow-[0_0_40px_rgba(232,53,42,0.45)] transition-all hover:scale-105 hover:bg-[#C62B20] hover:shadow-[0_0_60px_rgba(232,53,42,0.65)]">
+                Get Started Free <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })} className="inline-flex items-center gap-2 rounded-2xl border border-white/15 px-8 py-4 text-sm font-semibold text-white/80 transition-all hover:border-[#E8352A]/50 hover:bg-white/5 hover:text-white">
+                View Examples
+              </button>
+            </motion.div>
+            <motion.div className="mt-14 grid grid-cols-4 gap-4 border-t border-white/10 pt-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>
+              {stats.map((s, i) => <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 + i * 0.08, duration: 0.4 }}>
+                <p className="text-2xl font-extrabold text-white lg:text-3xl">{s.value}</p><p className="mt-0.5 text-[10px] uppercase tracking-wider text-[#666]">{s.label}</p>
+              </motion.div>)}
             </motion.div>
           </div>
 
-      
+          <motion.div className="relative flex flex-col lg:h-screen" initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+            <div className="school-stage relative mx-4 mt-4 min-h-[340px] flex-1 select-none overflow-hidden rounded-2xl lg:mx-0 lg:mt-0 lg:rounded-none">
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${currentImage.beforeImage})`, filter: 'brightness(0.7) saturate(0.6)' }} />
+              <div className="school-motion absolute inset-0 overflow-hidden" style={{ animationName: 'schoolReveal' }}><div className="absolute inset-0 w-full bg-cover bg-center" style={{ backgroundImage: `url(${currentImage.afterImage})` }} /></div>
+              <div className="school-motion absolute bottom-0 top-0 z-10 w-1" style={{ animationName: 'schoolDivider', transform: 'translateX(-50%)' }}>
+                <div className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-white/60" />
+                <div className="absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#E8352A] bg-white shadow-2xl" style={{ boxShadow: '0 0 0 4px rgba(232,53,42,0.20), 0 8px 24px rgba(0,0,0,0.4)' }}><div className="flex gap-0.5"><ChevronLeft className="h-3.5 w-3.5 text-[#E8352A]" /><ChevronRight className="h-3.5 w-3.5 text-[#E8352A]" /></div></div>
+              </div>
+              <span className="absolute left-5 top-5 z-10 rounded-full bg-black/60 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md">Before</span>
+              <span className="absolute right-5 top-5 z-10 rounded-full bg-[#E8352A] px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white">After</span>
+              <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md"><Sparkles className="h-3.5 w-3.5 text-[#E8352A]" /><span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Manual Edit</span></motion.div>
+              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5"><div className="flex items-center justify-between gap-2">
+                {editorTabs.map(tab => <button key={tab} onClick={() => setActiveTab(tab)} className={`flex flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>
+                  {tab === 'Exposure' && <Sun className="h-4 w-4" />}{tab === 'Contrast' && <Contrast className="h-4 w-4" />}{tab === 'Highlights' && <Sun className="h-4 w-4 opacity-70" />}{tab === 'Shadows' && <Layers className="h-4 w-4" />}{tab === 'Color' && <Wand2 className="h-4 w-4" />}<span className="text-[9px] font-semibold">{tab}</span>
+                </button>)}
+              </div></div>
+            </div>
+            <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
+              {imageExamples.map((_, i) => <button key={i} aria-label={`Show ${schoolCategories[i].label} example`} onClick={() => { changeImage(i); selectCategory(schoolCategories[i].id); }} className={`rounded-full transition-all duration-300 ${currentImageIndex === i ? 'h-2.5 w-8 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'h-2.5 w-2.5 bg-white/25 hover:bg-white/50'}`} />)}
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -330,29 +204,27 @@ export default function SchoolRetouchingPage() {
           </div>
           <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
             <div className="flex-1 flex flex-col">
-              <div ref={gallerySliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px]"
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+              <div className="relative rounded-2xl overflow-hidden shadow-xl flex-1 min-h-[320px] sm:min-h-[420px]">
                 <div className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${currentCat.after})` }} />
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <motion.div initial={{ opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.55, ease: 'easeOut' }}
+                  className="absolute inset-0 overflow-hidden"
+                  style={{ clipPath: 'polygon(0 0, 56% 0, 56% 100%, 0 100%)' }}>
                   <div className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentCat.before})`,
-                      width: gallerySliderRef.current ? `${gallerySliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                    style={{ backgroundImage: `url(${currentCat.before})` }} />
+                </motion.div>
+                <motion.div
+                  animate={{ x: ['54%', '48%', '54%'] }}
+                  transition={{ duration: 6.6, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
+                  style={{ left: '52%', transform: 'translateX(-50%)' }}>
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
                     <div className="flex items-center gap-0.5">
                       <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
                       <ChevronRight className="w-3 h-3 text-[#E8352A]" />
                     </div>
                   </div>
-                </div>
+                </motion.div>
                 <span className="absolute bottom-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">Original</span>
                 <span className="absolute bottom-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1 rounded-full">Retouched</span>
               </div>
@@ -409,15 +281,33 @@ export default function SchoolRetouchingPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: service.bg, color: service.color }}>
+           <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                {(() => {
+                  const slug = slugify(service.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} aria-expanded={openServiceSlug === slug} className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: service.color }}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{service.description} More details, pricing examples, and typical turnaround info.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/people/school/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>

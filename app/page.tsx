@@ -6,7 +6,7 @@ import EnrollStep from "../components/features/EnrollStep";
 // import UnbreakableTrust from "@/components/features/UnbreakableTrust";
 
 export const metadata = {
-  title: "Snappeditt - Features",
+  title: "Snappeditt - Home",
   description: "Discover the features of Snappeditt, including before-and-after comparisons, client reviews, and more.",
 };
 
@@ -14,9 +14,7 @@ export default function Home() {
   return (
     <>
       <HeroPeel />
-       {/* <UnbreakableTrust /> */}
       <BeforeAfterSection />
-      
       <FreeTrialUpload />
       <EnrollStep />
       <ClientReviewsSection />

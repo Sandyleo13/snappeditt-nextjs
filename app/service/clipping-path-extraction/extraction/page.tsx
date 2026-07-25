@@ -91,11 +91,15 @@ export default function ExtractionPage() {
   ];
 
   const services = [
-    { title: 'Background Removal',    description: 'AI-powered instant background removal for any subject type.',          icon: <Layers className="w-6 h-6" /> },
-    { title: 'Alpha Masking',         description: 'Transparent PNG output with natural hair and soft-edge masking.',      icon: <Target className="w-6 h-6" /> },
-    { title: 'AI Bulk Extraction',    description: 'Process thousands of images overnight with consistent AI quality.',    icon: <Cpu className="w-6 h-6" /> },
-    { title: 'Smart Compositing',     description: 'Extract and place subjects onto any new background seamlessly.',       icon: <Box className="w-6 h-6" /> },
+    { title: 'Background Removal',    description: 'AI-powered instant background removal for any subject type.',          icon: <Layers className="w-6 h-6" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Alpha Masking',         description: 'Transparent PNG output with natural hair and soft-edge masking.',      icon: <Target className="w-6 h-6" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'AI Bulk Extraction',    description: 'Process thousands of images overnight with consistent AI quality.',    icon: <Cpu className="w-6 h-6" />, color: '#0EA5E9', bg: '#EFF9FF' },
+    { title: 'Smart Compositing',     description: 'Extract and place subjects onto any new background seamlessly.',       icon: <Box className="w-6 h-6" />, color: '#10B981', bg: '#ECFDF5' },
   ];
+
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
+
 
   useEffect(() => { sliderDirectionRef.current = 1; setSliderPosition(50); }, [activeCategory]);
 
@@ -143,189 +147,180 @@ export default function ExtractionPage() {
     <div className="min-h-screen bg-[#F8F9FB]">
 
       {/* ══════════════════════════════════  HERO  ══════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#0D0D0F]">
 
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.09) 0%, transparent 70%)' }} />
-          <div className="absolute -right-24 -top-24 w-[440px] h-[440px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.07) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[240px] rounded-full"
-            style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid meet">
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="0.8" opacity="0.10"/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="0.6" opacity="0.08"/>
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="1.6" opacity="0.38"
-              strokeDasharray="200 1600" style={{ animation: 'exCW 8s linear infinite', transformOrigin: '820px 340px' }}/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="1.0" opacity="0.22"
-              strokeDasharray="140 1200" style={{ animation: 'exCCW 12s linear infinite', transformOrigin: '820px 340px' }}/>
+          <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#noise)" />
           </svg>
-          <motion.div animate={{ y: [-13, 13, -13] }} transition={{ repeat: Infinity, duration: 5.8, ease: 'easeInOut' }}
-            style={{ position: 'absolute', right: '6%', top: '7%', width: 52, height: 52, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff7b6e 0%,#E8352A 52%,#8b1a0f 100%)',
-              boxShadow: '0 10px 30px rgba(232,53,42,0.32)' }} />
-          <motion.div animate={{ y: [9, -9, 9] }} transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.8 }}
-            style={{ position: 'absolute', right: '8%', top: '50%', width: 24, height: 24, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff9a80 0%,#E8352A 60%,#a31808 100%)',
-              boxShadow: '0 5px 16px rgba(232,53,42,0.26)' }} />
-          <motion.div animate={{ y: [-11, 11, -11] }} transition={{ repeat: Infinity, duration: 6.4, ease: 'easeInOut' }}
-            style={{ position: 'absolute', left: '5%', top: '46%', width: 60, height: 60, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.98) 0%,rgba(228,233,245,0.50) 58%,rgba(198,208,228,0.18) 100%)',
-              boxShadow: '0 6px 28px rgba(15,23,42,0.08),inset 0 1px 2px rgba(255,255,255,0.9)',
-              border: '1px solid rgba(208,218,234,0.40)' }} />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 4.7, ease: 'easeInOut', delay: 0.7 }}
-            style={{ position: 'absolute', left: '12%', bottom: '28%', width: 28, height: 28, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.97) 0%,rgba(224,230,244,0.45) 65%)',
-              boxShadow: '0 3px 12px rgba(15,23,42,0.07)', border: '1px solid rgba(208,218,234,0.35)' }} />
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[43%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5.2, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[18%] top-[22%] w-3 h-3 rounded-full bg-[#E8352A]/38" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.6, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
+          <motion.div
+            animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.3, 0.18] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute -left-32 top-20 w-[620px] h-[620px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }}
+          />
+          <motion.div
+            animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.22, 0.12] }}
+            transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }}
+            className="absolute -right-32 -bottom-24 w-[520px] h-[520px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.24) 0%, transparent 65%)' }}
+          />
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+          {[...Array(6)].map((_, i) => (
+            <motion.div key={i}
+              animate={{ y: [0, -18, 0], opacity: [0.4, 0.9, 0.4] }}
+              transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.4 }}
+              className="absolute rounded-full bg-[#E8352A]"
+              style={{
+                width: [6, 4, 8, 5, 3, 7][i], height: [6, 4, 8, 5, 3, 7][i],
+                left: `${[12, 28, 45, 62, 75, 88][i]}%`,
+                top: `${[20, 65, 15, 75, 35, 55][i]}%`,
+                filter: 'blur(1px)',
+              }}
+            />
+          ))}
         </div>
-        <style>{`
-          @keyframes exCW  { to { stroke-dashoffset: -1800; } }
-          @keyframes exCCW { to { stroke-dashoffset:  1348; } }
-        `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-
-            {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
-              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
-
-              <div>
-                <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
-                  AI <span className="text-[#E8352A]">Extraction</span>
-                </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
-                  Smart Background Removal
-                </motion.p>
-              </div>
-
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
-                Remove backgrounds instantly with AI precision. From simple products to complex hair,
-                fur and multi-element scenes — clean transparent PNGs delivered at scale.
-              </motion.p>
-
-
-              <motion.div className="flex flex-wrap gap-3 pt-1"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.64, duration: 0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-                 Get Start For Free
-                </Link>
-                <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  View Examples
-                </button>
-              </motion.div>
-
-            
+        <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-2 min-h-screen">
+          <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
+            <motion.div
+              initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}
+              className="inline-flex items-center gap-2 self-start mb-8 px-4 py-1.5 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] animate-pulse" />
+              <span className="text-[#E8352A] text-[10px] font-semibold tracking-[0.25em] uppercase">AI Extraction</span>
             </motion.div>
 
-            {/* ── RIGHT: Slider + layer-peel badge + checkerboard overlay + category strip ── */}
-            <motion.div className="flex flex-col gap-3 relative"
-              initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
+            <motion.h1
+              className="font-extrabold tracking-tight text-white text-5xl md:text-6xl lg:text-7xl leading-[0.94]"
+              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
+              Extraction that keeps every subject, edge and shadow intact.
+            </motion.h1>
 
-              <ExtractionBadge />
+            <motion.p
+              className="text-[#A8A8B8] text-base md:text-lg leading-relaxed max-w-xl mt-6"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
+              Intelligent background removal for products, people, vehicles and complex scenes.
+              Get transparent PNGs with precise hair, fur, glass and multi-element masking at scale.
+            </motion.p>
 
-              <div ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3' }}
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+            <motion.div className="flex flex-wrap gap-4 mt-10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.5 }}>
+              <Link href="/free-trial"
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all shadow-[0_0_40px_rgba(232,53,42,0.35)] hover:shadow-[0_0_60px_rgba(232,53,42,0.45)] hover:scale-105">
+                Get Started Free
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <button
+                onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 text-white/80 font-semibold text-sm hover:border-[#E8352A]/50 hover:text-white hover:bg-white/5 transition-all">
+                View Examples
+              </button>
+            </motion.div>
 
-                {/* Checkerboard base — represents transparency */}
-                <div className="absolute inset-0"
-                  style={{ backgroundImage: 'repeating-conic-gradient(#E0E0E0 0% 25%, #F8F8F8 0% 50%)',
-                    backgroundSize: '20px 20px' }} />
-
-                {/* AFTER — extracted on checkerboard */}
-                <motion.div key={`after-${activeCategory}`}
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${currentCat.after})` }} />
-
-                {/* BEFORE — original with background, clipped */}
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
-                  <motion.div key={`before-${activeCategory}`}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentCat.before})`,
-                      width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
+            <motion.div
+              className="grid grid-cols-2 gap-4 mt-14 pt-10 border-t border-white/10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>
+              {stats.map((stat, index) => (
+                <div key={index} className="rounded-3xl bg-white/5 border border-white/10 p-5">
+                  <p className="text-3xl font-extrabold text-white">{stat.value}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#B8B8C8] mt-2">{stat.label}</p>
                 </div>
-
-                {/* Divider + handle */}
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
-                    <div className="flex items-center gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">Original</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">Extracted</span>
-
-                {/* Alpha indicator bottom-right of after side */}
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}
-                  className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 shadow-sm border border-[#E8352A]/20">
-                  <div className="w-3 h-3 rounded"
-                    style={{ backgroundImage: 'repeating-conic-gradient(#CCC 0% 25%, white 0% 50%)', backgroundSize: '6px 6px' }} />
-                  <span className="text-[9px] font-bold text-[#E8352A]">PNG Alpha</span>
-                </motion.div>
-              </div>
-
-              {/* Category strip */}
-              <motion.div className="bg-white rounded-2xl border border-[#F0F0F0] shadow-lg px-3 py-3 flex items-center gap-1"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}>
-                <button
-                  onClick={() => { const i = extractionCategories.findIndex(c => c.id === activeCategory); selectCategory(extractionCategories[(i - 1 + extractionCategories.length) % extractionCategories.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <div className="flex gap-2 flex-1 justify-around">
-                  {extractionCategories.map(cat => (
-                    <button key={cat.id} onClick={() => selectCategory(cat.id)}
-                      className="flex flex-col items-center gap-1.5 flex-shrink-0 transition-all">
-                      <div className={`w-12 h-10 rounded-lg overflow-hidden border-2 transition-all ${
-                        activeCategory === cat.id ? 'border-[#E8352A] shadow-md' : 'border-transparent hover:border-[#E8352A]/40'}`}>
-                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${cat.img})` }} />
-                      </div>
-                      <span className={`text-[9px] font-semibold ${activeCategory === cat.id ? 'text-[#E8352A]' : 'text-[#999]'}`}>
-                        {cat.label}
-                      </span>
-                      {activeCategory === cat.id && (
-                        <motion.div layoutId="exCatDot" className="w-4 h-0.5 bg-[#E8352A] rounded-full"
-                          transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
-                      )}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={() => { const i = extractionCategories.findIndex(c => c.id === activeCategory); selectCategory(extractionCategories[(i + 1) % extractionCategories.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </motion.div>
-
-              <motion.p key={activeCategory} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
-                className="text-center text-xs text-[#888] leading-snug px-4">
-                {currentCat.desc}
-              </motion.p>
+              ))}
             </motion.div>
           </div>
+
+          <motion.div
+            className="relative flex flex-col px-8 sm:px-12 lg:px-6 xl:px-8 pb-16 lg:pb-0"
+            initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8, ease: 'easeOut' }}>
+
+            <ExtractionBadge />
+
+            <div ref={heroSliderRef}
+              className="relative flex-1 rounded-[2rem] overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.35)] cursor-col-resize select-none"
+              style={{ minHeight: 420 }}
+              onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
+              onMouseEnter={() => setIsHoveringSlider(true)}
+              onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
+              onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+
+              <div className="absolute inset-0 bg-[#0B0B0F]" />
+              <div className="absolute inset-0"
+                style={{ backgroundImage: 'repeating-conic-gradient(rgba(255,255,255,0.02) 0% 25%, rgba(255,255,255,0.05) 0% 50%)', backgroundSize: '18px 18px' }} />
+
+              <motion.div key={`after-${activeCategory}`}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${currentCat.after})`, filter: 'brightness(0.95)' }} />
+
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <motion.div key={`before-${activeCategory}`}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${currentCat.before})`, width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
+              </div>
+
+              <div className="absolute top-0 bottom-0 w-[1px] bg-white/40 z-10"
+                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center border-2 border-[#E8352A]">
+                  <div className="flex items-center gap-0.5">
+                    <ChevronLeft className="w-3.5 h-3.5 text-[#E8352A]" />
+                    <ChevronRight className="w-3.5 h-3.5 text-[#E8352A]" />
+                  </div>
+                </div>
+              </div>
+
+              <span className="absolute top-5 left-5 z-10 bg-black/70 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">Original</span>
+              <span className="absolute top-5 right-5 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-full">Extracted</span>
+            </div>
+
+            <div className="mt-6 bg-white/5 border border-white/10 rounded-[2rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#B8B8C8]">Use case</p>
+                  <p className="text-lg font-semibold text-white">Switch between extraction styles</p>
+                </div>
+                <div className="text-[#E8352A] text-sm font-semibold">{currentCat.label}</div>
+              </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                <button
+                  onClick={() => { const i = extractionCategories.findIndex(c => c.id === activeCategory); selectCategory(extractionCategories[(i - 1 + extractionCategories.length) % extractionCategories.length].id); }}
+                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/80 hover:border-[#E8352A]/60 hover:text-white transition">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                {extractionCategories.map(cat => (
+                  <button key={cat.id} onClick={() => selectCategory(cat.id)}
+                    className={`flex flex-col items-center gap-2 px-3 py-2 rounded-3xl transition-all ${
+                      activeCategory === cat.id ? 'bg-[#E8352A] text-white shadow-lg' : 'bg-white/10 text-[#D1D5DB] hover:bg-white/15'
+                    }`}>
+                    <div className="w-12 h-10 rounded-xl overflow-hidden border border-white/10 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${cat.img})` }} />
+                    <span className="text-[11px] font-semibold">{cat.label}</span>
+                  </button>
+                ))}
+                <button
+                  onClick={() => { const i = extractionCategories.findIndex(c => c.id === activeCategory); selectCategory(extractionCategories[(i + 1) % extractionCategories.length].id); }}
+                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/80 hover:border-[#E8352A]/60 hover:text-white transition">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              <motion.p key={activeCategory}
+                initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                className="text-sm text-[#C7CAD1] leading-relaxed mt-2">
+                {currentCat.desc}
+              </motion.p>
+            </div>
+          </motion.div>
 
           {/* Stats bar */}
           <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
@@ -442,15 +437,33 @@ export default function ExtractionPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: service.bg, color: service.color }}>
+                  <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                {(() => {
+                  const slug = slugify(service.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} aria-expanded={openServiceSlug === slug} className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: service.color }}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{service.description} Typical turnaround, sample edits, and volume pricing details.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/clipping-path-extraction/extraction/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>

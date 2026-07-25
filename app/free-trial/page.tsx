@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import FreeTrialForm from "@/components/features/FreeTrialForm";
+import { FreeTrialUpload } from "@/components/features/FreeTrial";
 
 export const metadata: Metadata = {
   title: "Free Trial | Snappeditt",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function FreeTrialPage() {
-  return <FreeTrialForm />;
+  return <FreeTrialUpload />;
 }

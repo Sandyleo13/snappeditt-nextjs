@@ -83,11 +83,15 @@ export default function ClippingPathPage() {
   ];
 
   const services = [
-    { title: 'Basic Clipping Path',    description: 'Simple product and object isolation for e-commerce backgrounds.',    icon: <Scissors className="w-6 h-6" /> },
-    { title: 'Complex Path',           description: 'Multi-layer paths for complex products with holes and fine edges.',  icon: <Layers className="w-6 h-6" /> },
-    { title: 'Background Removal',     description: 'Clean background removal ready for white, custom or transparent.',  icon: <Crop className="w-6 h-6" /> },
-    { title: 'Alpha Masking',          description: 'Hair, fur and soft-edge masking for photos needing natural cut-outs.',icon: <ImageIcon className="w-6 h-6" /> },
+    { title: 'Basic Clipping Path',    description: 'Simple product and object isolation for e-commerce backgrounds.',    icon: <Scissors className="w-6 h-6" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Complex Path',           description: 'Multi-layer paths for complex products with holes and fine edges.',  icon: <Layers className="w-6 h-6" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Background Removal',     description: 'Clean background removal ready for white, custom or transparent.',  icon: <Crop className="w-6 h-6" />, color: '#0EA5E9', bg: '#EFF9FF' },
+    { title: 'Alpha Masking',          description: 'Hair, fur and soft-edge masking for photos needing natural cut-outs.',icon: <ImageIcon className="w-6 h-6" />, color: '#10B981', bg: '#ECFDF5' },
   ];
+
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
+
 
   useEffect(() => { sliderDirectionRef.current = 1; setSliderPosition(50); }, [activeCategory]);
 
@@ -132,200 +136,192 @@ export default function ClippingPathPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB]">
+    <div className="min-h-screen bg-[#0D0D0F] text-white">
 
       {/* ══════════════════════════════════  HERO  ══════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#0D0D0F]">
 
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.09) 0%, transparent 70%)' }} />
-          <div className="absolute -right-24 -top-24 w-[440px] h-[440px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.07) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[240px] rounded-full"
-            style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid meet">
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="0.8" opacity="0.10"/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="0.6" opacity="0.08"/>
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="1.6" opacity="0.38"
-              strokeDasharray="200 1600" style={{ animation: 'cpCW 8s linear infinite', transformOrigin: '820px 340px' }}/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="1.0" opacity="0.22"
-              strokeDasharray="140 1200" style={{ animation: 'cpCCW 12s linear infinite', transformOrigin: '820px 340px' }}/>
+          <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#noise)"/>
           </svg>
-          <motion.div animate={{ y: [-13, 13, -13] }} transition={{ repeat: Infinity, duration: 5.8, ease: 'easeInOut' }}
-            style={{ position: 'absolute', right: '6%', top: '7%', width: 52, height: 52, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff7b6e 0%,#E8352A 52%,#8b1a0f 100%)',
-              boxShadow: '0 10px 30px rgba(232,53,42,0.32)' }} />
-          <motion.div animate={{ y: [9, -9, 9] }} transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.8 }}
-            style={{ position: 'absolute', right: '8%', top: '50%', width: 24, height: 24, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff9a80 0%,#E8352A 60%,#a31808 100%)',
-              boxShadow: '0 5px 16px rgba(232,53,42,0.26)' }} />
-          <motion.div animate={{ y: [-11, 11, -11] }} transition={{ repeat: Infinity, duration: 6.4, ease: 'easeInOut' }}
-            style={{ position: 'absolute', left: '5%', top: '46%', width: 60, height: 60, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.98) 0%,rgba(228,233,245,0.50) 58%,rgba(198,208,228,0.18) 100%)',
-              boxShadow: '0 6px 28px rgba(15,23,42,0.08),inset 0 1px 2px rgba(255,255,255,0.9)',
-              border: '1px solid rgba(208,218,234,0.40)' }} />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 4.7, ease: 'easeInOut', delay: 0.7 }}
-            style={{ position: 'absolute', left: '12%', bottom: '28%', width: 28, height: 28, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.97) 0%,rgba(224,230,244,0.45) 65%)',
-              boxShadow: '0 3px 12px rgba(15,23,42,0.07)', border: '1px solid rgba(208,218,234,0.35)' }} />
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[43%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5.2, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[18%] top-[22%] w-3 h-3 rounded-full bg-[#E8352A]/38" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.6, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
+          <motion.div
+            animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute -left-40 top-1/3 w-[700px] h-[700px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }}
+          />
+          <motion.div
+            animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }}
+            transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }}
+            className="absolute -right-32 -bottom-20 w-[500px] h-[500px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }}
+          />
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)"/>
+          </svg>
+          {[...Array(6)].map((_, i) => (
+            <motion.div key={i}
+              animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }}
+              transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }}
+              className="absolute rounded-full bg-[#E8352A]"
+              style={{
+                width: [6,4,8,5,3,7][i], height: [6,4,8,5,3,7][i],
+                left: `${[12,28,45,62,75,88][i]}%`,
+                top: `${[20,65,15,75,35,55][i]}%`,
+                filter: 'blur(1px)',
+              }}
+            />
+          ))}
         </div>
         <style>{`
           @keyframes cpCW  { to { stroke-dashoffset: -1800; } }
           @keyframes cpCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-4 sm:px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-
-            {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
-              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
-              <div>
-                <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
-                  Clipping <span className="text-[#E8352A]">Path</span>
-                </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
-                  Pixel-Perfect Isolation
-                </motion.p>
-              </div>
-
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
-                Precise clipping paths and background removal for products, apparel, jewelry and complex
-                objects — delivered clean, sharp, and ready for any background or platform.
-              </motion.p>
-
-              <motion.div className="flex flex-wrap gap-3 pt-1"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.64, duration: 0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-                  Get Start For Free
-                </Link>
-                <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                 View Examples
-                </button>
-              </motion.div>
-
- 
+        <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-2 min-h-screen">
+          <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
+            <motion.div
+              initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 self-start mb-8 px-4 py-1.5 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 backdrop-blur-sm text-sm text-[#E8352A]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] animate-pulse" />
+              Clipping Path
             </motion.div>
 
-            {/* ── RIGHT: Slider + path badge + category strip ── */}
-            <motion.div className="flex flex-col gap-3 relative"
-              initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
+            <h1 className="font-extrabold leading-[0.95] tracking-tight text-white text-[clamp(3rem,8vw,7rem)]">
+              <motion.span className="block"
+                initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+                Clipping
+              </motion.span>
+              <motion.span className="block text-[#E8352A]"
+                initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+                Path
+              </motion.span>
+            </h1>
 
-              <ClippingBadge />
+            <motion.p className="text-[#A0A0B0] text-base md:text-lg leading-relaxed max-w-xl mt-6"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.5 }}>
+              Precise clipping paths and background removal for products, apparel, jewelry and complex
+              objects — delivered clean, sharp, and ready for any background or platform.
+            </motion.p>
 
-              <div ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3' }}
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+            <motion.div className="flex flex-wrap gap-4 mt-10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>
+              <Link href="/free-trial"
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all shadow-[0_0_40px_rgba(232,53,42,0.35)] hover:shadow-[0_0_60px_rgba(232,53,42,0.55)] hover:scale-105">
+                Get Start For Free
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+              <button
+                onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 bg-white/5 text-white/80 font-semibold text-sm hover:text-white hover:border-[#E8352A]/50 hover:bg-white/10 transition-all">
+                View Examples
+              </button>
+            </motion.div>
 
-                <motion.div key={`after-${activeCategory}`}
+            <motion.div
+              className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-14 pt-10 border-t border-white/10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75, duration: 0.5 }}>
+              {stats.map((s, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.75 + i * 0.06, duration: 0.35 }}>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-white">{s.value}</p>
+                  <p className="text-[11px] text-[#666] mt-0.5 uppercase tracking-wider">{s.label}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          <div className="relative flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
+            <ClippingBadge />
+
+            <div ref={heroSliderRef}
+              className="relative rounded-[2rem] overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.35)] cursor-col-resize select-none w-full"
+              style={{ aspectRatio: '4/3' }}
+              onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
+              onMouseEnter={() => setIsHoveringSlider(true)}
+              onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
+              onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+
+              <motion.div key={`after-${activeCategory}`}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${currentCat.after})` }} />
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <motion.div key={`before-${activeCategory}`}
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
                   className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${currentCat.after})` }} />
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
-                  <motion.div key={`before-${activeCategory}`}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentCat.before})`,
-                      width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
-                    <div className="flex items-center gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">Before</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">Clipped</span>
-
-                {/* Dashed path outline overlay — subtle animation */}
-                <motion.div
-                  className="absolute inset-6 rounded-xl border-2 border-dashed pointer-events-none z-10"
-                  style={{ borderColor: 'rgba(232,53,42,0.4)' }}
-                  animate={{ opacity: [0.3, 0.7, 0.3] }}
-                  transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }} />
+                  style={{ backgroundImage: `url(${currentCat.before})`, width: '100%' }} />
               </div>
 
-              {/* Category strip */}
-              <motion.div className="bg-white rounded-2xl border border-[#F0F0F0] shadow-lg px-3 py-3 flex items-center gap-1"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}>
+              <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
+                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
+                  <div className="flex items-center gap-0.5">
+                    <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
+                    <ChevronRight className="w-3 h-3 text-[#E8352A]" />
+                  </div>
+                </div>
+              </div>
+
+              <span className="absolute top-4 left-4 z-10 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#D2D2E0]">Before</span>
+              <span className="absolute top-4 right-4 z-10 rounded-full bg-[#E8352A] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white">Clipped</span>
+
+              <motion.div
+                animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                className="absolute top-4 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/40 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
+                AI-Assisted Manual Edit
+              </motion.div>
+            </div>
+
+            <motion.div className="bg-[#11131A]/90 rounded-3xl border border-white/10 p-4 shadow-[0_16px_48px_rgba(0,0,0,0.25)] mt-6"
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}>
+              <div className="flex items-center justify-between gap-3 flex-wrap">
                 <button
                   onClick={() => { const i = clippingCategories.findIndex(c => c.id === activeCategory); selectCategory(clippingCategories[(i - 1 + clippingCategories.length) % clippingCategories.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronLeft className="w-4 h-4" />
+                  className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-[#E8352A] transition-all">
+                  <ChevronLeft className="w-4 h-4 text-white" />
                 </button>
-                <div className="flex gap-2 flex-1 justify-around">
+                <div className="flex gap-2 overflow-x-auto py-1">
                   {clippingCategories.map(cat => (
                     <button key={cat.id} onClick={() => selectCategory(cat.id)}
-                      className="flex flex-col items-center gap-1.5 flex-shrink-0 transition-all">
-                      <div className={`w-12 h-10 rounded-lg overflow-hidden border-2 transition-all ${
-                        activeCategory === cat.id ? 'border-[#E8352A] shadow-md' : 'border-transparent hover:border-[#E8352A]/40'}`}>
+                      className="flex flex-col items-center gap-1.5 rounded-3xl px-3 py-2 transition-all text-white/70 hover:text-white">
+                      <div className={`w-12 h-10 rounded-xl overflow-hidden border-2 transition-all ${
+                        activeCategory === cat.id ? 'border-[#E8352A] shadow-md' : 'border-white/10'}
+                      `}>
                         <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${cat.img})` }} />
                       </div>
-                      <span className={`text-[9px] font-semibold ${activeCategory === cat.id ? 'text-[#E8352A]' : 'text-[#999]'}`}>
+                      <span className={`text-[9px] font-semibold ${activeCategory === cat.id ? 'text-white' : 'text-white/50'}`}>
                         {cat.label}
                       </span>
                       {activeCategory === cat.id && (
-                        <motion.div layoutId="cpCatDot" className="w-4 h-0.5 bg-[#E8352A] rounded-full"
-                          transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
+                        <motion.div layoutId="cpCatDot" className="w-4 h-0.5 bg-[#E8352A] rounded-full" transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
                       )}
                     </button>
                   ))}
                 </div>
                 <button
                   onClick={() => { const i = clippingCategories.findIndex(c => c.id === activeCategory); selectCategory(clippingCategories[(i + 1) % clippingCategories.length].id); }}
-                  className="w-7 h-7 rounded-full border border-[#EEE] flex items-center justify-center hover:border-[#E8352A] hover:text-[#E8352A] transition-all flex-shrink-0">
-                  <ChevronRight className="w-4 h-4" />
+                  className="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:border-[#E8352A] transition-all">
+                  <ChevronRight className="w-4 h-4 text-white" />
                 </button>
-              </motion.div>
-
+              </div>
               <motion.p key={activeCategory} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
-                className="text-center text-xs text-[#888] leading-snug px-4">
+                className="text-center text-xs text-white/70 leading-snug mt-3 px-2">
                 {currentCat.desc}
               </motion.p>
             </motion.div>
           </div>
-
-          {/* Stats bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
-            {stats.map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors mt-0.5">
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#E8352A]">{s.value}</p>
-                  <p className="text-xs font-semibold text-[#1A1A1A] leading-tight">{s.label}</p>
-                  <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
-                  <svg viewBox="0 0 60 14" className="w-14 mt-1.5 opacity-50" fill="none">
-                    <polyline points="0,11 10,7 22,9 34,3 44,6 60,2" stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
@@ -352,8 +348,7 @@ export default function ClippingPathPage() {
                   style={{ backgroundImage: `url(${currentCat.after})` }} />
                 <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
                   <div className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentCat.before})`,
-                      width: gallerySliderRef.current ? `${gallerySliderRef.current.offsetWidth}px` : '100%' }} />
+                    style={{ backgroundImage: `url(${currentCat.before})`, width: '100%' }} />
                 </div>
                 <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10"
                   style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
@@ -420,15 +415,33 @@ export default function ClippingPathPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: service.bg, color: service.color }}>
+                  <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                {(() => {
+                  const slug = slugify(service.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} aria-expanded={openServiceSlug === slug} className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: service.color }}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{service.description} Typical turnaround, sample edits, and volume pricing details.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/clipping-path-extraction/clipping-path/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>

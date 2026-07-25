@@ -1,5 +1,6 @@
 "use client";
 
+import { useLayoutEffect } from "react";
 import "./globals.css";
 import Navbar from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
@@ -21,6 +22,10 @@ function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const isAdminRoute = pathname.startsWith("/admin");
   const isUserRoute = pathname.startsWith("/user");
 
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
+
   if (isAdminRoute || isUserRoute) {
     return <>{children}</>;
   }
@@ -30,7 +35,7 @@ function ConditionalLayout({ children }: { children: React.ReactNode }) {
       <Navbar />
       <main className="bg-[#F8F9FB]">{children}</main>
       <Footer />
-      <FloatingCheckoutButton />
+      {/* <FloatingCheckoutButton /> */}
     </>
   );
 }

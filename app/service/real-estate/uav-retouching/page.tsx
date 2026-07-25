@@ -19,6 +19,7 @@ export default function UAVRetouchingPage() {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [isHoveringSlider, setIsHoveringSlider] = useState(false);
+  const [activeTab, setActiveTab] = useState('Enhance');
   const sliderDirectionRef = useRef<1 | -1>(1);
   const heroSliderRef = useRef<HTMLDivElement>(null);
   const gallerySliderRef = useRef<HTMLDivElement>(null);
@@ -120,28 +121,16 @@ export default function UAVRetouchingPage() {
     { value: "0.5cm", label: "Precision Level", sub: "Highly accurate results", icon: <Zap className="w-5 h-5" /> },
   ];
 
+  const editorTabs = ['Enhance', 'Clarity', 'Geometry', 'Color'];
   const services = [
-    {
-      title: "Aerial Enhancement",
-      description: "Transform raw drone shots into stunning professional aerial photography",
-      icon: <Camera className="w-6 h-6" />
-    },
-    {
-      title: "Survey Processing",
-      description: "Enhance aerial survey data while maintaining geospatial accuracy",
-      icon: <Map className="w-6 h-6" />
-    },
-    {
-      title: "Mapping Correction",
-      description: "Correct distortions and enhance details for professional mapping",
-      icon: <Layers className="w-6 h-6" />
-    },
-    {
-      title: "Weather Correction",
-      description: "Remove weather interference and enhance aerial visibility",
-      icon: <Cloud className="w-6 h-6" />
-    }
+    { title: "Aerial Enhancement", description: "Transform raw drone shots into stunning professional aerial photography", icon: <Camera className="w-6 h-6" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: "Survey Processing", description: "Enhance aerial survey data while maintaining geospatial accuracy", icon: <Map className="w-6 h-6" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: "Mapping Correction", description: "Correct distortions and enhance details for professional mapping", icon: <Layers className="w-6 h-6" />, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: "Weather Correction", description: "Remove weather interference and enhance aerial visibility", icon: <Cloud className="w-6 h-6" />, color: '#6366F1', bg: '#EEF2FF' },
   ];
+
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
 
   // Auto-animate slider when not dragging/hovering
   useEffect(() => {
@@ -216,7 +205,7 @@ export default function UAVRetouchingPage() {
       {/* ══════════════════════════════════════
           HERO — two-column layout
       ══════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0D0D0F] text-white">
 
         {/* Animated background blobs + orbits */}
         <div className="absolute inset-0 pointer-events-none">
@@ -264,31 +253,48 @@ export default function UAVRetouchingPage() {
             className="absolute right-[18%] top-[22%] w-3 h-3 rounded-full bg-[#E8352A]/38" />
         </div>
 
+        <div className="pointer-events-none absolute inset-0">
+          <svg className="absolute inset-0 h-full w-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="uav-noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
+            <rect width="100%" height="100%" filter="url(#uav-noise)" />
+          </svg>
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="uav-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" /></pattern></defs><rect width="100%" height="100%" fill="url(#uav-grid)" /></svg>
+          {[6, 4, 8, 5, 3, 7].map((size, i) => <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }} className="absolute rounded-full bg-[#E8352A]" style={{ width: size, height: size, left: `${[12, 28, 45, 62, 75, 88][i]}%`, top: `${[20, 65, 15, 75, 35, 55][i]}%`, filter: 'blur(1px)' }} />)}
+        </div>
+
         <style>{`
           @keyframes uavCW  { to { stroke-dashoffset: -1800; } }
           @keyframes uavCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col px-8 pb-12 pt-24 sm:px-12 lg:grid lg:grid-cols-2 lg:px-16 lg:py-0 xl:px-24">
+          <div className="grid min-h-screen grid-cols-1 items-stretch lg:contents">
 
             {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
+            <motion.div className="flex flex-col justify-center gap-6 px-2 text-center lg:items-start lg:px-0 lg:text-left"
               initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}>
+              <motion.div className="inline-flex items-center gap-2 self-center rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm lg:self-start"
+                initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#E8352A]" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#E8352A]">Aerial Image Editing</span>
+              </motion.div>
+
               {/* Heading */}
               <div>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
+                <motion.h1 className="font-extrabold leading-[0.95] tracking-tight"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
-                  UAV <span className="text-[#E8352A]">Retouching</span>
+                  <span className="block text-white text-[clamp(3rem,8vw,7rem)]">UAV</span><span className="block text-[#E8352A] text-[clamp(3rem,8vw,7rem)]">Retouching</span>
                 </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
+                <motion.p className="mt-2 text-xl font-semibold leading-snug text-white/90 sm:text-2xl md:text-3xl"
                   initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32, duration: 0.5 }}>
                   Aerial Image Enhancement
                 </motion.p>
               </div>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="max-w-md text-base leading-relaxed text-[#A0A0B0] md:text-lg"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.44, duration: 0.5 }}>
                 Transform raw drone footage into professional aerial masterpieces. Watch as AI magically
                 enhances clarity, corrects distortions, and perfects every aerial shot.
@@ -312,15 +318,14 @@ export default function UAVRetouchingPage() {
             </motion.div>
 
             {/* ── RIGHT: Before / After Slider ── */}
-            <motion.div className="flex flex-col gap-4"
+            <motion.div className="relative flex flex-col lg:h-screen"
               initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
 
               {/* Slider */}
               <div
                 ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3' }}
+                className="relative mt-4 min-h-[340px] w-full flex-1 cursor-col-resize select-none overflow-hidden rounded-2xl shadow-2xl lg:mt-0 lg:rounded-none"
                 onMouseMove={handleSliderMove}
                 onTouchMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
@@ -359,53 +364,46 @@ export default function UAVRetouchingPage() {
                 {/* Labels */}
                 <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">Before</span>
                 <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-full">After</span>
+
+                <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
+                  <Zap className="h-3.5 w-3.5 text-[#E8352A]" />
+                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Aerial Edit</span>
+                </motion.div>
+
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                  <div className="flex items-center justify-between gap-2">
+                    {editorTabs.map(tab => (
+                      <button key={tab} onClick={() => setActiveTab(tab)} className={`flex flex-1 flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>
+                        {tab === 'Enhance' && <Zap className="h-4 w-4" />}
+                        {tab === 'Clarity' && <ImageIcon className="h-4 w-4" />}
+                        {tab === 'Geometry' && <Target className="h-4 w-4" />}
+                        {tab === 'Color' && <Cloud className="h-4 w-4" />}
+                        <span className="text-[9px] font-semibold">{tab}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              {/* Feature badges below slider */}
-              <motion.div className="grid grid-cols-4 gap-2"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}>
-                {[
-                  { icon: <Zap className="w-4 h-4" />,    label: 'Better Clarity',    sub: 'Crystal clear details' },
-                  { icon: <Camera className="w-4 h-4" />, label: 'True Colors',       sub: 'Vibrant & natural' },
-                  { icon: <Target className="w-4 h-4" />, label: 'Geometry Fix',      sub: 'Perfect alignment' },
-                  { icon: <Shield className="w-4 h-4" />, label: 'Noise Reduction',   sub: 'Clean & smooth' },
-                ].map((b, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-[#F0F0F0] shadow-sm px-2.5 py-2.5 flex flex-col gap-1 items-start">
-                    <div className="text-[#E8352A]">{b.icon}</div>
-                    <p className="text-[10px] font-bold text-[#1A1A1A] leading-tight">{b.label}</p>
-                    <p className="text-[9px] text-[#999] leading-tight">{b.sub}</p>
-                  </div>
-                ))}
-              </motion.div>
-
               {/* Dot nav */}
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
                 {transformationExamples.map((_, i) => (
                   <button key={i} onClick={() => changeExample(i)}
                     className={`rounded-full transition-all ${i === currentExampleIndex % transformationExamples.length
-                      ? 'w-5 h-2.5 bg-[#E8352A]'
-                      : 'w-2.5 h-2.5 bg-[#CCC] hover:bg-[#E8352A]/60'}`} />
+                      ? 'h-2.5 w-8 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]'
+                      : 'h-2.5 w-2.5 bg-white/25 hover:bg-white/50'}`} />
                 ))}
               </div>
             </motion.div>
           </div>
 
           {/* Stats bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
+          <motion.div className="grid grid-cols-2 gap-4 border-t border-white/10 px-8 pb-8 pt-14 sm:px-12 lg:absolute lg:bottom-8 lg:left-8 lg:mt-0 lg:w-[calc(50%-4rem)] lg:grid-cols-4 lg:px-0 lg:pb-0 lg:pt-0 xl:left-24 xl:w-[calc(50%-8rem)]"
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
             {stats.map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors mt-0.5">
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#E8352A]">{s.value}</p>
-                  <p className="text-xs font-semibold text-[#1A1A1A] leading-tight">{s.label}</p>
-                  <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
-                  <svg viewBox="0 0 60 14" className="w-14 mt-1.5 opacity-50" fill="none">
-                    <polyline points="0,11 10,7 22,9 34,3 44,6 60,2" stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+              <div key={i} className="text-center">
+                <p className="text-2xl font-extrabold text-white lg:text-3xl">{s.value}</p>
+                <p className="mt-0.5 text-[11px] uppercase tracking-wider text-[#666]">{s.label}</p>
               </div>
             ))}
           </motion.div>
@@ -521,15 +519,33 @@ export default function UAVRetouchingPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: service.bg, color: service.color }}>
+                   <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                {(() => {
+                  const slug = slugify(service.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} aria-expanded={openServiceSlug === slug} className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: service.color }}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{service.description} Examples, turnaround times, and common use-cases.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/real-estate/uav-retouching/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>

@@ -1,0 +1,43 @@
+.slantedSection {
+  position: relative;
+}
+
+/* small helper for the slanted white bottom */
+.slantedSection::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6rem;
+  height: 220px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.0), #fff);
+  transform: skewY(-6deg);
+  transform-origin: 0 0;
+  pointer-events: none;
+  filter: drop-shadow(0 -24px 48px rgba(0,0,0,0.06));
+}
+
+/* dot grid overlay used optionally inside the card */
+.dotGrid {
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.12;
+}
+
+/* subtle floating glow used behind the trust card */
+.floatingGlow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: -6rem;
+  top: 2rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(254,226,226,0.9) 0%, rgba(254,226,226,0.4) 30%, rgba(254,226,226,0.06) 60%, transparent 70%);
+  filter: blur(36px);
+  pointer-events: none;
+}
+
+/* small utility to help GSAP target the element */
+.gsapFloatTarget {
+  will-change: transform, opacity;
+}

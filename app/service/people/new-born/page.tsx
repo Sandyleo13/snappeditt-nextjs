@@ -1,446 +1,249 @@
-// app/baby-retouch/page.tsx
+// app/service/people/new-born/page.tsx
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import {
-  Heart, Star, Sparkles, Users,
-  ArrowRight, Zap, Shield, CheckCircle,
-  Camera, Wand2, Eye,
-  ChevronLeft, ChevronRight
-} from 'lucide-react';
+import { Heart, Star, Sparkles, Users, ArrowRight, Zap, Shield, CheckCircle, Camera, Wand2, ChevronLeft, ChevronRight, Sun, Contrast, Layers } from 'lucide-react';
 
-/* ── Floating soft star/cloud decorative element ── */
 function FloatingStar({ style, size = 16 }: { style: React.CSSProperties; size?: number }) {
   return (
-    <motion.div
-      animate={{ y: [-10, 10, -10], opacity: [0.4, 0.8, 0.4] }}
-      transition={{ repeat: Infinity, duration: 4 + Math.random() * 2, ease: 'easeInOut' }}
-      className="absolute pointer-events-none"
-      style={style}>
-      <Star style={{ width: size, height: size, fill: '#E8352A', color: '#E8352A', opacity: 0.35 }} />
+    <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 5 }} className="absolute pointer-events-none" style={style}>
+      <Star style={{ width: size, height: size, fill: '#E8352A', opacity: 0.28 }} />
     </motion.div>
   );
 }
 
-/* ── Angel Glow badge ── */
-function NewbornBadge() {
-  return (
-    <motion.div initial={{ opacity: 0, y: -12, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 1.0, duration: 0.5, ease: 'easeOut' }}
-      className="absolute -top-5 right-2 z-20 flex items-center gap-2.5 bg-white rounded-xl shadow-lg border border-[#F0F0F0] px-3 py-2">
-      {/* Pulsing star halo */}
-      <div className="relative w-9 h-9 flex-shrink-0 flex items-center justify-center">
-        <motion.div className="absolute inset-0 rounded-full bg-[#E8352A]/15"
-          animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }} />
-        <div className="w-9 h-9 rounded-full bg-[#FFF0EE] flex items-center justify-center">
-          <Star className="w-4 h-4 text-[#E8352A] fill-[#E8352A]" />
-        </div>
-      </div>
-      <div>
-        <p className="text-[10px] font-bold text-[#1A1A1A] leading-none">Angel Glow ✨</p>
-        <p className="text-[9px] text-[#999] mt-0.5">Soft · Pure · Precious</p>
-      </div>
-    </motion.div>
-  );
-}
+export default function NewBornPage() {
+  const [index, setIndex] = useState(0);
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHoveringSlider, setIsHoveringSlider] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null!);
+  const galleryRef = useRef<HTMLDivElement>(null!);
 
-export default function BabyRetouchPage() {
-  const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
-  const [sliderPosition, setSliderPosition]           = useState(50);
-  const [isDragging, setIsDragging]                   = useState(false);
-  const [isHoveringSlider, setIsHoveringSlider]       = useState(false);
-  const sliderDirectionRef = useRef<1 | -1>(1);
-  const heroSliderRef      = useRef<HTMLDivElement>(null);
-  const gallerySliderRef   = useRef<HTMLDivElement>(null);
-
-  const transformationExamples = [
-    { id: 1,
-      beforeImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&q=85&auto=format&fit=crop&sat=-30&brightness=75',
-      afterImage:  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&q=85&auto=format&fit=crop',
-      description: 'Gentle retouching that enhances your newborn\'s natural beauty.' },
-    { id: 2,
-      beforeImage: 'https://images.unsplash.com/photo-1531895861208-8504b83fe2c3?w=900&q=85&auto=format&fit=crop&sat=-30&brightness=75',
-      afterImage:  'https://images.unsplash.com/photo-1531895861208-8504b83fe2c3?w=900&q=85&auto=format&fit=crop',
-      description: 'Capture perfect milestone photos with the gentlest enhancement.' },
-    { id: 3,
-      beforeImage: 'https://images.unsplash.com/photo-1529254479751-fbacb4c7a587?w=900&q=85&auto=format&fit=crop&sat=-30&brightness=75',
-      afterImage:  'https://images.unsplash.com/photo-1529254479751-fbacb4c7a587?w=900&q=85&auto=format&fit=crop',
-      description: 'Cherished family photos with baby, beautifully retouched.' },
-    { id: 4,
-      beforeImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=85&auto=format&fit=crop&sat=-30&brightness=75',
-      afterImage:  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=85&auto=format&fit=crop',
-      description: 'Dreamy, angelic first-year milestone portraits.' },
+  const examples = [
+    { beforeImage: 'https://images.unsplash.com/photo-1522336572468-97b06e8ef143?w=1200&q=80&auto=format&fit=crop', afterImage: 'https://images.unsplash.com/photo-1522336572468-97b06e8ef143?w=1200&q=80&auto=format&fit=crop' },
+    { beforeImage: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=1200&q=80&auto=format&fit=crop', afterImage: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=1200&q=80&auto=format&fit=crop' },
   ];
 
   const stats = [
-    { value: '5K+',  label: 'Babies Retouched', sub: 'Precious memories preserved', icon: <Heart className="w-5 h-5" /> },
-    { value: '4.9★', label: 'Parent Rating',     sub: 'Based on loving reviews',     icon: <Star className="w-5 h-5" /> },
-    { value: '100%', label: 'Gentle Touch',      sub: 'Natural, not over-edited',     icon: <Shield className="w-5 h-5" /> },
-    { value: '24h',  label: 'Delivery Time',     sub: 'Fast, caring turnaround',      icon: <Zap className="w-5 h-5" /> },
+    { value: '5K+', label: 'Babies Retouched' },
+    { value: '4.9★', label: 'Parent Rating' },
+    { value: '100%', label: 'Gentle Touch' },
+    { value: '24h', label: 'Delivery Time' },
   ];
 
-  const services = [
-    { title: 'Newborn Portraits',   description: 'Ultra-soft retouching that preserves your baby\'s delicate features.', icon: <Heart className="w-6 h-6" /> },
-    { title: 'Milestone Memories',  description: 'Monthly milestone photos retouched with gentle, consistent style.',     icon: <Star className="w-6 h-6" /> },
-    { title: 'Family with Baby',    description: 'Perfect family portraits with baby — everyone looking their best.',     icon: <Users className="w-6 h-6" /> },
-    { title: 'First Year Album',    description: 'A full year of consistently retouched baby photos for your keepsake.',  icon: <Camera className="w-6 h-6" /> },
+  const relatedServices = [
+    { title: 'Maternity Retouching', description: 'Soft, polished edits for maternity portraits and pregnancy sessions.', icon: <Users className="w-8 h-8" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Family Portraits', description: 'Refined color and skin toning for family photo sessions.', icon: <Heart className="w-8 h-8" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Headshot Retouch', description: 'Professional finishing for brand, actor, and portfolio portraits.', icon: <Star className="w-8 h-8" />, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: 'Lifestyle Editing', description: 'Cinematic finishing for newborn and family lifestyle imagery.', icon: <Sparkles className="w-8 h-8" />, color: '#10B981', bg: '#ECFDF5' },
   ];
+
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
+
+  const editorTabs = ['Exposure','Contrast','Highlights','Shadows','Color'];
+  const [activeTab, setActiveTab] = useState(editorTabs[0]);
 
   useEffect(() => {
     if (isDragging || isHoveringSlider) return;
-    const id = window.setInterval(() => {
-      setSliderPosition(prev => {
-        const next = prev + sliderDirectionRef.current * 0.7;
-        if (next >= 100) { sliderDirectionRef.current = -1; return 100; }
-        if (next <= 0)   { sliderDirectionRef.current =  1; return 0; }
-        return next;
-      });
-    }, 30);
+    const id = window.setInterval(() => setSliderPosition(s => (s >= 100 ? 50 : s + 0.6)), 60);
     return () => window.clearInterval(id);
   }, [isDragging, isHoveringSlider]);
 
-  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+  function handleMove(e: React.MouseEvent | React.TouchEvent) {
     if (!isDragging) return;
-    const activeRef = heroSliderRef.current?.contains(e.target as Node) ? heroSliderRef : gallerySliderRef;
-    if (!activeRef.current) return;
+    const ref = heroRef.current;
+    if (!ref) return;
     e.preventDefault();
-    const rect = activeRef.current.getBoundingClientRect();
-    const x = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-    setSliderPosition(Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100)));
-  };
+    const rect = ref.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setSliderPosition(Math.max(0, Math.min(100, pct)));
+  }
 
-  const changeExample = (i: number) => {
-    setCurrentExampleIndex((i + transformationExamples.length) % transformationExamples.length);
-    setSliderPosition(50);
-    sliderDirectionRef.current = 1;
-  };
+  function changeExample(i: number) { setIndex((i + examples.length) % examples.length); setSliderPosition(50); }
 
-  const currentExample = transformationExamples[currentExampleIndex % transformationExamples.length];
-
-  const addToCart = () => {
-    const pricePerImage = 0.15, imageCount = 50;
-    const total = parseFloat((pricePerImage * imageCount).toFixed(2));
-    const cartItem = { service_name: 'Newborn Retouching', qty: 1, price: pricePerImage,
-      retouching: 'Newborn Retouching', order_name: 'Newborn Retouching',
-      order_images: imageCount, order_details: currentExample.description, addons: [], total };
-    try {
-      const existing = document.cookie.match(/(^| )cart=([^;]+)/);
-      const currentCart = existing ? JSON.parse(decodeURIComponent(existing[2])) : [];
-      const updatedCart = Array.isArray(currentCart) ? [...currentCart, cartItem] : [currentCart, cartItem];
-      document.cookie = 'cart=' + encodeURIComponent(JSON.stringify(updatedCart)) + '; path=/';
-    } catch { document.cookie = 'cart=' + encodeURIComponent(JSON.stringify([cartItem])) + '; path=/'; }
-    window.location.href = '/cart';
-  };
+  function addToCart() { console.log('add to cart'); }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB]">
+    <div className="min-h-screen bg-[#0D0D0F] text-white">
+      <section className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#0D0D0F]">
 
-      {/* ══════════════════════════════════  HERO  ══════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
-
-        {/* ── Animated background ── */}
+        {/* ── Animated mesh background ── */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.09) 0%, transparent 70%)' }} />
-          <div className="absolute -right-24 -top-24 w-[440px] h-[440px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.07) 0%, transparent 70%)' }} />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[240px] rounded-full"
-            style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
-
-          {/* Orbit SVG rings */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid meet">
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="0.8" opacity="0.10"/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="0.6" opacity="0.08"/>
-            <ellipse cx="820" cy="340" rx="270" ry="200" stroke="#E8352A" strokeWidth="1.6" opacity="0.38"
-              strokeDasharray="200 1600" style={{ animation: 'nbCW 8s linear infinite', transformOrigin: '820px 340px' }}/>
-            <ellipse cx="820" cy="340" rx="210" ry="158" stroke="#E8352A" strokeWidth="1.0" opacity="0.22"
-              strokeDasharray="140 1200" style={{ animation: 'nbCCW 12s linear infinite', transformOrigin: '820px 340px' }}/>
+          <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#noise)"/>
           </svg>
-
-          {/* Floating stars — newborn-specific decorations */}
-          <FloatingStar style={{ right: '5%', top: '6%' }}   size={28} />
-          <FloatingStar style={{ right: '12%', top: '52%' }} size={18} />
-          <FloatingStar style={{ right: '3%', top: '74%' }}  size={14} />
-          <FloatingStar style={{ left: '42%', top: '9%' }}   size={12} />
-          <FloatingStar style={{ left: '8%', bottom: '30%' }} size={10} />
-
-          {/* Red sphere */}
-          <motion.div animate={{ y: [-13, 13, -13] }} transition={{ repeat: Infinity, duration: 5.8, ease: 'easeInOut' }}
-            style={{ position: 'absolute', right: '7%', top: '18%', width: 36, height: 36, borderRadius: '50%',
-              background: 'radial-gradient(circle at 35% 28%,#ff9a80 0%,#E8352A 60%,#a31808 100%)',
-              boxShadow: '0 8px 24px rgba(232,53,42,0.28)' }} />
-
-          {/* Glass spheres */}
-          <motion.div animate={{ y: [-11, 11, -11] }} transition={{ repeat: Infinity, duration: 6.4, ease: 'easeInOut' }}
-            style={{ position: 'absolute', left: '5%', top: '46%', width: 60, height: 60, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.98) 0%,rgba(228,233,245,0.50) 58%,rgba(198,208,228,0.18) 100%)',
-              boxShadow: '0 6px 28px rgba(15,23,42,0.08),inset 0 1px 2px rgba(255,255,255,0.9)',
-              border: '1px solid rgba(208,218,234,0.40)' }} />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 4.7, ease: 'easeInOut', delay: 0.7 }}
-            style={{ position: 'absolute', left: '12%', bottom: '28%', width: 28, height: 28, borderRadius: '50%',
-              background: 'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.97) 0%,rgba(224,230,244,0.45) 65%)',
-              boxShadow: '0 3px 12px rgba(15,23,42,0.07)', border: '1px solid rgba(208,218,234,0.35)' }} />
-
-          {/* Dot accents */}
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[43%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5.2, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[18%] top-[22%] w-3 h-3 rounded-full bg-[#E8352A]/38" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.6, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 w-[700px] h-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 w-[500px] h-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+          {[...Array(6)].map((_, i) => (
+            <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }} className="absolute rounded-full bg-[#E8352A]" style={{ width: [6,4,8,5,3,7][i], height: [6,4,8,5,3,7][i], left: `${[12,28,45,62,75,88][i]}%`, top: `${[20,65,15,75,35,55][i]}%`, filter: 'blur(1px)' }} />
+          ))}
         </div>
 
-        <style>{`
-          @keyframes nbCW  { to { stroke-dashoffset: -1800; } }
-          @keyframes nbCCW { to { stroke-dashoffset:  1348; } }
-        `}</style>
+        {/* ── Main content grid ── */}
+        <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-2 min-h-screen">
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* LEFT PANEL */}
+          <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
 
-            {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6"
-              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
-              {/* Heading */}
-              <div>
-                <motion.h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.55 }}>
-                  Newborn <span className="text-[#E8352A]">Baby</span>
-                </motion.h1>
-                <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug mt-2"
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
-                  Angel-Soft Retouching
-                </motion.p>
-              </div>
+            {/* Badge */}
+            <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 self-start mb-8 px-4 py-1.5 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 backdrop-blur-sm"><span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] animate-pulse" /><span className="text-[#E8352A] text-xs font-semibold tracking-widest uppercase">Newborn Retouch</span></motion.div>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
-                Preserve every tiny detail of your newborn's first days. Our ultra-gentle retouching
-                enhances natural beauty while keeping that precious, authentic newborn feel.
-              </motion.p>
+            {/* Heading */}
+            <h1 className="font-extrabold leading-[0.95] tracking-tight mb-6">
+              {['Newborn','Baby'].map((word,i) => (
+                <motion.span key={word} className={`block ${i===1? 'text-[#E8352A]':'text-white'} text-[clamp(3rem,8vw,5rem)]`} initial={{ opacity:0, x:-60 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.15 + i*0.12, duration:0.6 }}>{word}</motion.span>
+              ))}
+            </h1>
 
+            <motion.p className="text-[#A0A0B0] text-base md:text-lg leading-relaxed max-w-md mb-10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>Gentle, angel-soft retouching for your newborn's first photos.</motion.p>
 
-              {/* CTAs */}
-              <motion.div className="flex flex-wrap gap-3 pt-1"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-              Get Start For Free
-                </Link>
-                <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  View Examples
-                </button>
-              </motion.div>
-
+            <motion.div className="flex flex-wrap gap-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}>
+              <Link href="/free-trial" className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all shadow-[0_0_40px_rgba(232,53,42,0.45)] hover:scale-105">Get Started Free <ArrowRight className="w-4 h-4"/></Link>
+              <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })} className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 text-white/80 font-semibold text-sm">View Examples</button>
             </motion.div>
 
-            {/* ── RIGHT: Slider + angel badge + milestone strip + feature badges ── */}
-            <motion.div className="flex flex-col gap-3 relative"
-              initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
-
-              {/* Angel Glow badge */}
-              <NewbornBadge />
-
-              {/* Before/After slider */}
-              <div ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3' }}
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
-
-                {/* AFTER */}
-                <div className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${currentExample.afterImage})` }} />
-                {/* BEFORE clipped */}
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
-                  <div className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentExample.beforeImage})`,
-                      width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-
-                {/* Divider + handle */}
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white/80 shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
-                    <div className="flex items-center gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Labels */}
-                <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/75 text-white text-xs font-semibold px-3 py-1.5 rounded-lg backdrop-blur-sm">Before</span>
-                <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">After</span>
-
-                {/* Milestone month strip overlay */}
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.3 }}
-                  className="absolute bottom-4 left-4 right-4 z-10 bg-white/92 backdrop-blur-sm rounded-xl px-3 py-2 flex items-center justify-between gap-1">
-                  {['Day 1', '1 mo', '3 mo', '6 mo', '1 yr'].map((m, i) => (
-                    <motion.button key={m}
-                      initial={{ scale: 0 }} animate={{ scale: 1 }}
-                      transition={{ delay: 1.4 + i * 0.08 }}
-                      onClick={() => changeExample(i < transformationExamples.length ? i : 0)}
-                      className={`flex-1 py-1.5 rounded-lg text-[9px] font-bold transition-all ${
-                        i === currentExampleIndex % transformationExamples.length
-                          ? 'bg-[#E8352A] text-white'
-                          : 'bg-[#F5F5F5] text-[#888] hover:bg-[#FFE5E2] hover:text-[#E8352A]'}`}>
-                      {m}
-                    </motion.button>
-                  ))}
+            <motion.div className="grid grid-cols-4 gap-4 mt-14 pt-10 border-t border-white/10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>
+              {stats.map((s,i) => (
+                <motion.div key={i} initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay: 0.9 + i*0.08, duration:0.4 }}>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-white">{s.value}</p>
+                  <p className="text-[11px] text-[#666] mt-0.5 uppercase tracking-wider">{s.label}</p>
                 </motion.div>
-              </div>
-
-              {/* Feature badges */}
-              <motion.div className="grid grid-cols-4 gap-2"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
-                {[
-                  { icon: <Heart className="w-4 h-4" />,    label: 'Gentle',     sub: 'Touch' },
-                  { icon: <Star className="w-4 h-4" />,     label: 'Angel',      sub: 'Glow' },
-                  { icon: <Wand2 className="w-4 h-4" />,    label: 'Natural',    sub: 'Skin' },
-                  { icon: <Sparkles className="w-4 h-4" />, label: 'Dreamy',     sub: 'Effects' },
-                ].map((b, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-[#F0F0F0] shadow-sm px-2.5 py-2.5 flex items-center gap-2">
-                    <div className="text-[#E8352A] flex-shrink-0">{b.icon}</div>
-                    <div>
-                      <p className="text-[9px] font-bold text-[#1A1A1A] leading-tight">{b.label}</p>
-                      <p className="text-[9px] text-[#999] leading-tight">{b.sub}</p>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Dot nav */}
-              <div className="flex items-center justify-center gap-2">
-                {transformationExamples.map((_, i) => (
-                  <button key={i} onClick={() => changeExample(i)}
-                    className={`rounded-full transition-all ${
-                      i === currentExampleIndex % transformationExamples.length
-                        ? 'w-5 h-2.5 bg-[#E8352A]'
-                        : 'w-2.5 h-2.5 bg-[#CCC] hover:bg-[#E8352A]/60'}`} />
-                ))}
-              </div>
+              ))}
             </motion.div>
           </div>
 
-       
+          {/* RIGHT PANEL — full-height before/after */}
+          <motion.div className="relative flex flex-col lg:h-screen" initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+
+            <div ref={heroRef} className="relative flex-1 cursor-col-resize select-none overflow-hidden lg:rounded-none rounded-2xl mx-4 lg:mx-0 mt-4 lg:mt-0" style={{ minHeight: 340 }} onMouseMove={handleMove} onMouseEnter={() => setIsHoveringSlider(true)} onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }} onTouchMove={handleMove} onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+
+              {/* BEFORE — base */}
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${examples[index].afterImage})` }} />
+              {/* AFTER — clipped */}
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${examples[index].beforeImage})`, width: heroRef.current ? `${heroRef.current.offsetWidth}px` : '100%' }} />
+              </div>
+
+              {/* Divider + handle */}
+              <div className="absolute top-0 bottom-0 z-10" style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }} onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/60" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 bg-white rounded-full shadow-2xl flex items-center justify-center border-2 border-[#E8352A]" style={{ boxShadow: '0 0 0 4px rgba(232,53,42,0.20), 0 8px 24px rgba(0,0,0,0.4)' }}>
+                  <div className="flex gap-0.5"><ChevronLeft className="w-3.5 h-3.5 text-[#E8352A]"/><ChevronRight className="w-3.5 h-3.5 text-[#E8352A]"/></div>
+                </div>
+              </div>
+
+              {/* Labels */}
+              <span className="absolute top-5 left-5 z-10 bg-black/60 text-white text-[11px] font-bold px-3 py-1.5 rounded-full backdrop-blur-md tracking-wider uppercase">Before</span>
+              <span className="absolute top-5 right-5 z-10 bg-[#E8352A] text-white text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider uppercase">After</span>
+
+              {/* Bottom overlay: editor toolbar */}
+              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                <div className="flex items-center justify-between gap-2">
+                  {editorTabs.map(tab => (
+                    <button key={tab} onClick={() => setActiveTab(tab)} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>
+                      {tab === 'Exposure'   && <Sun className="w-4 h-4"/>}
+                      {tab === 'Contrast'   && <Contrast className="w-4 h-4"/>}
+                      {tab === 'Highlights' && <Sun className="w-4 h-4 opacity-70"/>}
+                      {tab === 'Shadows'    && <Layers className="w-4 h-4"/>}
+                      {tab === 'Color'      && <Wand2 className="w-4 h-4"/>}
+                      <span className="text-[9px] font-semibold">{tab}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Floating AI badge */}
+              <motion.div animate={{ y: [-4,4,-4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#E8352A]" />
+                <span className="text-white text-[11px] font-semibold">AI-Assisted Manual Edit</span>
+              </motion.div>
+            </div>
+
+            {/* Image selector dots */}
+            <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
+              {examples.map((_, i) => (
+                <button key={i} onClick={() => changeExample(i)} className={`rounded-full transition-all duration-300 ${index === i ? 'w-8 h-2.5 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/50'}`} />
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════  GALLERY  ══════════════════════════════════ */}
-      <section id="gallery" className="py-16 sm:py-20 bg-[#F7F8FA]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              See the <span className="text-[#E8352A]">Angel Difference</span>
-            </h2>
-            <p className="text-lg sm:text-xl text-[#555]">
-              Real newborn photos before and after our gentle, ultra-soft retouching.
-            </p>
-          </div>
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
-            <div className="flex-1 flex flex-col">
-              <div ref={gallerySliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-xl cursor-col-resize select-none flex-1 min-h-[320px] sm:min-h-[420px]"
-                onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
-                <div className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${currentExample.afterImage})` }} />
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
-                  <div className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentExample.beforeImage})`,
-                      width: gallerySliderRef.current ? `${gallerySliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]">
-                    <div className="flex items-center gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-                <span className="absolute bottom-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">Original</span>
-                <span className="absolute bottom-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1 rounded-full">Retouched</span>
+      <section id="gallery" className="py-16 bg-white text-black">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-4">See the Magical Difference</h2>
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="rounded-2xl overflow-hidden h-[420px] relative">
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${examples[index].afterImage})` }} />
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${examples[index].beforeImage})` }} />
               </div>
-              <div className="flex items-center justify-center gap-3 mt-5">
-                <button onClick={() => changeExample(currentExampleIndex - 1)}
-                  className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow">
-                  <ChevronLeft className="w-4 h-4" /> Prev
-                </button>
-                <button onClick={() => changeExample(currentExampleIndex + 1)}
-                  className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow">
-                  Next <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+              <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-full">Original</div>
+              <div className="absolute bottom-4 right-4 bg-[#E8352A] text-white px-3 py-1 rounded-full">Retouched</div>
             </div>
-
-            {/* Service card */}
-            <div className="w-full lg:w-80 xl:w-96 bg-white rounded-2xl border border-[#E5E7EB] shadow-md p-6 flex flex-col">
-              <h3 className="text-xl sm:text-2xl font-bold text-[#E8352A] mb-2">Newborn Retouching</h3>
-              <p className="text-[#555] text-sm mb-5 leading-relaxed">
-                Ultra-gentle retouching that preserves your baby's precious, authentic beauty.
-              </p>
-              <div className="text-2xl font-bold text-[#111] mb-4">
-                $0.15 <span className="text-base font-normal text-[#555]">/ image</span>
-              </div>
-              <button onClick={addToCart}
-                className="w-full bg-[#E8352A] hover:bg-[#C62B20] text-white font-semibold py-2.5 rounded-lg transition-all mb-5 shadow-sm text-sm">
-                Add to Cart
-              </button>
-              <ul className="flex flex-col gap-2.5 mb-6 flex-1">
-                {['Ultra-Soft Skin Smoothing','Natural Baby Glow','Background Clean-Up',
-                  'Gentle Color Grading','Blemish & Redness Removal','24-Hour Delivery'].map(feat => (
-                  <li key={feat} className="flex items-center gap-2 text-sm text-[#333]">
-                    <CheckCircle className="w-4 h-4 text-[#E8352A] flex-shrink-0" />{feat}
-                  </li>
-                ))}
+            <div className="bg-white rounded-2xl border p-6 shadow">
+              <h3 className="text-xl font-bold text-[#E8352A] mb-2">Newborn Retouching</h3>
+              <p className="text-gray-700 mb-4">Ultra-gentle retouching that preserves your baby's delicate features.</p>
+              <div className="text-2xl font-bold mb-4">$0.15 <span className="text-base font-normal text-gray-600">/ image</span></div>
+              <button onClick={addToCart} className="w-full bg-[#E8352A] text-white py-3 rounded-lg mb-4">Add to Cart</button>
+              <ul className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#E8352A]"/> Soft Skin Glow Enhancement</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#E8352A]"/> Lighting & Background Fix</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#E8352A]"/> Dreamy Color Grading</li>
               </ul>
-              <button className="w-full border border-[#E8352A] text-[#E8352A] hover:bg-[#FFF3F2] font-semibold py-2.5 rounded-lg transition-all text-sm">
-                View More
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════  SERVICES  ══════════════════════════════════ */}
-      <section id="services" className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              <span className="text-[#E8352A]">Newborn</span> Services
-            </h2>
-            <p className="text-xl text-gray-600">Gentle, precious retouching for every baby milestone.</p>
+      {/* Related services CTA */}
+      <section id="related-services" className="py-20 bg-gradient-to-b from-[#F7F8FA] to-white text-black">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <p className="text-sm uppercase tracking-[0.3em] text-[#E8352A] mb-4">Related Services</p>
+            <h2 className="text-4xl md:text-5xl font-bold">More people retouching services</h2>
+            <p className="text-gray-600 mt-4">Explore related retouching services that complement your newborn photos.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedServices.map((service, i) => (
+              <div key={i} className="relative bg-white rounded-[28px] border border-gray-200 p-6 shadow-sm hover:shadow-xl transition-all overflow-hidden group">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style={{ background: service.bg, color: service.color }}>
                   {service.icon}
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-3">{service.title}</h3>
+                <p className="text-lg text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                {(() => {
+                  const slug = slugify(service.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} className="inline-flex items-center gap-2 text-xl font-semibold transition-all" style={{ color: service.color }} aria-expanded={openServiceSlug === slug}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{service.description} Typical turnaround, sample edits, and add-on options.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/people/new-born/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>
         </div>
       </section>
-
     </div>
   );
 }

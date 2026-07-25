@@ -41,6 +41,13 @@
   --shadow-card: 0 14px 40px rgba(2,6,23,0.06);
   --shadow-button: 0 8px 20px rgba(244, 67, 54, 0.18);
   --transition: 0.3s ease;
+  /* Floating checkout compact tuning */
+  --fcb-z: 999;
+  --fcb-icon-size: 20px;
+  --fcb-font-size: 14px;
+  --fcb-padding: 10px 14px;
+  --fcb-bg-opacity: 0.72;
+  --fcb-shadow: 0 6px 20px rgba(244,67,54,0.12);
 }
 
 @theme inline {
@@ -377,13 +384,13 @@ input[type="password"]::-ms-clear {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
-  padding: 10px 16px;
-  background: rgba(10, 10, 10, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(244, 67, 54, 0.30);
-  box-shadow: 0 -4px 24px rgba(244, 67, 54, 0.15);
+  z-index: var(--fcb-z);
+  padding: 8px 12px;
+  background: rgba(10, 10, 10, var(--fcb-bg-opacity));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(244, 67, 54, 0.22);
+  box-shadow: 0 -3px 16px rgba(244, 67, 54, 0.08);
 }
 
 .floating-checkout-btn {
@@ -392,34 +399,26 @@ input[type="password"]::-ms-clear {
   justify-content: center;
   gap: 10px;
   width: 100%;
-  padding: 13px 20px;
+  padding: var(--fcb-padding);
   background: #111111;
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow:
-    0 0 0 1.5px var(--primary),
-    0 0 18px 2px rgba(244, 67, 54, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: var(--fcb-shadow);
 }
 
 /* Animated gradient border */
 .floating-checkout-btn::before {
   content: "";
   position: absolute;
-  inset: -1.5px;
-  border-radius: 15px;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    #ff6b6b 40%,
-    #c2185b 70%,
-    var(--primary) 100%
-  );
-  background-size: 300% 300%;
-  animation: fcbGlow 4s ease infinite;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--primary) 0%, #ff6b6b 40%, #c2185b 70%, var(--primary) 100%);
+  background-size: 200% 200%;
+  animation: fcbGlow 6s ease infinite;
   z-index: -1;
 }
 
@@ -427,9 +426,9 @@ input[type="password"]::-ms-clear {
 .floating-checkout-btn::after {
   content: "";
   position: absolute;
-  inset: 1.5px;
+  inset: 1px;
   background: #111111;
-  border-radius: 13px;
+  border-radius: 12px;
   z-index: -1;
 }
 
@@ -444,21 +443,22 @@ input[type="password"]::-ms-clear {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--fcb-icon-size);
+  height: var(--fcb-icon-size);
   border-radius: 50%;
   background: var(--primary);
   flex-shrink: 0;
-  box-shadow: 0 2px 10px rgba(244, 67, 54, 0.50);
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.28);
 }
 
 /* Label text */
 .floating-checkout-label {
-  font-size: 15px;
+  font-size: var(--fcb-font-size);
   font-weight: 600;
   color: #ffffff;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  opacity: 0.98;
 }
 
 .floating-checkout-btn:active {
@@ -469,7 +469,7 @@ input[type="password"]::-ms-clear {
 @media (min-width: 768px) {
   .floating-checkout-wrapper {
     bottom: auto;
-    left: 0;
+    left: 12px;
     right: auto;
     top: 50%;
     transform: translateY(-50%);
@@ -484,31 +484,18 @@ input[type="password"]::-ms-clear {
   .floating-checkout-btn {
     width: auto;
     justify-content: flex-start;
-    padding: 10px 18px 10px 10px;
+    padding: 8px 12px 8px 8px;
     border-radius: 0 999px 999px 0;
-    box-shadow:
-      0 0 0 1.5px var(--primary),
-      0 0 18px 2px rgba(244, 67, 54, 0.45),
-      0 0 40px 4px rgba(244, 67, 54, 0.18);
+    box-shadow: var(--fcb-shadow);
   }
 
-  .floating-checkout-btn::before {
-    border-radius: 0 999px 999px 0;
-  }
-
-  .floating-checkout-btn::after {
-    border-radius: 0 999px 999px 0;
-  }
+  .floating-checkout-btn::before { border-radius: 0 999px 999px 0; }
+  .floating-checkout-btn::after  { border-radius: 0 999px 999px 0; }
 
   .floating-checkout-btn:hover {
-    transform: translateX(5px);
-    box-shadow:
-      0 0 0 1.5px var(--primary),
-      0 0 28px 6px rgba(244, 67, 54, 0.55),
-      0 0 56px 8px rgba(244, 67, 54, 0.22);
+    transform: translateX(4px);
+    box-shadow: 0 8px 28px rgba(244,67,54,0.12);
   }
 
-  .floating-checkout-btn:active {
-    transform: translateX(3px);
-  }
+  .floating-checkout-btn:active { transform: translateX(2px); }
 }

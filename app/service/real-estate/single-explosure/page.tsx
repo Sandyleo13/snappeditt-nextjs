@@ -2,14 +2,108 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import {
   Camera, Sparkles, Shield, CheckCircle,
   ArrowRight, Image as ImageIcon,
   BarChart, Target, ChevronRight, ChevronLeft,
-  Sun, Contrast, Layers, Wand2
+  Sun, Contrast, Layers, Wand2,
+  type LucideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
+
+function ServicesSection({ services }: { services: { title: string; description: string; icon: LucideIcon; color: string; bg: string }[] }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+
+  return (
+    <section id="services" className="relative py-24 bg-[#F8F9FB] overflow-hidden">
+      {/* background glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* heading */}
+        <motion.div
+          className="text-center max-w-2xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}>
+          <span className="inline-block text-[#E8352A] text-2xl font-bold tracking-[0.2em] uppercase mb-4">What We Offer</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] mb-4">
+            Related <span className="text-[#E8352A]">Services</span>
+          </h2>
+          <p className="text-[#777] text-xl">
+            Additional real estate photo services designed to make listings look their best.
+          </p>
+        </motion.div>
+
+        {/* grid */}
+        <div ref={ref} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {(() => {
+            const slugify = (s: string) =>
+              s
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+
+            return services.map((service, i) => {
+              const href = (service as any).href ?? `/service/${slugify(service.title)}`;
+              return (
+                <Link key={i} href={href} className="group">
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: i * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                    className="relative rounded-2xl p-6 border border-[#EBEBEB] bg-white shadow-sm overflow-hidden cursor-pointer hover:shadow-lg hover:border-[#E8352A]/20 transition-shadow duration-300"
+                  >
+                    {/* hover glow fill */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+
+                    {/* top accent line */}
+                    <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+
+                    {/* icon */}
+                    <div
+                      className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300"
+                      style={{ background: service.bg, color: service.color }}
+                    >
+                      {React.createElement(service.icon, { size: 24, className: 'w-10 h-10' })}
+                    </div>
+
+                    <h3 className="text-[#1A1A1A] font-bold text-xl mb-2 transition-colors duration-300"
+                      style={{ ['--hover-color' as string]: service.color }}
+                    >
+                      {service.title}
+                    </h3>
+                    <p className="text-[#888] text-lg leading-relaxed mb-5">{service.description}</p>
+
+                    <div className="flex items-center gap-1.5 text-sm font-semibold" style={{ color: service.color }}>
+                      <span className="relative text-xl after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:transition-all after:duration-300 group-hover:after:w-full"
+                        style={{ ['--tw-after-bg' as string]: service.color }}>
+                        Learn more
+                      </span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </div>
+
+                    {/* corner number */}
+                    <span className="absolute top-4 right-5 text-[11px] font-bold text-[#1A1A1A]/10 transition-colors duration-300">
+                      0{i + 1}
+                    </span>
+                  </motion.div>
+                </Link>
+              );
+            });
+          })()}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function SingleExposurePage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -57,14 +151,14 @@ export default function SingleExposurePage() {
   const editorTabs = ['Exposure', 'Contrast', 'Highlights', 'Shadows', 'Color'];
 
   const services = [
-    { title: 'HDR Photo Editing', description: 'Enhance dynamic range while preserving natural detail in every room.', icon: <Camera className="w-6 h-6" /> },
-    { title: 'Day to Dusk', description: 'Turn daytime property shots into elegant evening scenes for marketing.', icon: <Sparkles className="w-6 h-6" /> },
-    { title: 'Virtual Staging', description: 'Prepare spaces for listings with photo-ready staging support.', icon: <ImageIcon className="w-6 h-6" /> },
-    { title: 'Sky Replacement', description: 'Replace dull skies with clean, attractive backdrops.', icon: <Target className="w-6 h-6" /> },
-    { title: 'Object Removal', description: 'Remove distractions for cleaner, more professional property images.', icon: <Shield className="w-6 h-6" /> },
-    { title: 'Image Enhancement', description: 'Sharpen detail, refine color, and improve overall visual appeal.', icon: <CheckCircle className="w-6 h-6" /> },
-    { title: 'Floor Plan Redraw', description: 'Create polished floor plan visuals for property marketing.', icon: <BarChart className="w-6 h-6" /> },
-    { title: 'Virtual Renovation', description: 'Showcase property potential with realistic renovation mockups.', icon: <Layers className="w-6 h-6" /> },
+    { title: 'HDR Photo Editing', description: 'Enhance dynamic range while preserving natural detail in every room.', icon: Camera, color: '#E8352A', bg: '#FFF0EE', href: '/service/real-estate/hdr-basic' },
+    { title: 'Day to Dusk', description: 'Turn daytime property shots into elegant evening scenes for marketing.', icon: Sparkles, color: '#7C3AED', bg: '#F5F0FF', href: '/service/real-estate/day-to-dusk' },
+    { title: 'Virtual Staging', description: 'Prepare spaces for listings with photo-ready staging support.', icon: ImageIcon, color: '#0EA5E9', bg: '#F0F9FF', href: '/service/real-estate/virtual-staging' },
+    { title: 'Sky Replacement', description: 'Replace dull skies with clean, attractive backdrops.', icon: Target, color: '#10B981', bg: '#ECFDF5', href: '/service/real-estate/sky-replacement' },
+    { title: 'Object Removal', description: 'Remove distractions for cleaner, more professional property images.', icon: Shield, color: '#F59E0B', bg: '#FFFBEB', href: '/service/real-estate/digital-declutter' },
+    { title: 'Image Enhancement', description: 'Sharpen detail, refine color, and improve overall visual appeal.', icon: CheckCircle, color: '#EC4899', bg: '#FDF2F8', href: '/service/real-estate/hdr-preminum' },
+    { title: 'Floor Plan Redraw', description: 'Create polished floor plan visuals for property marketing.', icon: BarChart, color: '#6366F1', bg: '#EEF2FF', href: '/service/real-estate/2d-3d-floor-plans' },
+    { title: 'Virtual Renovation', description: 'Showcase property potential with realistic renovation mockups.', icon: Layers, color: '#14B8A6', bg: '#F0FDFA', href: '/service/3d-services/3d-rendering' },
   ];
 
   const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
@@ -119,163 +213,210 @@ export default function SingleExposurePage() {
     <div className="min-h-screen bg-[#F8F9FB]">
 
       {/* ══════════════════════════════════════════
-          HERO
+          HERO — full-bleed cinematic
       ══════════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
-        {/* Soft background blobs */}
+      <section className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#0D0D0F]">
+
+        {/* ── Animated mesh background ── */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.10) 0%, transparent 70%)' }} />
-          <div className="absolute -right-20 -top-20 w-[380px] h-[380px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.08) 0%, transparent 70%)' }} />
-          {/* Floating dots */}
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[42%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[18%] top-[22%] w-3.5 h-3.5 rounded-full bg-[#E8352A]/40" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[15%] bottom-[28%] w-2 h-2 rounded-full bg-[#E8352A]/35" />
+          {/* base noise texture via SVG filter */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#noise)"/>
+          </svg>
+          {/* large red glow — left */}
+          <motion.div
+            animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }}
+            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute -left-40 top-1/3 w-[700px] h-[700px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }}
+          />
+          {/* subtle glow — right */}
+          <motion.div
+            animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }}
+            transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }}
+            className="absolute -right-32 -bottom-20 w-[500px] h-[500px] rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }}
+          />
+          {/* grid lines */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)"/>
+          </svg>
+          {/* floating particles */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div key={i}
+              animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }}
+              transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }}
+              className="absolute rounded-full bg-[#E8352A]"
+              style={{
+                width: [6,4,8,5,3,7][i], height: [6,4,8,5,3,7][i],
+                left: `${[12,28,45,62,75,88][i]}%`,
+                top: `${[20,65,15,75,35,55][i]}%`,
+                filter: 'blur(1px)',
+              }}
+            />
+          ))}
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        {/* ── Main content grid ── */}
+        <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-2 min-h-screen">
 
-            {/* ── LEFT ── */}
-            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left"
-              initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}>
+          {/* LEFT PANEL */}
+          <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
 
-              {/* Badge */}
-           
-
-              {/* Heading */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.04] tracking-tight max-w-full">
-                <motion.span className="block text-[#1A1A1A]"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.55 }}>
-                  Single
-                </motion.span>
-                <motion.span className="block text-[#E8352A]"
-                  initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.30, duration: 0.55 }}>
-                  Exposure
-                </motion.span>
-              </h1>
-
-              {/* Subheading */}
-              <motion.p className="text-xl md:text-2xl font-semibold text-[#333] leading-snug max-w-2xl"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
-                Real Estate Photo Enhancement
-              </motion.p>
-
-              {/* Description */}
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.54, duration: 0.5 }}>
-                Transform property photographs with expert manual editing. Our retouchers carefully
-                adjust lighting, colors, contrast, and perspective to deliver bright, natural,
-                market-ready images.
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1 justify-center lg:justify-start"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.66, duration: 0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex justify-center items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105 w-full sm:w-auto">
-                  Get Start For Free
-                </Link>
-                 <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex justify-center items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all w-full sm:w-auto">
-                  View Examples
-                </button>
-              </motion.div>
-
-            
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 self-start mb-8 px-4 py-1.5 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] animate-pulse" />
+              <span className="text-[#E8352A] text-xs font-semibold tracking-widest uppercase">Real Estate Editing</span>
             </motion.div>
 
-            {/* ── RIGHT: Before/After + Editor toolbar ── */}
-            <motion.div className="relative flex flex-col items-center gap-6 w-full max-w-[760px] mx-auto lg:mx-0"
-              initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
+            {/* Heading */}
+            <h1 className="font-extrabold leading-[0.95] tracking-tight mb-6">
+              {['Single', 'Exposure', 'Editing'].map((word, i) => (
+                <motion.span key={word} className={`block ${
+                  i === 1 ? 'text-[#E8352A]' : 'text-white'
+                } text-[clamp(3rem,8vw,7rem)]`}
+                  initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+                  {word}
+                </motion.span>
+              ))}
+            </h1>
 
-              {/* Floating filter settings icon */}
-              <div className="absolute -right-3 top-1/3 z-20 hidden lg:flex flex-col items-center justify-center w-10 h-10 bg-white rounded-xl shadow-lg border border-[#eee]">
-                <svg className="w-4 h-4 text-[#555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              </div>
-              <div className="absolute -right-3 top-1/2 z-20 hidden lg:flex flex-col items-center justify-center w-10 h-10 bg-[#E8352A] rounded-xl shadow-lg mt-2">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
+            {/* Description */}
+            <motion.p
+              className="text-[#A0A0B0] text-base md:text-lg leading-relaxed max-w-md mb-10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>
+              Transform property photographs with expert manual editing — precise exposure correction,
+              color grading, and perspective fixes that make listings sell faster.
+            </motion.p>
 
-              {/* Before/After card */}
-              <div
-                ref={sliderRef}
-                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full max-w-full"
-                style={{ aspectRatio: '4/3', border: '2px solid rgba(255,255,255,0.9)' }}
-                onMouseMove={handleSliderMove}
-                onMouseEnter={() => setIsHoveringSlider(true)}
-                onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchMove={handleSliderMove}
-                onTouchEnd={() => setIsDragging(false)}
-                onMouseUp={() => setIsDragging(false)}
-              >
-                {/* Before */}
-                <div className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${currentImage.beforeImage})` }} />
-                {/* After — clipped left side */}
-                <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
-                  <div className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${currentImage.afterImage})`,
-                      width: sliderRef.current ? `${sliderRef.current.offsetWidth}px` : '100%' }} />
-                </div>
-                {/* Divider */}
-                <div className="absolute top-0 bottom-0 z-10" style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
-                  <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-white/80" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-[#E8352A]"
-                    style={{ boxShadow: '0 4px 16px rgba(232,53,42,0.30)' }}>
-                    <div className="flex gap-0.5">
-                      <ChevronLeft className="w-3 h-3 text-[#E8352A]" />
-                      <ChevronRight className="w-3 h-3 text-[#E8352A]" />
-                    </div>
-                  </div>
-                </div>
-                {/* Labels */}
-                <span className="absolute top-3 left-3 z-10 bg-[#1A1A1A]/75 text-white text-[11px] font-semibold px-3 py-1 rounded-full backdrop-blur-sm">Before</span>
-                <span className="absolute top-3 right-3 z-10 bg-[#E8352A] text-white text-[11px] font-semibold px-3 py-1 rounded-full">After</span>
-              </div>
+            {/* CTAs */}
+            <motion.div className="flex flex-wrap gap-4"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}>
+              <Link href="/free-trial"
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all shadow-[0_0_40px_rgba(232,53,42,0.45)] hover:shadow-[0_0_60px_rgba(232,53,42,0.65)] hover:scale-105">
+                Get Started Free
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <button
+                onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 text-white/80 font-semibold text-sm hover:border-[#E8352A]/50 hover:text-white hover:bg-white/5 transition-all">
+                View Examples
+              </button>
+            </motion.div>
 
-              {/* Editor toolbar */}
-              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-4 py-3 flex flex-wrap items-center justify-center md:justify-between gap-2">
-                {editorTabs.map(tab => (
-                  <button key={tab} onClick={() => setActiveTab(tab)}
-                    className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg transition-all text-center ${
-                      activeTab === tab ? 'bg-[#E8352A]/10 text-[#E8352A]' : 'text-[#888] hover:text-[#555]'
-                    }`}>
-                    {tab === 'Exposure'   && <Sun      className="w-4 h-4" />}
-                    {tab === 'Contrast'   && <Contrast className="w-4 h-4" />}
-                    {tab === 'Highlights' && <Sun      className="w-4 h-4 opacity-70" />}
-                    {tab === 'Shadows'    && <Layers   className="w-4 h-4" />}
-                    {tab === 'Color'      && <Wand2    className="w-4 h-4" />}
-                    <span className={`text-[10px] font-semibold ${activeTab === tab ? 'text-[#E8352A]' : ''}`}>{tab}</span>
-                  </button>
-                ))}
-              </div>
+            {/* Stats strip */}
+            <motion.div
+              className="grid grid-cols-4 gap-4 mt-14 pt-10 border-t border-white/10"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>
+              {stats.map((s, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 + i * 0.08, duration: 0.4 }}>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-white">{s.value}</p>
+                  <p className="text-[11px] text-[#666] mt-0.5 uppercase tracking-wider">{s.label}</p>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
 
-          {/* ── Stats bar ── */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9, duration: 0.5 }}>
-            {stats.map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 text-center group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <p className="text-2xl font-bold text-[#1A1A1A] group-hover:text-[#E8352A] transition-colors">{s.value}</p>
-                <p className="text-xs text-[#888] mt-1">{s.label}</p>
-                {/* mini sparkline */}
-                <svg viewBox="0 0 80 20" className="w-full mt-2 opacity-50" fill="none">
-                  <polyline points="0,15 15,10 30,13 45,5 60,9 80,3"
-                    stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                </svg>
+          {/* RIGHT PANEL — full-height before/after */}
+          <motion.div
+            className="relative flex flex-col lg:h-screen"
+            initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+
+            {/* Before/After fills the entire right column */}
+            <div
+              ref={sliderRef}
+              className="relative flex-1 cursor-col-resize select-none overflow-hidden lg:rounded-none rounded-2xl mx-4 lg:mx-0 mt-4 lg:mt-0"
+              style={{ minHeight: 340 }}
+              onMouseMove={handleSliderMove}
+              onMouseEnter={() => setIsHoveringSlider(true)}
+              onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
+              onTouchMove={handleSliderMove}
+              onTouchEnd={() => setIsDragging(false)}
+              onMouseUp={() => setIsDragging(false)}
+            >
+              {/* Before */}
+              <div className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${currentImage.beforeImage})`, filter: 'brightness(0.7) saturate(0.6)' }} />
+              {/* After */}
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <div className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: `url(${currentImage.afterImage})`,
+                    width: sliderRef.current ? `${sliderRef.current.offsetWidth}px` : '100%',
+                  }} />
               </div>
-            ))}
+
+              {/* Divider */}
+              <div className="absolute top-0 bottom-0 z-10"
+                style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+                onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/60" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 bg-white rounded-full shadow-2xl flex items-center justify-center border-2 border-[#E8352A]"
+                  style={{ boxShadow: '0 0 0 4px rgba(232,53,42,0.20), 0 8px 24px rgba(0,0,0,0.4)' }}>
+                  <div className="flex gap-0.5">
+                    <ChevronLeft className="w-3.5 h-3.5 text-[#E8352A]" />
+                    <ChevronRight className="w-3.5 h-3.5 text-[#E8352A]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Labels */}
+              <span className="absolute top-5 left-5 z-10 bg-black/60 text-white text-[11px] font-bold px-3 py-1.5 rounded-full backdrop-blur-md tracking-wider uppercase">Before</span>
+              <span className="absolute top-5 right-5 z-10 bg-[#E8352A] text-white text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider uppercase">After</span>
+
+              {/* Bottom overlay: editor toolbar */}
+              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                <div className="flex items-center justify-between gap-2">
+                  {editorTabs.map(tab => (
+                    <button key={tab} onClick={() => setActiveTab(tab)}
+                      className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
+                        activeTab === tab
+                          ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]'
+                          : 'text-white/50 hover:text-white/80'
+                      }`}>
+                      {tab === 'Exposure'   && <Sun    className="w-4 h-4" />}
+                      {tab === 'Contrast'   && <Contrast className="w-4 h-4" />}
+                      {tab === 'Highlights' && <Sun    className="w-4 h-4 opacity-70" />}
+                      {tab === 'Shadows'    && <Layers className="w-4 h-4" />}
+                      {tab === 'Color'      && <Wand2  className="w-4 h-4" />}
+                      <span className="text-[9px] font-semibold">{tab}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Floating AI badge */}
+              <motion.div
+                animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#E8352A]" />
+                <span className="text-white text-[11px] font-semibold">AI-Assisted Manual Edit</span>
+              </motion.div>
+            </div>
+
+            {/* Image selector dots */}
+            <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
+              {imageExamples.map((_, i) => (
+                <button key={i} onClick={() => changeImage(i)}
+                  className={`rounded-full transition-all duration-300 ${
+                    currentImageIndex === i
+                      ? 'w-8 h-2.5 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]'
+                      : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/50'
+                  }`} />
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -362,32 +503,7 @@ export default function SingleExposurePage() {
       {/* ══════════════════════════════════════════
           RELATED SERVICES
       ══════════════════════════════════════════ */}
-      <section id="services" className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Related <span className="text-[#E8352A]">Services</span>
-            </h2>
-            <p className="text-xl text-gray-600">
-              Additional real estate photo services designed to make listings look their best.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
-                </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ServicesSection services={services} />
 
     </div>
   );

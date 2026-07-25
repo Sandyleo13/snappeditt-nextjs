@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   MapPin, Mail, Phone,
@@ -186,8 +187,12 @@ export default function ContactUsPage() {
           )}
         </div>
 
-        {/* CSS keyframe */}
-        <style>{`@keyframes ctCW { to { stroke-dashoffset: -1960; } }`}</style>
+        {/* CSS keyframes */}
+        <style>{`
+          @keyframes ctCW { to { stroke-dashoffset: -1960; } }
+          @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          @keyframes spinSlowReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        `}</style>
 
         {/* Floating icon badges — desktop only */}
         {isDesktop && (
@@ -199,215 +204,259 @@ export default function ContactUsPage() {
           </>
         )}
 
-        {/* Left text content */}
-        <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-10 py-14 sm:py-20">
-          <div className="max-w-xl">
-            {/* Label */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
-              className="flex items-center gap-2 mb-4 sm:mb-5"
-            >
-              <div className="w-7 h-0.5 bg-[#E8352A]" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#E8352A]">Get In Touch</span>
-            </motion.div>
+        {/* Hero content */}
+        <div className="relative z-10 w-full py-16 sm:py-24 lg:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+            {/* Left text content */}
+            <div className="w-full lg:w-full max-w-2xl lg:pr-8 lg:ml-[-150px]">
+              {/* Label */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}
+                className="flex items-center gap-2 mb-4 sm:mb-5"
+              >
+                <div className="w-7 h-0.5 bg-[#E8352A]" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#E8352A]">Get In Touch</span>
+              </motion.div>
 
-            {/* Heading */}
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.08] mb-4 sm:mb-5"
-            >
-              Let's Connect and<br />
-              Create Something{' '}
-              <span className="text-[#E8352A]">Great</span>
-            </motion.h1>
+              {/* Heading */}
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6 }}
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-[1.02] mb-5 sm:mb-6"
+              >
+                Let's Connect and
+                Create Something{' '}
+                <span className="text-[#E8352A]">Great</span>
+              </motion.h1>
 
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-              className="text-gray-500 text-sm leading-relaxed mb-8 sm:mb-10 max-w-sm"
-            >
-              {"We'd love to hear from you! Whether you have a question, need a quote, or just want to say hello, we're here to help."}
-            </motion.p>
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+                className="text-gray-500 text-lg sm:text-xl leading-relaxed mb-8 sm:mb-10 max-w-xl"
+              >
+                {"We'd love to hear from you! Whether you have a question, need a quote, or just want to say hello, we're here to help."}
+              </motion.p>
 
-            {/* Trust badges row */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.5 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"
-            >
-              {[
-                { icon: <Headphones className="w-5 h-5 text-[#E8352A]" />, title: '24/7 Support',    sub: "We're always here to help" },
-                { icon: <Clock      className="w-5 h-5 text-[#E8352A]" />, title: 'Fast Response',   sub: 'Average response within 2 hours' },
-                { icon: <Shield     className="w-5 h-5 text-[#E8352A]" />, title: 'Trusted Service', sub: '100% satisfaction guaranteed' },
-              ].map(b => (
-                <div key={b.title} className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#FFF0EE] border border-[#FFD5CE] flex items-center justify-center flex-shrink-0">
-                    {b.icon}
+              {/* Trust badges row */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.5 }}
+                className="flex flex-col lg:flex-row gap-4"
+              >
+                {[
+                  { icon: <Headphones className="w-10 h-10 text-[#E8352A]" />, title: '24/7 Support', sub: "We're always here to help" },
+                  { icon: <Clock className="w-10 h-10 text-[#E8352A]" />, title: 'Fast Response', sub: 'Average response within 2 hours' },
+                  { icon: <Shield className="w-10 h-10 text-[#E8352A]" />, title: 'Trusted Service', sub: '100% satisfaction guaranteed' },
+                ].map(b => (
+                  <div key={b.title} className="flex items-center gap-3 rounded-2xl border border-[#F4D9D6] bg-white/80 px-4 py-4 shadow-sm backdrop-blur-sm flex-1 min-w-0">
+                    <div className="w-12 h-12 rounded-full bg-[#FFF0EE] border border-[#FFD5CE] flex items-center justify-center flex-shrink-0">
+                      {b.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-gray-900 text-2xl font-bold leading-none mb-1">{b.title}</p>
+                      <p className="text-gray-500 text-lg leading-snug">{b.sub}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-gray-900 text-sm font-bold leading-none mb-1">{b.title}</p>
-                    <p className="text-gray-500 text-xs leading-snug">{b.sub}</p>
-                  </div>
+                ))}
+              </motion.div>
+
+              {/* Slide indicator dots */}
+              <div className="flex items-center gap-2 mt-8 sm:mt-10">
+                <div className="w-6 h-6 rounded-full bg-[#E8352A]" />
+                <div className="w-6 h-6 rounded-full bg-gray-200" />
+                <div className="w-6 h-6 rounded-full bg-gray-200" />
+              </div>
+            </div>
+
+            {/* Right image showcase */}
+            <div className="w-full lg:w-[75%] flex justify-center lg:justify-end">
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="relative"
+              >
+                <div className="absolute inset-[-18px] rounded-full border border-[#E8352A]/20 animate-[spinSlow_14s_linear_infinite]" />
+                <div className="absolute inset-[-34px] rounded-full border border-dashed border-[#E8352A]/35 animate-[spinSlowReverse_18s_linear_infinite]" />
+                <div className="absolute inset-[-8px] rounded-full bg-[radial-gradient(circle,_rgba(232,53,42,0.22)_0%,_transparent_70%)] blur-xl" />
+
+                <div className="relative w-[300px] h-[300px] sm:w-[380px] sm:h-[380px] lg:w-[450px] lg:h-[450px] rounded-full overflow-hidden border-[8px] border-white shadow-[0_25px_80px_rgba(232,53,42,0.18)]">
+                  <Image
+                    src="/images/real-estate/real-estate-corrected.jpg"
+                    alt="Professional photo retouching showcase"
+                    fill
+                    priority
+                    className="object-cover"
+                  />
                 </div>
-              ))}
-            </motion.div>
 
-            {/* Slide indicator dots */}
-            <div className="flex items-center gap-2 mt-8 sm:mt-10">
-              <div className="w-3 h-3 rounded-full bg-[#E8352A]" />
-              <div className="w-3 h-3 rounded-full bg-gray-200" />
-              <div className="w-3 h-3 rounded-full bg-gray-200" />
+                <motion.div
+                  animate={{ y: [-6, 6, -6], rotate: [0, 4, 0] }}
+                  transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
+                  className="absolute -right-2 -top-3 rounded-2xl border border-[#FFD5CE] bg-white/90 px-3 py-2 shadow-lg backdrop-blur"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#E8352A]">Retouched</p>
+                  <p className="text-sm font-semibold text-gray-900">Premium Quality</p>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════  CONTACT + FORM  ══════════════ */}
-      <section className="py-14 px-4 sm:px-6 bg-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14">
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="px-4 sm:px-6 lg:px-8 xl:px-12">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-start">
 
-          {/* Left */}
-          <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 mb-1">
-              Where You Can <span className="text-[#E8352A]">Find Us</span>
-            </h2>
-            <div className="w-10 h-0.5 bg-[#E8352A] mb-4" />
-            <p className="text-sm text-gray-500 mb-8 leading-relaxed">
-              We are here to assist you with all your Photo Post-Production needs.
-            </p>
+            {/* Left */}
+            <div>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-2 leading-tight">
+                Where You Can <span className="text-[#E8352A]">Find Us</span>
+              </h2>
+              <div className="w-12 h-1 bg-[#E8352A] mb-5" />
+              <p className="text-base sm:text-lg text-gray-500 mb-8 leading-relaxed max-w-2xl">
+                We are here to assist you with all your Photo Post-Production needs.
+              </p>
 
-            <div className="space-y-6">
-              {[
-                { icon: <MapPin className="w-4 h-4 text-[#E8352A]" />, title: 'Address',
-                  lines: ['123 Business Avenue, Suite 100,', 'New York, NY 10001, United States'] },
-                { icon: <Phone className="w-4 h-4 text-[#E8352A]" />, title: 'Phone',
-                  lines: ['+1 (212) 456 7890', 'Mon – Fri: 9:00 AM – 6:00 PM (EST)'] },
-                { icon: <Mail className="w-4 h-4 text-[#E8352A]" />, title: 'Email',
-                  lines: ['support@snappeditt.com', 'We reply within 2–4 hours'] },
-              ].map(c => (
-                <div key={c.title} className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#FFF0EE] border border-[#FFD5CE] flex items-center justify-center flex-shrink-0">
-                    {c.icon}
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900 text-sm mb-1">{c.title}</p>
-                    {c.lines.map((l, i) => (
-                      <p key={i} className="text-sm text-gray-500 leading-relaxed">{l}</p>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right form */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 sm:p-8 self-start">
-            <h3 className="text-lg font-bold text-gray-900 mb-5">Send Us a Message</h3>
-
-            {submitted ? (
-              <div className="text-center py-10">
-                <div className="w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mx-auto mb-3">
-                  <Send className="w-6 h-6 text-green-500" />
-                </div>
-                <p className="font-bold text-gray-900 mb-1">Message Sent!</p>
-                <p className="text-sm text-gray-500 mb-4">{"We'll get back to you within 2 hours."}</p>
-                <button onClick={() => setSubmitted(false)} className="text-sm text-[#E8352A] font-semibold hover:underline">
-                  Send another
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-4">
                 {[
-                  { label: 'Full Name',     name: 'name',  type: 'text',  placeholder: 'Enter your full name' },
-                  { label: 'Email Address', name: 'email', type: 'email', placeholder: 'Enter your email' },
-                  { label: 'Phone Number',  name: 'phone', type: 'tel',   placeholder: 'Enter your phone' },
-                ].map(f => (
-                  <div key={f.name}>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">{f.label}</label>
-                    <input
-                      type={f.type} name={f.name}
-                      value={(form as Record<string, string>)[f.name]}
-                      onChange={handleChange}
-                      required={f.name !== 'phone'}
-                      placeholder={f.placeholder}
-                      className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8352A]/20 focus:border-[#E8352A] transition-all"
-                    />
+                  {
+                    icon: <MapPin className="w-10 h-10 text-[#E8352A] text-2xl" />, title: 'Address',
+                    lines: ['123 Business Avenue, Suite 100,', 'New York, NY 10001, United States']
+                  },
+                  {
+                    icon: <Phone className="w-10 h-10 text-[#E8352A] text-2xl" />, title: 'Phone',
+                    lines: ['+1 (212) 456 7890', 'Mon – Fri: 9:00 AM – 6:00 PM (EST)']
+                  },
+                  {
+                    icon: <Mail className="w-10 h-10 text-[#E8352A] text-2xl" />, title: 'Email',
+                    lines: ['support@snappeditt.com', 'We reply within 2–4 hours']
+                  },
+                ].map(c => (
+                  <div key={c.title} className="flex items-start gap-4 rounded-2xl border border-[#F4D9D6] bg-[#FFF9F8] p-5 shadow-sm">
+                    <div className="w-14 h-14 rounded-2xl bg-[#FFF0EE] border border-[#FFD5CE] flex items-center justify-center flex-shrink-0">
+                      {c.icon}
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900 text-lg mb-1">{c.title}</p>
+                      {c.lines.map((l, i) => (
+                        <p key={i} className="text-base text-gray-500 leading-relaxed">{l}</p>
+                      ))}
+                    </div>
                   </div>
                 ))}
+              </div>
+            </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">Select Service</label>
-                  <select
-                    name="service" value={form.service} onChange={handleChange}
-                    className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8352A]/20 focus:border-[#E8352A] transition-all bg-white"
-                  >
-                    <option value="">— Choose a Service —</option>
-                    <option value="real-estate">Real Estate Editing</option>
-                    <option value="wedding">Wedding Album Editing</option>
-                    <option value="people">People Retouching</option>
-                    <option value="commercial">Commercial / Product</option>
-                    <option value="clipping">Clipping Path & Extraction</option>
-                    <option value="3d">3D Rendering</option>
-                    <option value="custom">Custom Project</option>
-                  </select>
-                </div>
+            {/* Right form */}
+            <div className="bg-white border border-gray-200 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.06)] p-6 sm:p-8 self-start">
+              <h3 className="text-2xl font-bold text-gray-900 mb-5">Send Us a Message</h3>
 
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">Your Message</label>
-                  <textarea
-                    name="message" value={form.message} onChange={handleChange} required rows={5}
-                    placeholder="Tell us about your project..."
-                    className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E8352A]/20 focus:border-[#E8352A] transition-all resize-none"
-                  />
-                </div>
-
-                {/* reCAPTCHA mock */}
-                <div className="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-3 bg-gray-50">
-                  <input type="checkbox" id="robot" className="w-4 h-4 accent-[#E8352A]" />
-                  <label htmlFor="robot" className="text-sm text-gray-700 cursor-pointer select-none">{"I'm not a robot"}</label>
-                  <div className="ml-auto text-right">
-                    <p className="text-[9px] font-bold text-gray-400 tracking-wide">reCAPTCHA</p>
-                    <p className="text-[8px] text-gray-300">Privacy · Terms</p>
+              {submitted ? (
+                <div className="text-center py-10">
+                  <div className="w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mx-auto mb-3">
+                    <Send className="w-6 h-6 text-green-500" />
                   </div>
+                  <p className="font-bold text-gray-900 mb-1">Message Sent!</p>
+                  <p className="text-sm text-gray-500 mb-4">{"We'll get back to you within 2 hours."}</p>
+                  <button onClick={() => setSubmitted(false)} className="text-sm text-[#E8352A] font-semibold hover:underline">
+                    Send another
+                  </button>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {[
+                    { label: 'Full Name', name: 'name', type: 'text', placeholder: 'Enter your full name' },
+                    { label: 'Email Address', name: 'email', type: 'email', placeholder: 'Enter your email' },
+                    { label: 'Phone Number', name: 'phone', type: 'tel', placeholder: 'Enter your phone' },
+                  ].map(f => (
+                    <div key={f.name}>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">{f.label}</label>
+                      <input
+                        type={f.type} name={f.name}
+                        value={(form as Record<string, string>)[f.name]}
+                        onChange={handleChange}
+                        required={f.name !== 'phone'}
+                        placeholder={f.placeholder}
+                        className="w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8352A]/20 focus:border-[#E8352A] transition-all"
+                      />
+                    </div>
+                  ))}
 
-                <button
-                  type="submit" disabled={submitting}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all disabled:opacity-60"
-                >
-                  {submitting ? 'Sending...' : <><span>Send Message</span><Send className="w-4 h-4" /></>}
-                </button>
-              </form>
-            )}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Select Service</label>
+                    <select
+                      name="service" value={form.service} onChange={handleChange}
+                      className="w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8352A]/20 focus:border-[#E8352A] transition-all bg-white"
+                    >
+                      <option value="">— Choose a Service —</option>
+                      <option value="real-estate">Real Estate Editing</option>
+                      <option value="wedding">Wedding Album Editing</option>
+                      <option value="people">People Retouching</option>
+                      <option value="commercial">Commercial / Product</option>
+                      <option value="clipping">Clipping Path & Extraction</option>
+                      <option value="3d">3D Rendering</option>
+                      <option value="custom">Custom Project</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Your Message</label>
+                    <textarea
+                      name="message" value={form.message} onChange={handleChange} required rows={5}
+                      placeholder="Tell us about your project..."
+                      className="w-full px-4 py-3 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E8352A]/20 focus:border-[#E8352A] transition-all resize-none"
+                    />
+                  </div>
+
+                  {/* reCAPTCHA mock */}
+                  <div className="flex items-center gap-3 border border-gray-200 rounded-2xl px-4 py-3 bg-gray-50">
+                    <input type="checkbox" id="robot" className="w-5 h-5 accent-[#E8352A]" />
+                    <label htmlFor="robot" className="text-sm text-gray-700 cursor-pointer select-none">{"I'm not a robot"}</label>
+                    <div className="ml-auto text-right">
+                      <p className="text-[9px] font-bold text-gray-400 tracking-wide">reCAPTCHA</p>
+                      <p className="text-[8px] text-gray-300">Privacy · Terms</p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit" disabled={submitting}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#E8352A] text-white font-bold text-base hover:bg-[#C62B20] transition-all disabled:opacity-60"
+                  >
+                    {submitting ? 'Sending...' : <><span>Send Message</span><Send className="w-4 h-4" /></>}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════  FAQ — Services  ══════════════ */}
-      <section className="py-12 px-4 sm:px-6 bg-[#F7F8FA]">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-2 mb-2">
-            <MessageCircle className="w-5 h-5 text-[#E8352A]" />
-            <h2 className="text-xl font-extrabold text-gray-900">
+      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 xl:px-12 bg-[#F7F8FA]">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-2 mb-3">
+            <MessageCircle className="w-6 h-6 text-[#E8352A]" />
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
               Frequently Asked <span className="text-[#E8352A]">Questions</span>
             </h2>
           </div>
-          <p className="text-sm text-gray-500 mb-6">Find answers to common questions about our services.</p>
-          <div className="space-y-2">
+          <p className="text-base sm:text-lg text-gray-500 mb-8 max-w-2xl">Find answers to common questions about our services.</p>
+          <div className="space-y-3">
             {faqServices.map((item, i) => <FAQItem key={i} q={item.q} />)}
           </div>
         </div>
       </section>
 
       {/* ══════════════  FAQ — General  ══════════════ */}
-      <section className="py-12 px-4 sm:px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
+      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white">
+        <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 mb-6">
-            <MessageCircle className="w-5 h-5 text-[#E8352A]" />
-            <h2 className="text-xl font-extrabold text-gray-900">
+            <MessageCircle className="w-6 h-6 text-[#E8352A]" />
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
               General <span className="text-[#E8352A]">Queries</span>
             </h2>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {faqGeneral.map((item, i) => <FAQItem key={i} q={item.q} a={item.a} />)}
           </div>
         </div>

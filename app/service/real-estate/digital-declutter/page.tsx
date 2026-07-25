@@ -16,6 +16,7 @@ export default function DigitalDeclutterPage() {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [isHoveringSlider, setIsHoveringSlider] = useState(false);
+  const [activeTab, setActiveTab] = useState('Scan');
   const sliderDirectionRef = useRef<1 | -1>(1);
   const sliderRef = useRef<HTMLDivElement>(null);        // hero slider
   const gallerySliderRef = useRef<HTMLDivElement>(null); // gallery slider
@@ -47,6 +48,8 @@ export default function DigitalDeclutterPage() {
     { value: '98%',   label: 'Accuracy Rate',     sub: 'AI-powered precision',             icon: <Eye        className="w-5 h-5" /> },
     { value: '60%',   label: 'Faster Access',     sub: 'Find files in half the time',      icon: <Zap        className="w-5 h-5" /> },
   ];
+
+  const editorTabs = ['Scan', 'Remove', 'Organize', 'Review'];
 
   const services = [
     { title: 'Object Removal',      description: 'Remove unwanted objects, furniture and clutter from property photos.',          icon: <Trash2    className="w-6 h-6" /> },
@@ -112,7 +115,7 @@ export default function DigitalDeclutterPage() {
       {/* ══════════════════════════════════════
           HERO
       ══════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0D0D0F] text-white">
 
         {/* ── Animated background ── */}
         <div className="absolute inset-0 pointer-events-none">
@@ -172,41 +175,52 @@ export default function DigitalDeclutterPage() {
             className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
         </div>
 
+        <div className="pointer-events-none absolute inset-0">
+          <svg className="absolute inset-0 h-full w-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="declutter-noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
+            <rect width="100%" height="100%" filter="url(#declutter-noise)" />
+          </svg>
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="declutter-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" /></pattern></defs><rect width="100%" height="100%" fill="url(#declutter-grid)" /></svg>
+          {[6, 4, 8, 5, 3, 7].map((size, i) => <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }} className="absolute rounded-full bg-[#E8352A]" style={{ width: size, height: size, left: `${[12, 28, 45, 62, 75, 88][i]}%`, top: `${[20, 65, 15, 75, 35, 55][i]}%`, filter: 'blur(1px)' }} />)}
+        </div>
+
         <style>{`
           @keyframes ddCW  { to { stroke-dashoffset: -1800; } }
           @keyframes ddCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col px-8 pb-12 pt-24 sm:px-12 lg:grid lg:grid-cols-2 lg:px-16 lg:py-0 xl:px-24">
+          <div className="grid min-h-screen grid-cols-1 items-stretch lg:contents">
 
             {/* ── LEFT ── */}
-            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left w-full max-w-xl mx-auto lg:max-w-none lg:mx-0"
+            <motion.div className="flex flex-col justify-center gap-6 px-2 text-center lg:items-start lg:px-0 lg:text-left"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }}
               transition={{ duration:0.7, ease:'easeOut' }}>
 
               {/* Badge */}
               <motion.div initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.1 }}
-                className="inline-flex items-center gap-2 bg-[#E8352A]/10 border border-[#E8352A]/25 rounded-full px-4 py-1.5 w-fit">
+                className="inline-flex items-center gap-2 self-center rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm lg:self-start">
                 <Zap className="w-3.5 h-3.5 text-[#E8352A]" />
                 <span className="text-[#E8352A] text-xs font-semibold tracking-wide">AI-Powered Organization</span>
               </motion.div>
 
               {/* Heading */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight max-w-xl mx-auto lg:mx-0">
-                <motion.span className="block text-[#E8352A]"
+              <h1 className="font-extrabold leading-[0.95] tracking-tight">
+                <motion.span className="block text-[#E8352A] text-[clamp(3rem,8vw,7rem)]"
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.30, duration:0.55 }}>
                   De-
                 </motion.span>
-                clutter
+                <span className="block text-white text-[clamp(3rem,8vw,7rem)]">clutter</span>
               </h1>
 
-              <motion.p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#333] leading-snug max-w-xl mx-auto lg:mx-0"
+              <motion.p className="max-w-xl text-xl font-semibold leading-snug text-white/90 sm:text-2xl md:text-3xl"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.42, duration:0.5 }}>
                 Organization & Cleanup Magic
               </motion.p>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
+              <motion.p className="mx-auto max-w-xl text-base leading-relaxed text-[#A0A0B0] md:text-lg lg:mx-0"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.54, duration:0.5 }}>
                 Transform digital chaos into organized perfection. Watch as AI magically organizes files,
                 removes duplicates, and creates order from digital mess.
@@ -226,15 +240,14 @@ export default function DigitalDeclutterPage() {
             </motion.div>
 
             {/* ── RIGHT: before / after image slider ── */}
-            <motion.div className="flex flex-col gap-3"
+            <motion.div className="relative flex flex-col lg:h-screen"
               initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }}
               transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
 
               {/* Slider container */}
               <div
                 ref={sliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3' }}
+                className="relative mt-4 min-h-[340px] w-full flex-1 cursor-col-resize select-none overflow-hidden rounded-2xl shadow-2xl lg:mt-0 lg:rounded-none"
                 onMouseMove={handleSliderMove}
                 onTouchMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
@@ -279,44 +292,51 @@ export default function DigitalDeclutterPage() {
                 {/* Labels */}
                 <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm">Before</span>
                 <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1 rounded-full">After</span>
+
+                <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
+                  <Zap className="h-3.5 w-3.5 text-[#E8352A]" />
+                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Declutter</span>
+                </motion.div>
+
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                  <div className="flex items-center justify-between gap-2">
+                    {editorTabs.map(tab => (
+                      <button key={tab} onClick={() => setActiveTab(tab)} className={`flex flex-1 flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>
+                        {tab === 'Scan' && <Search className="h-4 w-4" />}
+                        {tab === 'Remove' && <Trash2 className="h-4 w-4" />}
+                        {tab === 'Organize' && <Folder className="h-4 w-4" />}
+                        {tab === 'Review' && <CheckCircle className="h-4 w-4" />}
+                        <span className="text-[9px] font-semibold">{tab}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Thumbnail nav */}
-              <div className="flex items-center justify-center gap-2 pt-1">
+              <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
                 {imageExamples.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => { setCurrentImageIndex(i); setSliderPosition(50); }}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
-                      i === currentImageIndex ? 'bg-[#E8352A] scale-125' : 'bg-[#CCC] hover:bg-[#E8352A]/60'
+                    className={`rounded-full transition-all duration-300 ${
+                      i === currentImageIndex ? 'h-2.5 w-8 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'h-2.5 w-2.5 bg-white/25 hover:bg-white/50'
                     }`}
                   />
                 ))}
               </div>
 
               {/* Caption */}
-              <p className="text-center text-xs text-[#888] leading-snug px-4">
-                {imageExamples[currentImageIndex].description}
-              </p>
             </motion.div>
           </div>
 
           {/* Stats bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
+          <motion.div className="grid grid-cols-2 gap-4 border-t border-white/10 px-8 pb-8 pt-14 sm:px-12 lg:absolute lg:bottom-8 lg:left-8 lg:mt-0 lg:w-[calc(50%-4rem)] lg:grid-cols-4 lg:px-0 lg:pb-0 lg:pt-0 xl:left-24 xl:w-[calc(50%-8rem)]"
             initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:1.0 }}>
             {stats.map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors mt-0.5">
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#E8352A]">{s.value}</p>
-                  <p className="text-xs font-semibold text-[#1A1A1A] leading-tight">{s.label}</p>
-                  <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
-                  <svg viewBox="0 0 60 14" className="w-14 mt-1.5 opacity-50" fill="none">
-                    <polyline points="0,11 10,7 22,9 34,3 44,6 60,2" stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
+              <div key={i} className="text-center">
+                <p className="text-2xl font-extrabold text-white lg:text-3xl">{s.value}</p>
+                <p className="mt-0.5 text-[11px] uppercase tracking-wider text-[#666]">{s.label}</p>
               </div>
             ))}
           </motion.div>
@@ -370,7 +390,7 @@ export default function DigitalDeclutterPage() {
                   className="flex items-center justify-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow w-full sm:w-auto">
                   <ChevronLeft className="w-4 h-4"/> Prev
                 </button>
-                <button onClick={() => changeImage((currentImageIndex+1)%imageExamples.length)}
+                  <button onClick={() => changeImage((currentImageIndex+1)%imageExamples.length)}
                   className="flex items-center justify-center gap-1.5 px-5 py-2 rounded-full bg-[#E8352A] text-white text-sm font-semibold hover:bg-[#C62B20] transition-all shadow w-full sm:w-auto">
                   Next <ChevronRight className="w-4 h-4"/>
                 </button>
@@ -421,12 +441,12 @@ export default function DigitalDeclutterPage() {
             {services.map((service, i) => (
               <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
                 <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+                   <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5"/>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                <button className="text-[#E8352A] text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                  Learn more <ArrowRight className="w-3.5 h-3.5 text-current"/>
                 </button>
               </div>
             ))}

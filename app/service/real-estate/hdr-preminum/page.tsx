@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { 
   Users, Briefcase, Target, Shield, Clock, CheckCircle, 
   ArrowRight, Play, Pause, ChevronDown,
@@ -11,18 +11,70 @@ import {
   Zap, Headphones, FileText, Building,
   Crown, Star, Brain, Target as TargetIcon,
   DollarSign, Award as AwardIcon, Cpu, Network,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight,
+  Sun, Contrast, Layers, Wand2, Sparkles,
+  type LucideIcon,
 } from 'lucide-react';
 
-
+function ServicesSection({ services, sectionTitle, sectionDesc }: { services: { 
+  title: string; description: string; icon: LucideIcon; color: string; bg: string }[]; sectionTitle: string; sectionDesc: string }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  return (
+    <section id="services" className="relative py-24 bg-[#F8F9FB] overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
+      </div>
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div className="text-center max-w-2xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}>
+          <span className="inline-block text-[#E8352A] text-xl font-bold tracking-[0.2em] uppercase mb-4">What We Offer</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] mb-4">{sectionTitle} <span className="text-[#E8352A]">Services</span></h2>
+          <p className="text-[#777] text-lg">{sectionDesc}</p>
+        </motion.div>
+        <div ref={ref} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {services.map((service, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, transition: { duration: 0.25 } }}
+              className="group relative rounded-2xl p-6 border border-[#EBEBEB] bg-white shadow-sm overflow-hidden cursor-pointer hover:shadow-lg hover:border-transparent transition-all duration-300">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+              <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+              <div className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                style={{ background: service.bg, color: service.color }}>
+                {React.createElement(service.icon, { size: 24 , className: "w-12 h-12" })}
+              </div>
+              <h3 className="text-[#1A1A1A] font-bold text-2xl mb-2">{service.title}</h3>
+              <p className="text-[#888] text-lg leading-relaxed mb-5">{service.description}</p>
+              <div className="flex items-center gap-1.5 text-xl font-semibold" style={{ color: service.color }}>
+                <span className="relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">Learn more</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
+              <span className="absolute top-4 right-5 text-[11px] font-bold text-[#1A1A1A]/10">0{i + 1}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function HRDPremiumPage() {
   const [currentCaseIndex, setCurrentCaseIndex] = useState(0);
   const [automationActive, setAutomationActive] = useState(false);
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
+  const [activeTab, setActiveTab] = useState('Exposure');
+  const [isHoveringSlider, setIsHoveringSlider] = useState(false);
   
   const sliderRef = useRef<HTMLDivElement>(null);
+  const heroSliderRef = useRef<HTMLDivElement>(null);
 
   // Auto-oscillate hero before/after slider
   useEffect(() => {
@@ -39,55 +91,55 @@ export default function HRDPremiumPage() {
   const automationIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
-  // Sample Premium HR transformation cases
+  // HDR Premium real-estate transformation cases
   const hrCases = [
     {
       id: 1,
-      beforeTitle: "Basic HRIS",
-      afterTitle: "AI-Powered HR Suite",
-      beforeImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80&auto=format&fit=crop",
-      afterImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80&auto=format&fit=crop&brightness=120&contrast=20&saturation=150",
-      description: "Upgrade from basic HR systems to comprehensive AI-powered HR management suite"
+      beforeTitle: "Raw Interior",
+      afterTitle: "Premium HDR Interior",
+      beforeImage: "/snappeditt-photos/HDR PRO/DSC_4694.jpg",
+      afterImage: "/snappeditt-photos/HDR PRO/DSC_4694_5_6.jpg",
+      description: "Balance interior light, window detail, and natural color for a premium listing image."
     },
     {
       id: 2,
-      beforeTitle: "Local HR Tools",
-      afterTitle: "Global HR Platform",
-      beforeImage: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&auto=format&fit=crop",
-      afterImage: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80&auto=format&fit=crop&brightness=110&contrast=15",
-      description: "Transform local HR tools into a unified global platform with multi-region compliance"
+      beforeTitle: "Flat Exterior",
+      afterTitle: "Balanced Exterior",
+      beforeImage: "/snappeditt-photos/HDR PRO/DSC_4706.jpg",
+      afterImage: "/snappeditt-photos/HDR PRO/DSC_4706_7_8.jpg",
+      description: "Recover highlights and shadow detail while keeping the exterior clean and realistic."
     },
     {
       id: 3,
-      beforeTitle: "Reactive HR",
-      afterTitle: "Predictive Analytics",
-      beforeImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&auto=format&fit=crop&desaturate=50",
-      afterImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&auto=format&fit=crop",
-      description: "Move from reactive HR to predictive workforce analytics and strategic planning"
+      beforeTitle: "Muted Living Room",
+      afterTitle: "Rich Natural Tones",
+      beforeImage: "/snappeditt-photos/HDR PRO/DSC_4709.jpg",
+      afterImage: "/snappeditt-photos/HDR PRO/DSC_4709_10_11.jpg",
+      description: "Bring depth and warmth to living spaces with controlled tone mapping and color correction."
     },
     {
       id: 4,
-      beforeTitle: "Manual Analytics",
-      afterTitle: "Real-Time Dashboard",
-      beforeImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop",
-      afterImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop&brightness=110&contrast=20&saturation=140",
-      description: "Replace manual reporting with real-time executive dashboards and predictive insights"
+      beforeTitle: "Dark Kitchen",
+      afterTitle: "Clean HDR Detail",
+      beforeImage: "/snappeditt-photos/HDR PRO/DSC_4733.jpg",
+      afterImage: "/snappeditt-photos/HDR PRO/DSC_4733_4_5.jpg",
+      description: "Reveal detail across reflective surfaces and darker areas without an artificial HDR look."
     },
     {
       id: 5,
-      beforeTitle: "Standard Training",
-      afterTitle: "Personalized Learning",
-      beforeImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80&auto=format&fit=crop",
-      afterImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80&auto=format&fit=crop&brightness=110&contrast=15&saturation=130",
-      description: "Transform standard training programs into AI-powered personalized learning journeys"
+      beforeTitle: "Cool Raw Room",
+      afterTitle: "Warm Premium Finish",
+      beforeImage: "/snappeditt-photos/HDR PRO/DSC_4742.jpg",
+      afterImage: "/snappeditt-photos/HDR PRO/DSC_4742_3_4.jpg",
+      description: "Create a cohesive, inviting finish with precise white balance and premium color grading."
     },
     {
       id: 6,
-      beforeTitle: "Annual Reviews",
-      afterTitle: "Continuous Feedback",
-      beforeImage: "https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?w=800&q=80&auto=format&fit=crop",
-      afterImage: "https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?w=800&q=80&auto=format&fit=crop&saturation=150",
-      description: "Upgrade from annual reviews to continuous feedback and real-time performance coaching"
+      beforeTitle: "Raw Property View",
+      afterTitle: "Listing-Ready HDR",
+      beforeImage: "/snappeditt-photos/HDR PRO/DSC_4763.jpg",
+      afterImage: "/snappeditt-photos/HDR PRO/DSC_4763_4_5.jpg",
+      description: "Deliver a polished, listing-ready image with clean highlights, balanced contrast, and detail."
     }
   ];
 
@@ -124,33 +176,17 @@ export default function HRDPremiumPage() {
   ];
 
   const stats = [
-    { value: "85%", label: "Strategic HR Time Increase" },
-    { value: "60%", label: "Faster Decision Making" },
-    { value: "99.99%", label: "Platform Uptime" },
-    { value: "40%", label: "Employee Retention Boost" }
+    { value: "24h", label: "Fast Delivery" },
+    { value: "99%", label: "Natural Results" },
+    { value: "4.9/5", label: "Client Rating" },
+    { value: "50K+", label: "Images Edited" }
   ];
 
-  const services = [
-    {
-      title: "Strategic HR Analytics",
-      description: "AI-powered workforce planning and predictive analytics for strategic decisions",
-      icon: <Brain className="w-6 h-6" />
-    },
-    {
-      title: "Global HR Management",
-      description: "Multi-country HR operations with local compliance and payroll",
-      icon: <Globe className="w-6 h-6" />
-    },
-    {
-      title: "Executive Leadership Tools",
-      description: "Advanced dashboards and reporting for C-level HR insights",
-      icon: <Crown className="w-6 h-6" />
-    },
-    {
-      title: "Enterprise Integration",
-      description: "Seamless integration with existing enterprise systems and custom workflows",
-      icon: <Network className="w-6 h-6" />
-    }
+  const services: { title: string; description: string; icon: LucideIcon; color: string; bg: string }[] = [
+    { title: 'HDR Merging',        description: 'Blend multiple exposures into one perfectly balanced HDR image.',              icon: Brain,   color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Advanced Tone Map',  description: 'Multi-country HDR tone mapping with natural-looking results.',                icon: Globe,   color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Color Correction',   description: 'Advanced color grading and correction for premium real estate listings.',     icon: Crown,   color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: 'Sky Enhancement',    description: 'Seamless sky replacement and enhancement for stunning property backdrops.',   icon: Network, color: '#10B981', bg: '#ECFDF5' },
   ];
 
   const hrProcesses = [
@@ -270,11 +306,11 @@ export default function HRDPremiumPage() {
   }, []);
 
   // Handle slider movement
-  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging || !sliderRef.current) return;
+  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, targetRef = sliderRef) => {
+    if (!isDragging || !targetRef.current) return;
     
     e.preventDefault();
-    const containerRect = sliderRef.current.getBoundingClientRect();
+    const containerRect = targetRef.current.getBoundingClientRect();
     const x = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
     const relativeX = x - containerRect.left;
     const percentage = Math.max(0, Math.min(100, (relativeX / containerRect.width) * 100));
@@ -331,6 +367,7 @@ export default function HRDPremiumPage() {
   };
 
   const currentCase = hrCases[currentCaseIndex];
+  const editorTabs = ['Exposure', 'Contrast', 'Highlights', 'Shadows', 'Color'];
 
   // Add current service to cart cookie and navigate to /cart
   const addToCart = () => {
@@ -370,129 +407,11 @@ export default function HRDPremiumPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* ═══ Hero Section ═══ */}
-      <section className="relative min-h-screen bg-[#FFF7F5] overflow-hidden flex items-center">
-
-        {/* Background blobs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#E8352A]/12 blur-3xl" />
-          <div className="absolute -right-20 -top-20 w-[400px] h-[400px] rounded-full bg-[#E8352A]/10 blur-3xl" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full bg-[#E8352A]/5 blur-3xl" />
-          {/* Dot pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#E8352A 1px,transparent 1px)', backgroundSize: '26px 26px' }} />
-        </div>
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 py-24">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-
-            {/* ── LEFT: Text ── */}
-            <div className="space-y-8">
-          
-              <div className="space-y-4">
-                <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl text-slate-950 leading-tight">
-                  HDR <span className="text-[#E8352A]">Premium</span>
-                </h1>
-                <p className="text-2xl font-semibold text-slate-700 sm:text-3xl">
-                  Professional Photo Enhancement
-                </p>
-                <p className="text-base leading-8 text-slate-600 sm:text-lg max-w-lg">
-                  Elevate your real estate listings with our premium HDR editing. Advanced tone mapping, colour correction, and sky replacement — delivered in 24 hours with unlimited revisions.
-                </p>
-              </div>
-
-               <motion.div className="flex flex-wrap gap-3 pt-1"
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.66, duration: 0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-          Get Start For Free
-        
-                </Link>
-                   <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  View Examples
-                </button>
-              </motion.div>
-
-
-            </div>
-
-            {/* ── RIGHT: Auto-animating before/after comparison ── */}
-            <div className="relative w-full max-w-[600px] mx-auto">
-
-              {/* Glow behind card */}
-              <div className="absolute inset-0 rounded-3xl bg-[#E8352A]/10 blur-3xl scale-110 pointer-events-none" />
-
-              {/* Before/After card */}
-              <div className="relative overflow-hidden rounded-3xl shadow-2xl border-2 border-white/80 bg-white">
-                {/* After (base layer) */}
-                <img
-                  src="/snappeditt-photos/HDR PRO/DSC_4694_5_6.jpg"
-                  alt="After HDR Premium"
-                  className="w-full aspect-[4/3] object-cover"
-                />
-
-                {/* Before (clipped overlay) */}
-                <div
-                  className="absolute inset-0 overflow-hidden transition-none"
-                  style={{ width: `${sliderPosition}%` }}
-                >
-                  <img
-                    src="/snappeditt-photos/HDR PRO/DSC_4694.jpg"
-                    alt="Before HDR Premium"
-                    className="w-full aspect-[4/3] object-cover"
-                    style={{ minWidth: sliderRef.current ? `${sliderRef.current.offsetWidth}px` : '100%' }}
-                  />
-                </div>
-
-                {/* Divider line */}
-                <div
-                  className="absolute top-0 bottom-0 w-0.5 bg-white z-10"
-                  style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                >
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#E8352A] shadow-xl flex items-center justify-center text-white font-bold text-sm">
-                    ↔
-                  </div>
-                </div>
-
-                {/* Labels */}
-                <div className="absolute top-4 left-4 z-10 bg-black/65 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">Before</div>
-                <div className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-full">HDR Premium</div>
-              </div>
-
-              {/* Floating stat card — Exposure */}
-              <motion.div
-                animate={{ y: [-10, 10, -10] }}
-                transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
-                className="absolute -left-10 top-16 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 z-20"
-              >
-                <p className="text-xs font-semibold text-slate-700">Exposure</p>
-                <p className="text-lg font-extrabold text-[#E8352A]">+1.4 EV</p>
-              </motion.div>
-
-              {/* Floating stat card — Contrast */}
-              <motion.div
-                animate={{ y: [10, -10, 10] }}
-                transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
-                className="absolute -right-8 top-1/3 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 z-20"
-              >
-                <p className="text-xs font-semibold text-slate-700">Contrast</p>
-                <p className="text-lg font-extrabold text-[#E8352A]">+28%</p>
-              </motion.div>
-
-              {/* Floating stat card — Lighting bar */}
-              <motion.div
-                animate={{ y: [-12, 12, -12] }}
-                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                className="absolute left-16 -bottom-6 bg-white rounded-2xl shadow-xl border border-slate-100 px-4 py-3 z-20"
-              >
-                <p className="text-xs font-semibold text-slate-700 mb-1.5">Tone Mapping</p>
-                <div className="w-28 h-2 rounded-full bg-slate-100">
-                  <div className="w-[85%] h-2 rounded-full bg-[#E8352A]" />
-                </div>
-                <p className="text-[10px] text-slate-400 mt-1">85% optimised</p>
-              </motion.div>
-            </div>
-          </div>
+      <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0D0D0F]">
+        <div className="pointer-events-none absolute inset-0"><motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} /><motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} /><svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" /></pattern></defs><rect width="100%" height="100%" fill="url(#grid)" /></svg></div>
+        <div className="relative z-10 flex min-h-screen flex-1 flex-col lg:grid lg:grid-cols-2">
+          <div className="flex flex-col justify-center px-8 pb-12 pt-24 sm:px-12 lg:px-16 lg:py-0 xl:px-24"><motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mb-8 inline-flex self-start items-center gap-2 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#E8352A]" /><span className="text-xs font-semibold uppercase tracking-widest text-[#E8352A]">HDR Premium Editing</span></motion.div><h1 className="mb-6 font-extrabold leading-[0.95] tracking-tight">{['HDR', 'Premium', 'Editing'].map((word, i) => <motion.span key={word} className={`block text-[clamp(3rem,8vw,7rem)] ${i === 1 ? 'text-[#E8352A]' : 'text-white'}`} initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>{word}</motion.span>)}</h1><motion.p className="mb-10 max-w-md text-base leading-relaxed text-[#A0A0B0] md:text-lg" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>Transform property photographs with expert manual editing — precise exposure correction, color grading, and perspective fixes that make listings sell faster.</motion.p><motion.div className="flex flex-wrap gap-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}><Link href="/free-trial" className="group inline-flex items-center gap-2 rounded-2xl bg-[#E8352A] px-8 py-4 text-sm font-bold text-white shadow-[0_0_40px_rgba(232,53,42,0.45)] transition-all hover:scale-105 hover:bg-[#C62B20]">Get Started Free<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Link><button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })} className="inline-flex items-center gap-2 rounded-2xl border border-white/15 px-8 py-4 text-sm font-semibold text-white/80 transition-all hover:border-[#E8352A]/50 hover:bg-white/5 hover:text-white">View Examples</button></motion.div><motion.div className="mt-14 grid grid-cols-2 gap-4 border-t border-white/10 pt-10 sm:grid-cols-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>{[{ value: '24h', label: 'Delivery' }, { value: '$0.20', label: 'Per Image' }, { value: '100%', label: 'Manual Edit' }, { value: '∞', label: 'Revisions' }].map((stat, i) => <motion.div key={stat.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 + i * 0.08, duration: 0.4 }}><p className="text-2xl font-extrabold text-white lg:text-3xl">{stat.value}</p><p className="mt-0.5 text-[11px] uppercase tracking-wider text-[#666]">{stat.label}</p></motion.div>)}</motion.div></div>
+          <motion.div className="relative flex flex-col lg:h-screen" initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}><div ref={heroSliderRef} className="relative mx-4 mt-4 min-h-[340px] flex-1 cursor-col-resize select-none overflow-hidden rounded-2xl lg:mx-0 lg:mt-0 lg:rounded-none" onMouseMove={(e) => handleSliderMove(e, heroSliderRef)} onMouseDown={() => setIsDragging(true)} onMouseUp={() => setIsDragging(false)} onMouseEnter={() => setIsHoveringSlider(true)} onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }} onTouchMove={(e) => handleSliderMove(e, heroSliderRef)} onTouchStart={() => setIsDragging(true)} onTouchEnd={() => setIsDragging(false)}><div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${currentCase.beforeImage})`, filter: 'brightness(0.7) saturate(0.6)' }} /><div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}><div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${currentCase.afterImage})`, width: `${100 / Math.max(sliderPosition, 1) * 100}%` }} /></div><div className="absolute bottom-0 top-0 z-10" style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }} onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}><div className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 bg-white/60" /><div className="absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[#E8352A] bg-white shadow-2xl"><ChevronLeft className="h-3.5 w-3.5 text-[#E8352A]" /><ChevronRight className="h-3.5 w-3.5 text-[#E8352A]" /></div></div><span className="absolute left-5 top-5 z-10 rounded-full bg-black/60 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white backdrop-blur-md">Before</span><span className="absolute right-5 top-5 z-10 rounded-full bg-[#E8352A] px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white">After</span><motion.div animate={{ y: isHoveringSlider ? [-4, 4, -4] : 0 }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md"><Sparkles className="h-3.5 h-3.5 text-[#E8352A]" /><span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Manual Edit</span></motion.div><div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5"><div className="flex items-center justify-between gap-2">{editorTabs.map(tab => <button key={tab} onClick={() => setActiveTab(tab)} className={`flex flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>{tab === 'Exposure' && <Sun className="h-4 w-4" />}{tab === 'Contrast' && <Contrast className="h-4 w-4" />}{tab === 'Highlights' && <Sun className="h-4 w-4 opacity-70" />}{tab === 'Shadows' && <Layers className="h-4 w-4" />}{tab === 'Color' && <Wand2 className="h-4 w-4" />}<span className="text-[9px] font-semibold">{tab}</span></button>)}</div></div></div><div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">{hrCases.map((_, i) => <button aria-label={`Show example ${i + 1}`} key={i} onClick={() => changeCase(i)} className={`rounded-full transition-all duration-300 ${currentCaseIndex === i ? 'h-2.5 w-8 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'h-2.5 w-2.5 bg-white/25 hover:bg-white/50'}`} />)}</div></motion.div>
         </div>
       </section>
 
@@ -537,7 +456,7 @@ export default function HRDPremiumPage() {
                     className="w-full h-full bg-cover bg-center"
                     style={{
                       backgroundImage: `url(${currentCase.afterImage})`,
-                      width: sliderRef.current ? `${sliderRef.current.offsetWidth}px` : '100%',
+                      width: `${100 / Math.max(sliderPosition, 1) * 100}%`,
                     }}
                   />
                 </div>
@@ -632,8 +551,10 @@ export default function HRDPremiumPage() {
         </div>
       </section>
 
-      {/* Premium Services Section */}
-      <section id="services" className="py-20 bg-gradient-to-b from-white to-purple-50">
+      <ServicesSection services={services} sectionTitle="HDR Premium" sectionDesc="Premium HDR solutions designed for professional real estate photography." />
+
+      {/* Premium Services Section - hidden */}
+      <section id="services-old" className="py-20 bg-gradient-to-b from-white to-purple-50 hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -659,7 +580,7 @@ export default function HRDPremiumPage() {
                 
                 <div className="relative z-1">
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-[#F44336] group-hover:scale-110 transition-transform duration-300">
-                    {service.icon}
+                    {React.createElement(service.icon, { className: 'w-6 h-6' })}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#F44336] transition-colors">{service.title}</h3>
                   <p className="text-gray-600 mb-4 group-hover:text-gray-700 transition-colors">{service.description}</p>
@@ -672,55 +593,7 @@ export default function HRDPremiumPage() {
             ))}
           </div>
 
-          {/* Premium CTA Section */}
-          {/* <div className="mt-20 bg-[#F44336] rounded-3xl p-12 text-center relative overflow-hidden shadow-2xl">
-        
-           <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-x-32 -translate-y-32"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full translate-x-32 translate-y-32"></div>
-             
-            <div className="relative z-1">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-                <Crown className="w-5 h-5 text-white-300" />
-                <span className="text-white text-sm font-medium">Enterprise Grade Solution</span>
-              </div>
-              
-              <h2 className="text-4xl font-bold text-white mb-6">
-                Ready for Strategic <span className="bg-black bg-clip-text text-transparent">HR Transformation</span>?
-              </h2>
-              <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
-                Join industry leaders who trust HRD Premium for their enterprise HR needs. 
-                Schedule a personalized demo with our enterprise solutions team.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-white text-red-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-3 whitespace-nowrap group">
-                  <Crown className="w-5 h-5" />
-                  Schedule Enterprise Demo
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-                </button>
-                <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all shadow-lg flex items-center justify-center gap-3 whitespace-nowrap group">
-                  <Play className="w-5 h-5" />
-                  View Case Studies
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-                </button>
-              </div>
-              
-              <div className="flex flex-wrap justify-center gap-6 mt-10">
-                <div className="flex items-center gap-2 text-white/90">
-                  <CheckCircle className="w-5 h-5 text-red-300" />
-                  <span>Dedicated Implementation Team</span>
-                </div>
-                <div className="flex items-center gap-2 text-white/90">
-                  <CheckCircle className="w-5 h-5 text-red-300" />
-                  <span>24/7 Premium Support</span>
-                </div>
-                <div className="flex items-center gap-2 text-white/90">
-                  <CheckCircle className="w-5 h-5 text-red-300" />
-                  <span>Custom Enterprise Solutions</span>
-                </div>
-              </div>
-            </div>
-          </div> */}
+          
         </div>
       </section>
 

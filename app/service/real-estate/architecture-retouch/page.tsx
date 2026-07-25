@@ -72,14 +72,14 @@ export default function ArchitectureRetouchPage() {
   const editorTabs = ['Perspective', 'Lighting', 'Details', 'Color'];
 
   const services = [
-    { title: 'Exterior Enhancement', description: 'Professional enhancement of building exteriors with lighting and detail optimisation.',    icon: <Building className="w-6 h-6" /> },
-    { title: 'Interior Retouch',     description: 'Interior space enhancement with lighting balance and perspective correction.',             icon: <Home     className="w-6 h-6" /> },
-    { title: 'Perspective Fix',      description: 'Architectural perspective and lens distortion correction to perfect geometry.',           icon: <Grid     className="w-6 h-6" /> },
-    { title: 'Sky Replacement',      description: 'Intelligent sky replacement with architectural context awareness.',                       icon: <Wind     className="w-6 h-6" /> },
-    { title: 'Lighting Control',     description: 'Control and enhance natural and artificial lighting for optimal presentation.',           icon: <Sun      className="w-6 h-6" /> },
-    { title: 'Object Removal',       description: 'Remove distracting elements while preserving architectural context.',                    icon: <Eye      className="w-6 h-6" /> },
-    { title: 'Material Enhancement', description: 'Enhance textures, materials, and surface details for premium quality outputs.',          icon: <Layers   className="w-6 h-6" /> },
-    { title: 'Final Delivery',       description: 'Export in 4K resolution for presentations, publications, and marketing materials.',      icon: <CheckCircle className="w-6 h-6" /> },
+    { title: 'Exterior Enhancement', description: 'Professional enhancement of building exteriors with lighting and detail optimisation.',    icon: <Building className="w-6 h-6" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Interior Retouch',     description: 'Interior space enhancement with lighting balance and perspective correction.',             icon: <Home     className="w-6 h-6" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Perspective Fix',      description: 'Architectural perspective and lens distortion correction to perfect geometry.',           icon: <Grid     className="w-6 h-6" />, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: 'Sky Replacement',      description: 'Intelligent sky replacement with architectural context awareness.',                       icon: <Wind     className="w-6 h-6" />, color: '#10B981', bg: '#ECFDF5' },
+    { title: 'Lighting Control',     description: 'Control and enhance natural and artificial lighting for optimal presentation.',           icon: <Sun      className="w-6 h-6" />, color: '#F59E0B', bg: '#FFFBEB' },
+    { title: 'Object Removal',       description: 'Remove distracting elements while preserving architectural context.',                    icon: <Eye      className="w-6 h-6" />, color: '#EC4899', bg: '#FDF2F8' },
+    { title: 'Material Enhancement', description: 'Enhance textures, materials, and surface details for premium quality outputs.',          icon: <Layers   className="w-6 h-6" />, color: '#6366F1', bg: '#EEF2FF' },
+    { title: 'Final Delivery',       description: 'Export in 4K resolution for presentations, publications, and marketing materials.',      icon: <CheckCircle className="w-6 h-6" />, color: '#D71920', bg: '#FFF0EE' },
   ];
 
   const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
@@ -132,55 +132,56 @@ export default function ArchitectureRetouchPage() {
       {/* ══════════════════════════════════════
           HERO
       ══════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative flex min-h-screen flex-col overflow-hidden bg-[#0D0D0F] text-white">
 
-        {/* Soft radial blobs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.10) 0%, transparent 70%)' }} />
-          <div className="absolute -right-20 -top-20 w-[380px] h-[380px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.08) 0%, transparent 70%)' }} />
-          {/* Floating dots */}
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[42%] top-[12%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[16%] top-[20%] w-3.5 h-3.5 rounded-full bg-[#E8352A]/40" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[14%] bottom-[26%] w-2 h-2 rounded-full bg-[#E8352A]/35" />
-          <motion.div animate={{ y: [5, -5, 5] }} transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut', delay: 1.2 }}
-            className="absolute right-[30%] bottom-[18%] w-3 h-3 rounded-full bg-[#E8352A]/30" />
+        {/* Animated mesh background */}
+        <div className="pointer-events-none absolute inset-0">
+          <svg className="absolute inset-0 h-full w-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="architecture-noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
+            <rect width="100%" height="100%" filter="url(#architecture-noise)" />
+          </svg>
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="architecture-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" /></pattern></defs><rect width="100%" height="100%" fill="url(#architecture-grid)" /></svg>
+          {[6, 4, 8, 5, 3, 7].map((size, i) => <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }} className="absolute rounded-full bg-[#E8352A]" style={{ width: size, height: size, left: `${[12, 28, 45, 62, 75, 88][i]}%`, top: `${[20, 65, 15, 75, 35, 55][i]}%`, filter: 'blur(1px)' }} />)}
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col px-8 pb-12 pt-24 sm:px-12 lg:grid lg:grid-cols-2 lg:px-16 lg:py-0 xl:px-24">
+          <div className="grid min-h-screen grid-cols-1 items-stretch lg:contents">
 
             {/* ── LEFT ── */}
-            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0 w-full max-w-3xl px-2 sm:px-0"
+            <motion.div className="flex flex-col justify-center gap-6 px-2 text-center lg:items-start lg:px-0 lg:text-left"
               initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}>
 
             
 
+              <motion.div className="inline-flex items-center gap-2 self-center rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm lg:self-start"
+                initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#E8352A]" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#E8352A]">Real Estate Editing</span>
+              </motion.div>
+
               {/* Heading */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight">
-                <motion.span className="block text-[#1A1A1A]"
+              <h1 className="font-extrabold leading-[0.95] tracking-tight">
+                <motion.span className="block text-white text-[clamp(3rem,8vw,7rem)]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.55 }}>
                   Architecture
                 </motion.span>
-                <motion.span className="block text-[#E8352A]"
+                <motion.span className="block text-[#E8352A] text-[clamp(3rem,8vw,7rem)]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.30, duration: 0.55 }}>
                   Retouch
                 </motion.span>
               </h1>
 
               {/* Subheading */}
-              <motion.p className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#333] leading-snug max-w-2xl"
+              <motion.p className="max-w-2xl text-xl font-semibold leading-snug text-white/90 sm:text-2xl md:text-3xl"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
                 Professional Building Enhancement
               </motion.p>
 
               {/* Description */}
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
+              <motion.p className="mx-auto max-w-xl text-base leading-relaxed text-[#A0A0B0] md:text-lg lg:mx-0"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.54, duration: 0.5 }}>
                 Transform architectural photography into stunning visual presentations. Enhance building
                 aesthetics, correct perspectives, and create professional architectural visuals.
@@ -195,34 +196,12 @@ export default function ArchitectureRetouchPage() {
                 Get Start For Free
               
                 </Link>
-                {/* <button onClick={addToCart}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-white text-[#1A1A1A] font-semibold text-sm border border-[#E2E4E8] hover:border-[#E8352A] hover:text-[#E8352A] transition-all">
-                  View Examples
-                </button> */}
+             
               </motion.div>
-
-              {/* Feature pills */}
-              {/* <motion.div className="flex flex-wrap gap-5 pt-2"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.80 }}>
-                {[
-                  { icon: <Grid  className="w-3.5 h-3.5" />, label: 'Perfect Lines',       sub: 'Precision perspective correction' },
-                  { icon: <Eye   className="w-3.5 h-3.5" />, label: 'Enhanced Details',    sub: 'Sharp, clear and highly detailed'  },
-                  { icon: <Sun   className="w-3.5 h-3.5" />, label: 'True Colors',         sub: 'Accurate colors that pop'          },
-                  { icon: <Layers className="w-3.5 h-3.5" />, label: 'Natural Lighting',   sub: 'Realistic light and shadow balance' },
-                ].map(item => (
-                  <div key={item.label} className="flex items-center gap-2">
-                    <div className="text-[#E8352A]">{item.icon}</div>
-                    <div>
-                      <p className="text-xs font-bold text-[#1A1A1A] leading-none">{item.label}</p>
-                      <p className="text-[10px] text-[#999] mt-0.5">{item.sub}</p>
-                    </div>
-                  </div>
-                ))}
-              </motion.div> */}
             </motion.div>
 
             {/* ── RIGHT: slider + toolbar + floating tool panel ── */}
-            <motion.div className="relative flex flex-col items-center lg:pr-16 w-full max-w-full"
+            <motion.div className="relative flex w-full max-w-full flex-col lg:h-screen"
               initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
 
@@ -246,8 +225,8 @@ export default function ArchitectureRetouchPage() {
 
               {/* Before/After card */}
               <div ref={sliderRef}
-                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full max-w-full"
-                style={{ aspectRatio: '4/3', border: '2px solid rgba(255,255,255,0.9)' }}
+                className="relative mt-4 min-h-[340px] w-full flex-1 cursor-col-resize select-none overflow-hidden rounded-2xl shadow-2xl lg:mt-0 lg:rounded-none"
+                style={{ border: '2px solid rgba(255,255,255,0.9)' }}
                 onMouseMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
@@ -282,40 +261,39 @@ export default function ArchitectureRetouchPage() {
               </div>
 
               {/* Editor toolbar */}
-              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-3 py-3 flex flex-wrap items-center justify-center gap-2">
-                {editorTabs.map(tab => (
-                  <button key={tab} onClick={() => setActiveTab(tab)}
-                    className={`flex flex-col items-center gap-1 flex-1 min-w-[96px] py-1.5 rounded-lg transition-all ${
-                      activeTab === tab ? 'bg-[#E8352A]/10 text-[#E8352A]' : 'text-[#888] hover:text-[#555]'
-                    }`}>
-                    {tab === 'Perspective' && <Grid    className="w-4 h-4" />}
-                    {tab === 'Lighting'    && <Sun     className="w-4 h-4" />}
-                    {tab === 'Details'     && <Eye     className="w-4 h-4" />}
-                    {tab === 'Color'       && <Layers  className="w-4 h-4" />}
-                    <span className={`text-[10px] font-semibold ${activeTab === tab ? 'text-[#E8352A]' : ''}`}>{tab}</span>
-                  </button>
-                ))}
+              <div className="absolute bottom-0 left-0 right-0 z-10 rounded-none border-0 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                <div className="flex items-center justify-between gap-2">
+                  {editorTabs.map(tab => (
+                    <button key={tab} onClick={() => setActiveTab(tab)}
+                      className={`flex flex-1 flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${
+                        activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'
+                      }`}>
+                      {tab === 'Perspective' && <Grid className="h-4 w-4" />}
+                      {tab === 'Lighting' && <Sun className="h-4 w-4" />}
+                      {tab === 'Details' && <Eye className="h-4 w-4" />}
+                      {tab === 'Color' && <Layers className="h-4 w-4" />}
+                      <span className="text-[9px] font-semibold">{tab}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </motion.div>
+
+            <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
+              {imageExamples.map((_, i) => (
+                <button key={i} aria-label={`Show example ${i + 1}`} onClick={() => changeImage(i)}
+                  className={`rounded-full transition-all duration-300 ${currentImageIndex === i ? 'h-2.5 w-8 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'h-2.5 w-2.5 bg-white/25 hover:bg-white/50'}`} />
+              ))}
+            </div>
           </div>
 
           {/* Stats bar */}
-          <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto px-2 sm:px-0"
+            <motion.div className="grid grid-cols-2 gap-4 border-t border-white/10 px-8 pb-8 pt-14 sm:px-12 lg:absolute lg:bottom-8 lg:left-8 lg:mt-0 lg:w-[calc(50%-4rem)] lg:grid-cols-4 lg:px-0 lg:pb-0 lg:pt-0 xl:left-24 xl:w-[calc(50%-8rem)]"
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
             {stats.map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors mt-0.5">
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#E8352A]">{s.value}</p>
-                  <p className="text-xs font-semibold text-[#1A1A1A] leading-tight">{s.label}</p>
-                  <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
-                  <svg viewBox="0 0 60 14" className="w-14 mt-1.5 opacity-50" fill="none">
-                    <polyline points="0,11 10,7 22,9 34,3 44,6 60,2"
-                      stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+              <div key={i} className="text-center">
+                <p className="text-2xl font-extrabold text-white lg:text-3xl">{s.value}</p>
+                <p className="mt-0.5 text-[11px] uppercase tracking-wider text-[#666]">{s.label}</p>
               </div>
             ))}
           </motion.div>
@@ -420,14 +398,20 @@ export default function ArchitectureRetouchPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: service.bg, color: service.color }}>
+             <span className="w-10 h-10 flex items-center justify-center">{service.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                <button className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: service.color }}>
+                  Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
                 </button>
               </div>
             ))}

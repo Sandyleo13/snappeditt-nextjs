@@ -3,12 +3,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import {
   Home, Sofa, PaintBucket, Image as ImageIcon,
   ArrowRight, CheckCircle, Camera,
   Zap, Shield, Armchair,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight,
+  type LucideIcon,
 } from 'lucide-react';
 
 /* ─────────────────────────────────────────
@@ -21,6 +22,54 @@ const styleVariants = [
   { id: 'scandinavian', label: 'Scandinavian', img: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=120&q=70&auto=format&fit=crop' },
   { id: 'luxury',       label: 'Luxury',       img: 'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=120&q=70&auto=format&fit=crop' },
 ];
+
+function ServicesSection({ services, sectionTitle, sectionDesc }: { services: { title: string; description: string; icon: LucideIcon; color: string; bg: string }[]; sectionTitle: string; sectionDesc: string }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  return (
+    <section id="services" className="relative py-24 bg-[#F8F9FB] overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(232,53,42,0.06) 0%, transparent 70%)' }} />
+      </div>
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div className="text-center max-w-2xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}>
+          <span className="inline-block text-[#E8352A] text-xl font-bold tracking-[0.2em] uppercase mb-4">What We Offer</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] mb-4">{sectionTitle} <span className="text-[#E8352A]">Services</span></h2>
+          <p className="text-[#777] text-lg">{sectionDesc}</p>
+        </motion.div>
+        <div ref={ref} className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {services.map((service, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, transition: { duration: 0.25 } }}
+              className="group relative rounded-2xl p-6 border border-[#EBEBEB] bg-white shadow-sm overflow-hidden cursor-pointer hover:shadow-lg hover:border-transparent transition-all duration-300">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `radial-gradient(circle at 50% 0%, ${service.color}0D 0%, transparent 70%)` }} />
+              <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: `linear-gradient(to right, transparent, ${service.color}, transparent)` }} />
+              <div className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                style={{ background: service.bg, color: service.color }}>
+                {React.createElement(service.icon, { size: 24 })}
+              </div>
+              <h3 className="text-[#1A1A1A] font-bold text-2xl mb-2">{service.title}</h3>
+              <p className="text-[#888] text-lg leading-relaxed mb-5">{service.description}</p>
+              <div className="flex items-center gap-1.5 text-xl font-semibold" style={{ color: service.color }}>
+                <span className="relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">Learn more</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
+              <span className="absolute top-4 right-5 text-[11px] font-bold text-[#1A1A1A]/10">0{i + 1}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function VirtualStagingPage() {
   const [currentExampleIndex, setCurrentExampleIndex] = useState(0);
@@ -47,11 +96,11 @@ export default function VirtualStagingPage() {
     { value:'24h',   label:'Turnaround Time',   sub:'Super fast delivery within 24 hours',           icon:<CheckCircle className="w-5 h-5"/> },
   ];
 
-  const services = [
-    { title:'Residential Staging', description:'Transform empty homes into inviting living spaces with realistic furniture.',         icon:<Home className="w-6 h-6"/> },
-    { title:'Commercial Spaces',   description:'Stage offices, retail, and commercial properties for maximum appeal.',               icon:<Armchair className="w-6 h-6"/> },
-    { title:'Virtual Renovation',  description:'Show potential renovations and upgrades before construction.',                       icon:<PaintBucket className="w-6 h-6"/> },
-    { title:'VR Walkthroughs',     description:'Create immersive virtual reality tours of staged properties.',                       icon:<Camera className="w-6 h-6"/> },
+  const services: { title: string; description: string; icon: LucideIcon; color: string; bg: string }[] = [
+    { title: 'Residential Staging', description: 'Transform empty homes into inviting living spaces with realistic furniture.',   icon: Home,        color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Commercial Spaces',   description: 'Stage offices, retail, and commercial properties for maximum appeal.',         icon: Armchair,    color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Virtual Renovation',  description: 'Show potential renovations and upgrades before construction.',                 icon: PaintBucket, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: 'VR Walkthroughs',     description: 'Create immersive virtual reality tours of staged properties.',                 icon: Camera,      color: '#10B981', bg: '#ECFDF5' },
   ];
 
   /* ── Auto-animate slider ── */
@@ -107,7 +156,7 @@ export default function VirtualStagingPage() {
       {/* ══════════════════════════════════════
           HERO
       ══════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#0D0D0F] text-white">
 
         {/* Animated background */}
         <div className="absolute inset-0 pointer-events-none">
@@ -158,33 +207,49 @@ export default function VirtualStagingPage() {
             className="absolute left-[14%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/30" />
         </div>
 
+        <div className="pointer-events-none absolute inset-0">
+          <svg className="absolute inset-0 h-full w-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="staging-noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
+            <rect width="100%" height="100%" filter="url(#staging-noise)" />
+          </svg>
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="staging-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" /></pattern></defs><rect width="100%" height="100%" fill="url(#staging-grid)" /></svg>
+          {[6, 4, 8, 5, 3, 7].map((size, i) => <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }} className="absolute rounded-full bg-[#E8352A]" style={{ width: size, height: size, left: `${[12, 28, 45, 62, 75, 88][i]}%`, top: `${[20, 65, 15, 75, 35, 55][i]}%`, filter: 'blur(1px)' }} />)}
+        </div>
+
         <style>{`
           @keyframes vsCW  { to { stroke-dashoffset: -1800; } }
           @keyframes vsCCW { to { stroke-dashoffset:  1348; } }
         `}</style>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 pt-16 pb-10 lg:pt-24 lg:pb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col px-8 pb-12 pt-24 sm:px-12 lg:grid lg:grid-cols-2 lg:px-16 lg:py-0 xl:px-24">
+          <div className="grid min-h-screen grid-cols-1 items-stretch lg:contents">
 
             {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-6 items-center lg:items-start text-center lg:text-left w-full"
+            <motion.div className="flex flex-col justify-center gap-6 px-2 text-center lg:items-start lg:px-0 lg:text-left"
               initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
 
           
            
+              <motion.div className="inline-flex items-center gap-2 self-center rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm lg:self-start" initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#E8352A]" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#E8352A]">Real Estate Editing</span>
+              </motion.div>
+
               {/* Heading */}
-              <div className="max-w-xl mx-auto lg:mx-0">
-                <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight"
+              <div className="max-w-xl lg:mx-0">
+                <motion.h1 className="font-extrabold leading-[0.95] tracking-tight"
                   initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.55 }}>
-                  Virtual <span className="text-[#E8352A]">Staging</span>
+                  <span className="block text-white text-[clamp(3rem,8vw,7rem)]">Virtual</span><span className="block text-[#E8352A] text-[clamp(3rem,8vw,7rem)]">Staging</span>
                 </motion.h1>
-                <motion.p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#333] leading-snug mt-2"
+                <motion.p className="mt-2 text-xl font-semibold leading-snug text-white/90 sm:text-2xl md:text-3xl"
                   initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.32, duration:0.5 }}>
                   Digital Interior Transformation
                 </motion.p>
               </div>
 
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-xl mx-auto lg:mx-0"
+              <motion.p className="mx-auto max-w-xl text-base leading-relaxed text-[#A0A0B0] md:text-lg lg:mx-0"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.44, duration:0.5 }}>
                 Transform empty properties into beautifully furnished spaces instantly. Watch as AI magically
                 adds furniture, decor, and style to any room.
@@ -204,17 +269,26 @@ export default function VirtualStagingPage() {
                 </button>
               </motion.div>
 
+              <motion.div className="grid w-full grid-cols-2 gap-4 border-t border-white/10 pt-10 sm:grid-cols-4"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>
+                {stats.map((stat, i) => (
+                  <motion.div key={stat.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 + i * 0.08, duration: 0.4 }}>
+                    <p className="text-2xl font-extrabold text-white lg:text-3xl">{stat.value}</p>
+                    <p className="mt-0.5 text-[11px] uppercase tracking-wider text-[#666]">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+
              
             </motion.div>
 
             {/* ── RIGHT: Before/After Slider + Style Thumbnails ── */}
-            <motion.div className="flex flex-col gap-3"
+            <motion.div className="relative flex flex-col lg:h-screen"
               initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
 
               {/* Slider */}
               <div ref={heroSliderRef}
-                className="relative rounded-2xl overflow-hidden shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio:'4/3' }}
+                className="relative mt-4 min-h-[340px] w-full flex-1 cursor-col-resize select-none overflow-hidden rounded-2xl shadow-2xl lg:mt-0 lg:rounded-none"
                 onMouseMove={handleSliderMove} onTouchMove={handleSliderMove}
                 onMouseEnter={() => setIsHoveringSlider(true)}
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
@@ -245,11 +319,27 @@ export default function VirtualStagingPage() {
                 {/* Labels */}
                 <span className="absolute top-4 left-4 z-10 bg-[#1A1A1A]/70 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">Before</span>
                 <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1.5 rounded-full">After</span>
+
+                <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
+                  <Zap className="h-3.5 w-3.5 text-[#E8352A]" />
+                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Virtual Staging</span>
+                </motion.div>
+
+                <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/90 to-transparent px-6 py-5">
+                  <div className="flex items-center justify-between gap-2">
+                    {['Modern', 'Minimal', 'Classic', 'Luxury'].map((tab) => (
+                      <button key={tab} onClick={() => { setActiveStyle(tab.toLowerCase()); const index = transformationExamples.findIndex(example => example.style === tab.toLowerCase()); if (index >= 0) changeExample(index); }} className={`flex flex-1 flex-col items-center gap-1 rounded-xl px-3 py-2 transition-all ${activeStyle === tab.toLowerCase() ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>
+                        <Sofa className="h-4 w-4" />
+                        <span className="text-[9px] font-semibold">{tab}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Style thumbnails carousel */}
               <motion.div
-                className="bg-white rounded-2xl border border-[#F0F0F0] shadow-lg px-4 py-3 flex items-center gap-3"
+                className="hidden bg-black/50 rounded-2xl border border-white/10 shadow-lg px-4 py-3 items-center gap-3 backdrop-blur-sm lg:flex"
                 initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.85 }}>
                 <button
                   onClick={() => { const cur = styleVariants.findIndex(s => s.id === activeStyle); const next = (cur-1+styleVariants.length)%styleVariants.length; setActiveStyle(styleVariants[next].id); changeExample(next); }}
@@ -277,10 +367,10 @@ export default function VirtualStagingPage() {
               </motion.div>
 
               {/* Dot nav — synced with style thumbnails */}
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
                 {styleVariants.map((style, i) => (
                   <button key={i} onClick={() => changeExample(i)}
-                    className={`rounded-full transition-all ${style.id === activeStyle ? 'w-5 h-2.5 bg-[#E8352A]' : 'w-2.5 h-2.5 bg-[#CCC] hover:bg-[#E8352A]/60'}`} />
+                    className={`rounded-full transition-all duration-300 ${style.id === activeStyle ? 'h-2.5 w-8 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'h-2.5 w-2.5 bg-white/25 hover:bg-white/50'}`} />
                 ))}
               </div>
             </motion.div>
@@ -373,35 +463,7 @@ export default function VirtualStagingPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════
-          SERVICES
-      ══════════════════════════════════════ */}
-      <section id="services" className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              <span className="text-[#E8352A]">Staging</span> Services
-            </h2>
-            <p className="text-xl text-gray-600">
-              Comprehensive virtual staging solutions for every property type.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 sm:px-0">
-            {services.map((service,i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
-                </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Learn more <ArrowRight className="w-3.5 h-3.5"/>
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ServicesSection services={services} sectionTitle="Staging" sectionDesc="Comprehensive virtual staging solutions for every property type." />
 
     </div>
   );

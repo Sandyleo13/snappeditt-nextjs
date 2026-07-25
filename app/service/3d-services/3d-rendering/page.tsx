@@ -1,7 +1,7 @@
 // app/3d-rendering/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import BeforeAfterSlider from '@/components/features/BeforeAfterSlider';
@@ -9,7 +9,9 @@ import {
   Camera, Box, Zap, Eye, Building,
   ArrowRight, CheckCircle, Video,
   Globe, Cpu, Star,
+  ChevronLeft, ChevronRight, Layers,
 } from 'lucide-react';
+import { Sun, Contrast, Wand2, Sparkles } from 'lucide-react';
 
 /* ── Floating 3D cube ── */
 function FloatingCube({ size, x, y, delay, color = '#E8352A' }: {
@@ -49,6 +51,14 @@ export default function ThreeDRenderingPage() {
   const [heroIndex, setHeroIndex]     = useState(0);
   const [isHovering, setIsHovering]   = useState(false);
 
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHoveringSlider, setIsHoveringSlider] = useState(false);
+  const sliderDirectionRef = useRef<1 | -1>(1);
+  const heroSliderRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState('Exposure');
+  const editorTabs = ['Exposure', 'Contrast', 'Highlights', 'Shadows', 'Color'];
+
   const heroImages = [
     { image: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=900&q=85&auto=format&fit=crop', label: 'Architectural' },
     { image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&q=85&auto=format&fit=crop', label: 'Interior' },
@@ -71,10 +81,10 @@ export default function ThreeDRenderingPage() {
   ];
 
   const services = [
-    { title: 'Architectural Vis.',  description: 'Photorealistic exterior & interior building visualizations.',           icon: <Building className="w-6 h-6"/> },
-    { title: 'Product Rendering',   description: 'Studio-grade product renders for e-commerce and marketing.',           icon: <Box className="w-6 h-6"/> },
-    { title: '3D Animations',       description: 'Motion sequences, flythroughs and product reveal animations.',         icon: <Video className="w-6 h-6"/> },
-    { title: 'VR Experiences',      description: 'Immersive VR-ready scenes for presentations and sales.',               icon: <Eye className="w-6 h-6"/> },
+    { title: 'Architectural Vis.',  description: 'Photorealistic exterior & interior building visualizations.',           icon: <Building className="w-8 h-8"/> },
+    { title: 'Product Rendering',   description: 'Studio-grade product renders for e-commerce and marketing.',           icon: <Box className="w-8 h-8"/> },
+    { title: '3D Animations',       description: 'Motion sequences, flythroughs and product reveal animations.',         icon: <Video className="w-8 h-8"/> },
+    { title: 'VR Experiences',      description: 'Immersive VR-ready scenes for presentations and sales.',               icon: <Eye className="w-8 h-8"/> },
   ];
 
   const addToCart = () => {
@@ -91,220 +101,123 @@ export default function ThreeDRenderingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#0D0D0F] overflow-x-hidden">
 
       {/* ══════════════════════════════════  HERO  ══════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden min-h-screen flex items-center">
+      <section className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#0D0D0F]">
 
-        {/* ── Animated background ── */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Radial blobs */}
-          <div className="absolute -left-40 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
-            style={{ background:'radial-gradient(circle, rgba(232,53,42,0.10) 0%, transparent 70%)' }}/>
-          <div className="absolute -right-24 -top-24 w-[500px] h-[500px] rounded-full"
-            style={{ background:'radial-gradient(circle, rgba(232,53,42,0.07) 0%, transparent 70%)' }}/>
-          {/* Central glow under 3D model */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/4 -translate-y-1/2 w-[500px] h-[300px] rounded-full blur-3xl"
-            style={{ background:'radial-gradient(ellipse, rgba(232,53,42,0.12) 0%, transparent 70%)' }}/>
-
-          {/* Dot grid */}
-          <svg className="absolute inset-0 w-full h-full opacity-[0.04]">
+        <div className="absolute inset-0 pointer-events-none">
+          <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#noise)"/>
+          </svg>
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute -left-40 top-1/3 w-[700px] h-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }}
+            className="absolute -right-32 -bottom-20 w-[500px] h-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="rdots" width="30" height="30" patternUnits="userSpaceOnUse">
-                <circle cx="1.5" cy="1.5" r="1.5" fill="#E8352A"/>
+              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5"/>
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#rdots)"/>
+            <rect width="100%" height="100%" fill="url(#grid)"/>
           </svg>
-
-          {/* Orbit rings */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid meet">
-            <ellipse cx="680" cy="350" rx="300" ry="220" stroke="#E8352A" strokeWidth="0.7" opacity="0.08"/>
-            <ellipse cx="680" cy="350" rx="230" ry="170" stroke="#E8352A" strokeWidth="0.5" opacity="0.06"/>
-            <ellipse cx="680" cy="350" rx="300" ry="220" stroke="#E8352A" strokeWidth="1.4" opacity="0.30"
-              strokeDasharray="180 1900" style={{ animation:'r3CW 9s linear infinite', transformOrigin:'680px 350px' }}/>
-          </svg>
-
-          {/* Floating 3D cubes — desktop only */}
-          <div className="hidden md:block">
-            <FloatingCube size={48} x="4%"   y="12%" delay={0}  />
-            <FloatingCube size={36} x="88%"  y="8%"  delay={0.5}/>
-            <FloatingCube size={28} x="3%"   y="66%" delay={1.0}/>
-            <FloatingCube size={56} x="1%"   y="38%" delay={0.3} color="#E8352A"/>
-            <FloatingCube size={24} x="44%"  y="3%"  delay={0.7}/>
-          </div>
-
-          {/* Floating red spheres */}
-          <motion.div animate={{ y:[-12,12,-12] }} transition={{ repeat:Infinity, duration:5, ease:'easeInOut' }}
-            style={{ position:'absolute', right:'4%', top:'60%', width:22, height:22, borderRadius:'50%',
-              background:'radial-gradient(circle at 35% 28%,#ff9a80 0%,#E8352A 60%,#a31808 100%)',
-              boxShadow:'0 6px 18px rgba(232,53,42,0.35)' }}/>
-          <motion.div animate={{ y:[10,-10,10] }} transition={{ repeat:Infinity, duration:4, ease:'easeInOut', delay:0.6 }}
-            className="absolute w-4 h-4 rounded-full bg-[#E8352A]"
-            style={{ top:'18%', left:'48%', boxShadow:'0 4px 12px rgba(232,53,42,0.40)' }}/>
-          <motion.div animate={{ y:[-7,7,-7] }} transition={{ repeat:Infinity, duration:3.8, ease:'easeInOut', delay:1 }}
-            className="absolute w-3 h-3 rounded-full bg-[#E8352A]/60"
-            style={{ bottom:'32%', left:'10%' }}/>
-
-          {/* Glass spheres */}
-          <motion.div animate={{ y:[-11,11,-11] }} transition={{ repeat:Infinity, duration:6.4, ease:'easeInOut' }}
-            style={{ position:'absolute', left:'6%', top:'44%', width:58, height:58, borderRadius:'50%',
-              background:'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.98) 0%,rgba(228,233,245,0.50) 58%,rgba(198,208,228,0.18) 100%)',
-              boxShadow:'0 6px 28px rgba(15,23,42,0.08),inset 0 1px 2px rgba(255,255,255,0.9)',
-              border:'1px solid rgba(208,218,234,0.40)' }}/>
-          <motion.div animate={{ y:[8,-8,8] }} transition={{ repeat:Infinity, duration:4.7, ease:'easeInOut', delay:0.7 }}
-            style={{ position:'absolute', left:'13%', bottom:'26%', width:28, height:28, borderRadius:'50%',
-              background:'radial-gradient(circle at 36% 32%,rgba(255,255,255,0.97) 0%,rgba(224,230,244,0.45) 65%)',
-              boxShadow:'0 3px 12px rgba(15,23,42,0.07)', border:'1px solid rgba(208,218,234,0.35)' }}/>
-
-          {/* Dot accents */}
-          <motion.div animate={{ y:[-8,8,-8] }} transition={{ repeat:Infinity, duration:4 }}
-            className="absolute left-[42%] top-[13%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50"/>
-          <motion.div animate={{ y:[6,-6,6] }} transition={{ repeat:Infinity, duration:5, delay:0.9 }}
-            className="absolute left-[15%] bottom-[27%] w-2 h-2 rounded-full bg-[#E8352A]/35"/>
+          {[...Array(6)].map((_, i) => (
+            <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }}
+              className="absolute rounded-full bg-[#E8352A]" style={{ width: [6,4,8,5,3,7][i], height: [6,4,8,5,3,7][i], left: `${[12,28,45,62,75,88][i]}%`, top: `${[20,65,15,75,35,55][i]}%`, filter: 'blur(1px)' }} />
+          ))}
         </div>
 
-        <style>{`
-          @keyframes r3CW { to { stroke-dashoffset: -2080; } }
-        `}</style>
+        <div className="relative z-10 flex-1 flex flex-col lg:grid lg:grid-cols-2 min-h-screen">
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-16 sm:py-20 w-full">
-          <div className="grid lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-10 items-center">
-
-            {/* ── LEFT TEXT ── */}
-            <motion.div className="flex flex-col gap-5 sm:gap-6"
-              initial={{ opacity:0, x:-40 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.7, ease:'easeOut' }}>
-
-              {/* Heading */}
-              <div>
-                <motion.h1 className="font-extrabold leading-[1.06] tracking-tight"
-                  initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2, duration:0.55 }}>
-                  <span className="text-4xl sm:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#E8352A]">3D</span>
-                  <span className="text-4xl sm:text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[#1A1A1A]"> Rendering</span>
-                </motion.h1>
-                <motion.div className="mt-2"
-                  initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3, duration:0.5 }}>
-                  <span className="text-lg sm:text-2xl md:text-3xl font-bold text-[#1A1A1A]">Cinematic </span>
-                  <span className="text-lg sm:text-2xl md:text-3xl font-bold text-[#E8352A]">Visual Excellence</span>
-                </motion.div>
-              </div>
-
-              <motion.p className="text-sm sm:text-base text-[#666] leading-relaxed max-w-sm"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.46, duration:0.5 }}>
-                Transform 3D models into photorealistic masterpieces with advanced ray tracing
-                and global illumination.
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div className="flex flex-wrap gap-3"
-                initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.64, duration:0.5 }}>
-                <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-                  Get Started For Free
-                </Link>
-                <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' })}
-                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
-                  View Examples
-                </button>
-              </motion.div>
-
-              {/* Social proof */}
-              <motion.div className="flex items-center gap-3"
-                initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.7 }}>
-                <div className="flex -space-x-2">
-                  {['photo-1507003211169-0a1dd7228f2d','photo-1544005313-94ddf0286df2',
-                    'photo-1560250097-0b93528c311a','photo-1519085360753-af0119f7cbe7'].map((id, i) => (
-                    <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white overflow-hidden"
-                      style={{ backgroundImage:`url(https://images.unsplash.com/${id}?w=60&q=70&auto=format&fit=crop)`,
-                        backgroundSize:'cover', backgroundPosition:'center' }}/>
-                  ))}
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white bg-[#E8352A] flex items-center justify-center">
-                    <span className="text-[8px] sm:text-[9px] font-bold text-white">+2k</span>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-[#1A1A1A]">Trusted by 2,000+ Architects & Studios</p>
-                  <div className="flex gap-0.5 mt-0.5">
-                    {[1,2,3,4,5].map(s => <Star key={s} className="w-3 h-3 fill-amber-400 text-amber-400"/>)}
-                    <span className="text-[10px] text-[#999] ml-1">4.9/5</span>
-                  </div>
-                </div>
-              </motion.div>
+          {/* LEFT PANEL (text) */}
+          <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 pt-24 pb-12 lg:py-0">
+            <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 self-start mb-8 px-4 py-1.5 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 backdrop-blur-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8352A] animate-pulse" />
+              <span className="text-[#E8352A] text-xs font-semibold tracking-widest uppercase">Real Estate Editing</span>
             </motion.div>
 
-            {/* ── RIGHT: Floating 3D render + feature badges ── */}
-            <motion.div className="relative flex flex-col items-center justify-center mt-8 lg:mt-0"
-              initial={{ opacity:0, x:50 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.7, ease:'easeOut' }}>
+            <h1 className="font-extrabold leading-[0.95] tracking-tight mb-6">
+              {['Cinematic', 'GPU', 'Rendering'].map((word, i) => (
+                <motion.span key={word} className={`block ${i===1? 'text-[#E8352A]':'text-white'} text-[clamp(2.5rem,7vw,5rem)]`}
+                  initial={{ opacity: 0, x: -60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.12, duration: 0.6 }}>
+                  {word}
+                </motion.span>
+              ))}
+            </h1>
 
-              {/* Main image — full column width on all sizes */}
-              <div className="relative w-full">
-                {/* Glow base */}
-                <div className="absolute inset-x-8 bottom-0 h-16 blur-2xl rounded-full pointer-events-none"
-                  style={{ background:'radial-gradient(ellipse, rgba(232,53,42,0.30) 0%, transparent 70%)' }}/>
+            <motion.p className="text-[#A0A0B0] text-base md:text-lg leading-relaxed max-w-md mb-10"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.5 }}>
+              Photorealistic renders with ray tracing, GI and advanced post-processing for studio-quality output.
+            </motion.p>
 
-                <motion.div
-                  animate={{ y:[-10, 10, -10] }}
-                  transition={{ repeat:Infinity, duration:5.5, ease:'easeInOut' }}
-                  className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E8E8E8]"
-                  onMouseEnter={() => setIsHovering(true)}
-                  onMouseLeave={() => setIsHovering(false)}>
-                  <motion.img
-                    key={current.image}
-                    src={current.image}
-                    alt={current.label}
-                    initial={{ opacity:0, scale:1.03 }}
-                    animate={{ opacity:1, scale:1 }}
-                    transition={{ duration:0.5 }}
-                    className="block w-full object-cover"
-                    style={{ aspectRatio: '4/3' }} />
+            <motion.div className="flex flex-wrap gap-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.68, duration: 0.5 }}>
+              <Link href="/free-trial" className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[#E8352A] text-white font-bold text-sm hover:bg-[#C62B20] transition-all shadow-[0_0_40px_rgba(232,53,42,0.45)] hover:scale-105">Get Started Free <ArrowRight className="w-4 h-4"/></Link>
+              <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })} className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-white/15 text-white/80 font-semibold text-sm">View Examples</button>
+            </motion.div>
 
-                  {/* 360° badge */}
-                  <motion.div
-                    animate={{ rotate:[0, 360] }} transition={{ repeat:Infinity, duration:8, ease:'linear' }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-[#E8352A]/20 z-10">
-                    <div className="w-3 h-3 rounded-full border border-[#E8352A] flex items-center justify-center">
-                      <div className="w-1 h-1 rounded-full bg-[#E8352A]"/>
-                    </div>
-                    <span className="text-[10px] font-bold text-[#E8352A]">360° View</span>
-                  </motion.div>
-
-                  {isHovering && (
-                    <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }}
-                      className="absolute top-3 left-3 z-10 flex items-center gap-1.5 bg-[#1A1A1A]/70 backdrop-blur-sm text-white text-[9px] font-semibold px-2 py-1 rounded-full">
-                      <span className="flex gap-0.5"><span className="w-0.5 h-2.5 bg-white rounded-full"/><span className="w-0.5 h-2.5 bg-white rounded-full"/></span>
-                      Paused
-                    </motion.div>
-                  )}
+            <motion.div className="grid grid-cols-4 gap-4 mt-14 pt-10 border-t border-white/10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.6 }}>
+              {stats.map((s,i) => (
+                <motion.div key={i} initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay: 0.9 + i*0.08, duration:0.4 }}>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-white">{s.value}</p>
+                  <p className="text-[11px] text-[#666] mt-0.5 uppercase tracking-wider">{s.label}</p>
                 </motion.div>
-
-                {/* Dot nav */}
-                <div className="flex items-center justify-center gap-2 mt-4">
-                  {heroImages.map((_,i) => (
-                    <button key={i} onClick={() => setHeroIndex(i)}
-                      className={`rounded-full transition-all ${i === heroIndex ? 'w-5 h-2.5 bg-[#E8352A]' : 'w-2.5 h-2.5 bg-[#DDD] hover:bg-[#E8352A]/50'}`}/>
-                  ))}
-                </div>
-              </div>
-
+              ))}
             </motion.div>
           </div>
 
-          {/* ── Stats bar — desktop only ── */}
-          <motion.div className="hidden md:grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 max-w-4xl mx-auto"
-            initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:1.0 }}>
-            {stats.map((s,i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 flex items-start gap-3 group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0EE] flex items-center justify-center flex-shrink-0 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors mt-0.5">
-                  {s.icon}
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#E8352A]">{s.value}</p>
-                  <p className="text-xs font-semibold text-[#1A1A1A] leading-tight">{s.label}</p>
-                  <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
-                  <div className="w-6 h-0.5 bg-[#E8352A]/40 rounded-full mt-1.5"/>
+          {/* RIGHT PANEL — Before/After full height */}
+          <motion.div className="relative flex flex-col lg:h-screen" initial={{ opacity:0, x:60 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.3, duration:0.8 }}>
+            <div ref={heroSliderRef} className="relative flex-1 cursor-col-resize select-none overflow-hidden lg:rounded-none rounded-2xl mx-4 lg:mx-0 mt-4 lg:mt-0" style={{ minHeight:340 }}
+              onMouseMove={(e) => { if (isDragging) {
+                const rect = heroSliderRef.current?.getBoundingClientRect(); if (!rect) return; const x = (e as any).clientX; setSliderPosition(Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100))); } }}
+              onMouseEnter={() => setIsHoveringSlider(true)} onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }} onTouchMove={(e) => { if (isDragging) {
+                const t = (e as any).touches[0]; const rect = heroSliderRef.current?.getBoundingClientRect(); if (!rect) return; setSliderPosition(Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width) * 100))); }} }
+              onTouchEnd={() => setIsDragging(false)} onMouseUp={() => setIsDragging(false)}>
+
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${current.image})`, filter: 'brightness(0.7) saturate(0.6)' }} />
+              <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${current.image})`, width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
+              </div>
+
+              <div className="absolute top-0 bottom-0 z-10" style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }} onMouseDown={() => setIsDragging(true)} onTouchStart={() => setIsDragging(true)}>
+                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-white/60" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 bg-white rounded-full shadow-2xl flex items-center justify-center border-2 border-[#E8352A]" style={{ boxShadow: '0 0 0 4px rgba(232,53,42,0.20), 0 8px 24px rgba(0,0,0,0.4)' }}>
+                  <div className="flex gap-0.5"><ChevronLeft className="w-3.5 h-3.5 text-[#E8352A]"/><ChevronRight className="w-3.5 h-3.5 text-[#E8352A]"/></div>
                 </div>
               </div>
-            ))}
+
+              <span className="absolute top-5 left-5 z-10 bg-black/60 text-white text-[11px] font-bold px-3 py-1.5 rounded-full backdrop-blur-md tracking-wider uppercase">Before</span>
+              <span className="absolute top-5 right-5 z-10 bg-[#E8352A] text-white text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider uppercase">After</span>
+
+              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+                <div className="flex items-center justify-between gap-2">
+                  {editorTabs.map(tab => (
+                    <button key={tab} onClick={() => setActiveTab(tab)} className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'}`}>
+                      {tab === 'Exposure'   && <Sun className="w-4 h-4"/>}
+                      {tab === 'Contrast'   && <Contrast className="w-4 h-4"/>}
+                      {tab === 'Highlights' && <Sun className="w-4 h-4 opacity-70"/>}
+                      {tab === 'Shadows'    && <Layers className="w-4 h-4"/>}
+                      {tab === 'Color'      && <Wand2 className="w-4 h-4"/>}
+                      <span className="text-[9px] font-semibold">{tab}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <motion.div animate={{ y: [-4,4,-4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#E8352A]" />
+                <span className="text-white text-[11px] font-semibold">AI-Assisted Manual Edit</span>
+              </motion.div>
+            </div>
+
+            <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">
+              {heroImages.map((_, i) => (
+                <button key={i} onClick={() => { setHeroIndex(i); setSliderPosition(50); }} className={`rounded-full transition-all duration-300 ${heroIndex === i ? 'w-8 h-2.5 bg-[#E8352A] shadow-[0_0_8px_rgba(232,53,42,0.7)]' : 'w-2.5 h-2.5 bg-white/25 hover:bg-white/50'}`} />
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -360,11 +273,11 @@ export default function ThreeDRenderingPage() {
             {services.map((service,i) => (
               <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
                 <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {service.icon}
+                 {service.icon}
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{service.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{service.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{service.description}</p>
+                <button className="text-[#E8352A] text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
                   Learn more <ArrowRight className="w-3.5 h-3.5"/>
                 </button>
               </div>

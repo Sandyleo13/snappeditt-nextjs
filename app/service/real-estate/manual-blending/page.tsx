@@ -18,6 +18,7 @@ export default function ManualBlendingPage() {
   const [activeTab, setActiveTab] = useState('Mask');
   const sliderDirectionRef = useRef<1 | -1>(1);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const heroSliderRef = useRef<HTMLDivElement>(null);
 
   const imageExamples = [
     {
@@ -72,20 +73,23 @@ export default function ManualBlendingPage() {
   const editorTabs = ['Mask', 'Blend', 'Color', 'Depth', 'Refine'];
 
   const tools = [
-    { title: 'Layer Masking',   description: 'Precise layer masking with feathering and edge refinement for clean results.',   icon: <Layers   className="w-6 h-6" /> },
-    { title: 'Brush Engine',    description: 'Customizable brush engine with pressure sensitivity for gradual blending.',      icon: <Brush    className="w-6 h-6" /> },
-    { title: 'Color Blending',  description: 'Advanced color blending with harmony and matching tools for cohesive looks.',    icon: <Palette  className="w-6 h-6" /> },
-    { title: 'Opacity Control', description: 'Fine-grained opacity and flow control for natural, seamless transitions.',       icon: <Droplets className="w-6 h-6" /> },
-    { title: 'Exposure Blend',  description: 'Merge multiple exposures into one perfectly lit, balanced property image.',     icon: <Sun      className="w-6 h-6" /> },
-    { title: 'Window Pull',     description: 'Naturally blend window views with interior shots for stunning clarity.',        icon: <Wand2    className="w-6 h-6" /> },
-    { title: 'Sky Replacement', description: 'Seamlessly replace and blend skies for impactful exterior photography.',        icon: <Layers   className="w-6 h-6" /> },
-    { title: 'Detail Refinement', description: 'Final pixel-level refinements for professional, market-ready delivery.',     icon: <Settings className="w-6 h-6" /> },
+    { title: 'Layer Masking',   description: 'Precise layer masking with feathering and edge refinement for clean results.',   icon: <Layers   className="w-8 h-8" />, color: '#E8352A', bg: '#FFF0EE' },
+    { title: 'Brush Engine',    description: 'Customizable brush engine with pressure sensitivity for gradual blending.',      icon: <Brush    className="w-8 h-8" />, color: '#7C3AED', bg: '#F5F0FF' },
+    { title: 'Color Blending',  description: 'Advanced color blending with harmony and matching tools for cohesive looks.',    icon: <Palette  className="w-8 h-8" />, color: '#0EA5E9', bg: '#F0F9FF' },
+    { title: 'Opacity Control', description: 'Fine-grained opacity and flow control for natural, seamless transitions.',       icon: <Droplets className="w-8 h-8" />, color: '#10B981', bg: '#ECFDF5' },
+    { title: 'Exposure Blend',  description: 'Merge multiple exposures into one perfectly lit, balanced property image.',     icon: <Sun      className="w-8 h-8" />, color: '#F59E0B', bg: '#FFFBEB' },
+    { title: 'Window Pull',     description: 'Naturally blend window views with interior shots for stunning clarity.',        icon: <Wand2    className="w-8 h-8" />, color: '#EC4899', bg: '#FDF2F8' },
+    { title: 'Sky Replacement', description: 'Seamlessly replace and blend skies for impactful exterior photography.',        icon: <Layers   className="w-8 h-8" />, color: '#6366F1', bg: '#EEF2FF' },
+    { title: 'Detail Refinement', description: 'Final pixel-level refinements for professional, market-ready delivery.',     icon: <Settings className="w-8 h-8" />, color: '#14B8A6', bg: '#F0FDFA' },
   ];
 
-  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging || !sliderRef.current) return;
+  const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const [openServiceSlug, setOpenServiceSlug] = useState<string | null>(null);
+
+  const handleSliderMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, targetRef = sliderRef) => {
+    if (!isDragging || !targetRef.current) return;
     e.preventDefault();
-    const rect = sliderRef.current.getBoundingClientRect();
+    const rect = targetRef.current.getBoundingClientRect();
     const x = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
     setSliderPosition(Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100)));
   };
@@ -132,24 +136,22 @@ export default function ManualBlendingPage() {
       {/* ══════════════════════════════════════
           HERO
       ══════════════════════════════════════ */}
-      <section className="relative bg-[#F8F9FB] overflow-hidden">
+      <section className="relative flex min-h-screen flex-col overflow-hidden bg-[#0D0D0F] text-white">
 
-        {/* Background blobs */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -left-32 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.10) 0%, transparent 70%)' }} />
-          <div className="absolute -right-20 -top-20 w-[380px] h-[380px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.08) 0%, transparent 70%)' }} />
-          <motion.div animate={{ y: [-8, 8, -8] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            className="absolute left-[42%] top-[14%] w-2.5 h-2.5 rounded-full bg-[#E8352A]/50" />
-          <motion.div animate={{ y: [8, -8, 8] }} transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.8 }}
-            className="absolute right-[18%] top-[22%] w-3.5 h-3.5 rounded-full bg-[#E8352A]/40" />
-          <motion.div animate={{ y: [-6, 6, -6] }} transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.4 }}
-            className="absolute left-[15%] bottom-[28%] w-2 h-2 rounded-full bg-[#E8352A]/35" />
+        {/* Animated mesh background */}
+        <div className="pointer-events-none absolute inset-0">
+          <svg className="absolute inset-0 h-full w-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <filter id="manual-noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
+            <rect width="100%" height="100%" filter="url(#manual-noise)" />
+          </svg>
+          <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.18, 0.28, 0.18] }} transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }} className="absolute -left-40 top-1/3 h-[700px] w-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.35) 0%, transparent 65%)' }} />
+          <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.12, 0.20, 0.12] }} transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut', delay: 2 }} className="absolute -right-32 -bottom-20 h-[500px] w-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(232,53,42,0.25) 0%, transparent 65%)' }} />
+          <svg className="absolute inset-0 h-full w-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="manual-grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="#E8352A" strokeWidth="0.5" /></pattern></defs><rect width="100%" height="100%" fill="url(#manual-grid)" /></svg>
+          {[6, 4, 8, 5, 3, 7].map((size, i) => <motion.div key={i} animate={{ y: [0, -20, 0], opacity: [0.4, 0.9, 0.4] }} transition={{ repeat: Infinity, duration: 3 + i * 0.7, ease: 'easeInOut', delay: i * 0.5 }} className="absolute rounded-full bg-[#E8352A]" style={{ width: size, height: size, left: `${[12, 28, 45, 62, 75, 88][i]}%`, top: `${[20, 65, 15, 75, 35, 55][i]}%`, filter: 'blur(1px)' }} />)}
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 pt-20 pb-10 lg:pt-28 lg:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 grid min-h-screen flex-1 grid-cols-1 px-8 pb-12 pt-24 sm:px-12 lg:grid-cols-2 lg:px-16 lg:py-0 xl:px-24">
+          <div className="flex flex-col justify-center lg:contents">
 
             {/* ── LEFT ── */}
             <motion.div className="flex flex-col gap-6"
@@ -159,8 +161,13 @@ export default function ManualBlendingPage() {
            
 
               {/* Heading */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.06] tracking-tight">
-                <motion.span className="block text-[#1A1A1A]"
+              <motion.div className="mb-2 inline-flex self-start items-center gap-2 rounded-full border border-[#E8352A]/30 bg-[#E8352A]/10 px-4 py-1.5 backdrop-blur-sm"
+                initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#E8352A]" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#E8352A]">Real Estate Editing</span>
+              </motion.div>
+              <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl xl:text-[clamp(3rem,8vw,7rem)]">
+                <motion.span className="block text-white"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.55 }}>
                   Manual
                 </motion.span>
@@ -171,13 +178,13 @@ export default function ManualBlendingPage() {
               </h1>
 
               {/* Subheading */}
-              <motion.p className="text-2xl md:text-3xl font-semibold text-[#333] leading-snug"
+              <motion.p className="text-2xl font-semibold leading-snug text-white/90 md:text-3xl"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.5 }}>
                 Professional Photo Compositing
               </motion.p>
 
               {/* Description */}
-              <motion.p className="text-base md:text-lg text-[#666] leading-relaxed max-w-md"
+              <motion.p className="max-w-md text-base leading-relaxed text-[#A0A0B0] md:text-lg"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.54, duration: 0.5 }}>
                 Transform flat photos into stunning, perfectly balanced images. Expert manual blending brings out the best in every detail, color, and light — delivering results no automated tool can match.
               </motion.p>
@@ -186,12 +193,12 @@ export default function ManualBlendingPage() {
               <motion.div className="flex flex-wrap gap-3 pt-1"
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.66, duration: 0.5 }}>
                 <Link href="/free-trial"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#E8352A] text-white font-semibold text-sm hover:bg-[#C62B20] transition-all shadow-[0_8px_24px_rgba(232,53,42,0.30)] hover:scale-105">
-          Get Start For Free
+                    className="group inline-flex items-center gap-2 rounded-2xl bg-[#E8352A] px-8 py-4 text-sm font-bold text-white shadow-[0_0_40px_rgba(232,53,42,0.45)] transition-all hover:scale-105 hover:bg-[#C62B20]">
+                  Get Started Free <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         
                 </Link>
                    <button onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl border border-[#E8352A]/40 text-[#E8352A] font-semibold text-sm hover:bg-[#FFF3F2] transition-all">
+                  className="inline-flex items-center gap-2 rounded-2xl border border-white/15 px-8 py-4 text-sm font-semibold text-white/80 transition-all hover:border-[#E8352A]/50 hover:bg-white/5 hover:text-white">
                   View Examples
                 </button>
               </motion.div>
@@ -200,12 +207,12 @@ export default function ManualBlendingPage() {
             </motion.div>
 
             {/* ── RIGHT: Before/After + Editor toolbar ── */}
-            <motion.div className="relative flex flex-col items-center lg:pr-16"
+            <motion.div className="relative flex flex-col items-center lg:h-screen lg:pr-0"
               initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.7, ease: 'easeOut' }}>
 
               {/* Vertical floating tool panel — matches screenshot */}
-              <div className="absolute -right-14 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col gap-2 bg-white rounded-2xl shadow-xl border border-[#F0F0F0] p-2">
+              <div className="absolute -right-14 top-1/2 z-20 hidden -translate-y-1/2 flex-col gap-2 rounded-2xl border border-white/10 bg-[#111114] p-2 shadow-xl lg:flex">
                 {[
                   { icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>, active: false },
                   { icon: <Brush    className="w-4 h-4" />, active: true  },
@@ -215,7 +222,7 @@ export default function ManualBlendingPage() {
                   <div key={i} className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all cursor-pointer ${
                     item.active
                       ? 'bg-[#E8352A] text-white shadow-md shadow-[#E8352A]/30'
-                      : 'text-[#888] hover:text-[#E8352A] hover:bg-red-50'
+                      : 'text-white/50 hover:bg-white/5 hover:text-white'
                   }`}>
                     {item.icon}
                   </div>
@@ -223,13 +230,12 @@ export default function ManualBlendingPage() {
               </div>
 
               {/* Slider card */}
-              <div ref={sliderRef}
-                className="relative overflow-hidden rounded-2xl shadow-2xl cursor-col-resize select-none w-full"
-                style={{ aspectRatio: '4/3', border: '2px solid rgba(255,255,255,0.9)' }}
-                onMouseMove={handleSliderMove}
+              <div ref={heroSliderRef}
+                className="relative mt-4 min-h-[340px] w-full flex-1 cursor-col-resize select-none overflow-hidden rounded-2xl shadow-2xl lg:mt-0 lg:rounded-none"
+                onMouseMove={(e) => handleSliderMove(e, heroSliderRef)}
                 onMouseEnter={() => setIsHoveringSlider(true)}
                 onMouseLeave={() => { setIsDragging(false); setIsHoveringSlider(false); }}
-                onTouchMove={handleSliderMove}
+                onTouchMove={(e) => handleSliderMove(e, heroSliderRef)}
                 onTouchEnd={() => setIsDragging(false)}
                 onMouseUp={() => setIsDragging(false)}>
                 {/* Before */}
@@ -239,7 +245,7 @@ export default function ManualBlendingPage() {
                 <div className="absolute inset-0 overflow-hidden" style={{ width: `${sliderPosition}%` }}>
                   <div className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: `url(${currentImage.afterImage})`,
-                      width: sliderRef.current ? `${sliderRef.current.offsetWidth}px` : '100%' }} />
+                      width: heroSliderRef.current ? `${heroSliderRef.current.offsetWidth}px` : '100%' }} />
                 </div>
                 {/* Divider */}
                 <div className="absolute top-0 bottom-0 z-10"
@@ -259,32 +265,36 @@ export default function ManualBlendingPage() {
               </div>
 
               {/* Editor toolbar */}
-              <div className="w-full bg-white rounded-b-2xl border border-t-0 border-[#EBEBEB] shadow-lg px-3 py-3 flex items-center justify-between gap-1">
+              <motion.div animate={{ y: isHoveringSlider ? [-4, 4, -4] : 0 }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
+                <Wand2 className="h-3.5 w-3.5 text-[#E8352A]" /><span className="whitespace-nowrap text-[11px] font-semibold text-white">Manual Layer Blending</span>
+              </motion.div>
+              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
+              <div className="w-full px-3 py-3 flex items-center justify-between gap-1">
                 {editorTabs.map(tab => (
                   <button key={tab} onClick={() => setActiveTab(tab)}
                     className={`flex flex-col items-center gap-1 flex-1 py-1.5 rounded-lg transition-all ${
-                      activeTab === tab ? 'bg-[#E8352A]/10 text-[#E8352A]' : 'text-[#888] hover:text-[#555]'
+                      activeTab === tab ? 'bg-[#E8352A] text-white shadow-[0_0_16px_rgba(232,53,42,0.5)]' : 'text-white/50 hover:text-white/80'
                     }`}>
                     {tab === 'Mask'   && <Layers   className="w-4 h-4" />}
                     {tab === 'Blend'  && <Brush    className="w-4 h-4" />}
                     {tab === 'Color'  && <Palette  className="w-4 h-4" />}
                     {tab === 'Depth'  && <Droplets className="w-4 h-4" />}
                     {tab === 'Refine' && <Wand2    className="w-4 h-4" />}
-                    <span className={`text-[10px] font-semibold ${activeTab === tab ? 'text-[#E8352A]' : ''}`}>{tab}</span>
+                    <span className="text-[10px] font-semibold">{tab}</span>
                   </button>
                 ))}
-              </div>
+              </div></div>
             </motion.div>
           </div>
 
           {/* Stats bar */}
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 max-w-4xl mx-auto"
+          <motion.div className="grid grid-cols-2 gap-4 px-8 pb-8 pt-14 sm:px-12 lg:absolute lg:bottom-8 lg:left-8 lg:mt-0 lg:w-[calc(50%-4rem)] lg:grid-cols-4 lg:px-0 lg:pb-0 lg:pt-0 xl:left-24 xl:w-[calc(50%-8rem)]"
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
             {stats.map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#F0F0F0] shadow-sm px-5 py-4 text-center group hover:border-[#E8352A]/30 hover:scale-105 transition-all duration-300">
+              <div key={i} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center shadow-sm transition-all duration-300 group hover:scale-105 hover:border-[#E8352A]/30">
                 <p className="text-2xl font-bold text-[#E8352A]">{s.value}</p>
-                <p className="text-xs font-semibold text-[#1A1A1A] mt-0.5">{s.label}</p>
-                <p className="text-[10px] text-[#999] mt-0.5">{s.sub}</p>
+                <p className="mt-0.5 text-xs font-semibold text-white">{s.label}</p>
+                <p className="mt-0.5 text-[10px] text-white/45">{s.sub}</p>
                 <svg viewBox="0 0 80 20" className="w-full mt-2 opacity-50" fill="none">
                   <polyline points="0,15 15,10 30,13 45,5 60,9 80,3"
                     stroke="#E8352A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -393,15 +403,33 @@ export default function ManualBlendingPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {tools.map((tool, i) => (
-              <div key={i} className="bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl hover:border-[#E8352A]/30 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-[#FFF0EE] rounded-xl flex items-center justify-center mb-5 text-[#E8352A] group-hover:bg-[#FFE5E2] transition-colors">
-                  {tool.icon}
+              <div key={i} className="relative bg-white rounded-2xl p-7 border border-gray-200 hover:shadow-xl transition-all duration-300 group overflow-hidden">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `radial-gradient(circle at 50% 0%, ${tool.color}0D 0%, transparent 70%)` }} />
+                <div className="absolute top-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(to right, transparent, ${tool.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: tool.bg, color: tool.color }}>
+                   <span className="w-10 h-10 flex items-center justify-center">{tool.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{tool.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">{tool.description}</p>
-                <button className="text-[#E8352A] text-sm font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                  Explore tool <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">{tool.title}</h3>
+                <p className="text-gray-500 text-lg mb-4 leading-relaxed">{tool.description}</p>
+                {(() => {
+                  const slug = slugify(tool.title);
+                  return (
+                    <>
+                      <button type="button" onClick={() => setOpenServiceSlug(prev => prev === slug ? null : slug)} aria-expanded={openServiceSlug === slug} className="text-xl font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all" style={{ color: tool.color }}>
+                        Learn more <ArrowRight className="w-3.5 h-3.5 text-current" />
+                      </button>
+                      {openServiceSlug === slug && (
+                        <div className="mt-4 rounded-xl border border-gray-100 bg-white p-4 text-sm text-gray-800 shadow-sm">
+                          <p className="mb-3">{tool.description} Examples, turnarounds, and common use-cases for {tool.title}.</p>
+                          <div className="flex items-center gap-3">
+                            <button type="button" onClick={() => setOpenServiceSlug(null)} className="px-3 py-2 rounded-md bg-gray-100 text-gray-800">Close</button>
+                            <Link href={`/service/real-estate/manual-blending/${slug}`} className="px-3 py-2 rounded-md bg-[#E8352A] text-white">Open full page</Link>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
           </div>
