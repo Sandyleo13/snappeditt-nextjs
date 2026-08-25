@@ -23,8 +23,6 @@ import {
   BadgeCheck,
   Check,
 } from "lucide-react";
-import UnbreakableTrust from "./UnbreakableTrust";
-import TrustSection from "./TrustSection";
 
 const greatVibes = Great_Vibes({ subsets: ["latin"], weight: "400" });
 
