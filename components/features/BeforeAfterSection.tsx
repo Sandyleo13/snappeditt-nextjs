@@ -1,18 +1,28 @@
 // app/components/before-after-showcase.tsx
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
-  Zap, Sparkles, Layers,
-  Home, Building, Camera, Sunset, Award, TrendingUp, Timer,
-  ChevronLeft, ChevronRight
-} from 'lucide-react';
-import Image from 'next/image';
-import CountUp from 'react-countup';
+  Zap,
+  Sparkles,
+  Layers,
+  Home,
+  Building,
+  Camera,
+  Sunset,
+  Award,
+  TrendingUp,
+  Timer,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
+import Image from "next/image";
+import CountUp from "react-countup";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,14 +31,14 @@ interface ComparisonImage {
   id: string;
   title: string;
   category:
-  | 'real-estate'
-  | 'product-retouching'
-  | 'people-retouching'
-  | 'cliping-path'
-  | '3D-services'
-  | 'day-to-dusk'
-  | 'wedding-retouching'
-  | 'de-clutter-objects';
+    | "real-estate"
+    | "product-retouching"
+    | "people-retouching"
+    | "cliping-path"
+    | "3D-services"
+    | "day-to-dusk"
+    | "wedding-retouching"
+    | "de-clutter-objects";
 
   content: {
     description: string;
@@ -50,7 +60,7 @@ interface ComparisonImage {
     stats: string[];
   };
 
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: "Easy" | "Medium" | "Hard";
   timeSaved: string;
   tags: string[];
 }
@@ -61,295 +71,304 @@ interface ComparisonImage {
 const comparisonExamples: ComparisonImage[] = [
   // REAL ESTATE
   {
-    id: 'real-estate-1',
-    title: 'Real Estate',
-    category: 'real-estate',
+    id: "real-estate-1",
+    title: "Real Estate",
+    category: "real-estate",
 
     content: {
       description:
-        'Successful real estate sales rely heavily on great photographs with turnaround times of less than 12 hours and consistent results.',
+        "Successful real estate sales rely heavily on great photographs with turnaround times of less than 12 hours and consistent results.",
       services: [
-        ' HDR Editing',
-        ' Manual Blending',
-        ' Retouching',
-        ' Floor Plans',
-        ' Virtual Staging',
-        ' Day to Dusk'
-      ]
+        " HDR Editing",
+        " Manual Blending",
+        " Retouching",
+        " Floor Plans",
+        " Virtual Staging",
+        " Day to Dusk",
+      ],
     },
 
     before: {
-      title: 'Before: Dark Interior',
-      description: 'Poor lighting, dull colors, uninviting space',
-      imageUrl: '/images/real-estate-raw.jpg',
-      stats: ['ISO 800', 'f/4.0', '1/60s', 'Dark Corners']
+      title: "Before: Dark Interior",
+      description: "Poor lighting, dull colors, uninviting space",
+      imageUrl: "/images/real-estate-raw.jpg",
+      stats: ["ISO 800", "f/4.0", "1/60s", "Dark Corners"],
     },
 
     after: {
-      title: 'After: Magazine Ready',
-      description: 'Bright exposure, vibrant colors, professional look',
-      imageUrl: '/images/real-estate-corrected.jpg',
-      stats: ['+2 Stops', '+40% Saturation', 'Shadow Recovery']
+      title: "After: Magazine Ready",
+      description: "Bright exposure, vibrant colors, professional look",
+      imageUrl: "/images/real-estate-corrected.jpg",
+      stats: ["+2 Stops", "+40% Saturation", "Shadow Recovery"],
     },
 
-    difficulty: 'Medium',
-    timeSaved: '25 min',
-    tags: ['hdr', 'blending', 'retouching', 'staging']
+    difficulty: "Medium",
+    timeSaved: "25 min",
+    tags: ["hdr", "blending", "retouching", "staging"],
   },
 
   // PRODUCT RETOUCHING
   {
-    id: 'product-retouching',
-    title: 'Product Retouching',
-    category: 'product-retouching',
+    id: "product-retouching",
+    title: "Product Retouching",
+    category: "product-retouching",
 
     content: {
       description:
-        'Our Product Retouching services help your business showcase products beautifully for eCommerce portals—driving more sales.',
+        "Our Product Retouching services help your business showcase products beautifully for eCommerce portals—driving more sales.",
       services: [
-        ' eCommerce Retouching',
-        ' Apparel Retouching',
-        ' Jewelry Retouching',
-        ' Fashion Retouching',
-        ' Composite Retouching',
-        ' Ghost Mannequin'
+        " eCommerce Retouching",
+        " Apparel Retouching",
+        " Jewelry Retouching",
+        " Fashion Retouching",
+        " Composite Retouching",
+        " Ghost Mannequin",
       ],
-      cta: 'Check Our Packages →'
+      cta: "Check Our Packages →",
     },
 
     before: {
-      title: 'Before: Unretouched Product',
-      description: 'Raw product image with lighting and color inconsistencies',
-      imageUrl: '/images/Product-eComm-HP-Corrected-1-scaled.webp',
-      stats: ['Raw Capture', 'Uneven Lighting', 'Color Cast', 'Background Issues']
+      title: "Before: Unretouched Product",
+      description: "Raw product image with lighting and color inconsistencies",
+      imageUrl: "/images/Product-eComm-HP-Corrected-1-scaled.webp",
+      stats: [
+        "Raw Capture",
+        "Uneven Lighting",
+        "Color Cast",
+        "Background Issues",
+      ],
     },
 
     after: {
-      title: 'After: eCommerce Ready',
-      description: 'Professional retouching with clean background and accurate colors',
-      imageUrl: '/images/Product-eComm-HP-Raw-1-scaled.webp',
-      stats: ['Color Corrected', 'Clean Background', 'Shadow Enhanced', 'Web Ready']
+      title: "After: eCommerce Ready",
+      description:
+        "Professional retouching with clean background and accurate colors",
+      imageUrl: "/images/Product-eComm-HP-Raw-1-scaled.webp",
+      stats: [
+        "Color Corrected",
+        "Clean Background",
+        "Shadow Enhanced",
+        "Web Ready",
+      ],
     },
 
-    difficulty: 'Hard',
-    timeSaved: '35 min',
-    tags: ['ecommerce', 'apparel', 'jewelry', 'fashion']
+    difficulty: "Hard",
+    timeSaved: "35 min",
+    tags: ["ecommerce", "apparel", "jewelry", "fashion"],
   },
 
   // PEOPLE RETOUCHING
   {
-    id: 'people-retouching',
-    title: 'People Retouching',
-    category: 'people-retouching',
+    id: "people-retouching",
+    title: "People Retouching",
+    category: "people-retouching",
 
     content: {
       description:
-        'Reduce your workload with professional people retouching that matches your studio’s style perfectly.',
+        "Reduce your workload with professional people retouching that matches your studio’s style perfectly.",
       services: [
-        ' Pregnancy Retouching',
-        ' Newborn Retouching',
-        ' Sports Retouching',
-        ' Portrait Retouching',
-        ' Composite Retouching',
-        ' Fashion Retouching'
-      ]
+        " Pregnancy Retouching",
+        " Newborn Retouching",
+        " Sports Retouching",
+        " Portrait Retouching",
+        " Composite Retouching",
+        " Fashion Retouching",
+      ],
     },
 
     before: {
-      title: 'Before: Raw Portrait',
-      description: 'Unedited portrait image',
-      imageUrl: '/images/Baby-SPH-Raw-3.webp',
-      stats: ['Raw Photo', 'No Retouching', 'Natural Skin']
+      title: "Before: Raw Portrait",
+      description: "Unedited portrait image",
+      imageUrl: "/images/Baby-SPH-Raw-3.webp",
+      stats: ["Raw Photo", "No Retouching", "Natural Skin"],
     },
 
     after: {
-      title: 'After: Studio Finish',
-      description: 'Professional portrait enhancement',
-      imageUrl: '/images/Baby-SPH-Corrected-3.webp',
-      stats: ['Skin Retouch', 'Color Grading', 'Studio Finish']
+      title: "After: Studio Finish",
+      description: "Professional portrait enhancement",
+      imageUrl: "/images/Baby-SPH-Corrected-3.webp",
+      stats: ["Skin Retouch", "Color Grading", "Studio Finish"],
     },
 
-    difficulty: 'Hard',
-    timeSaved: '2 hours',
-    tags: ['portrait', 'beauty', 'fashion', 'newborn']
+    difficulty: "Hard",
+    timeSaved: "2 hours",
+    tags: ["portrait", "beauty", "fashion", "newborn"],
   },
 
   // WEDDING RETOUCHING
   {
-    id: 'wedding-retouching-1',
-    title: 'Wedding Retouching',
-    category: 'wedding-retouching',
+    id: "wedding-retouching-1",
+    title: "Wedding Retouching",
+    category: "wedding-retouching",
 
     content: {
       description:
-        'Create timeless wedding photos with natural skin tone enhancements, color grading, and flawless detail work for every bride and groom.',
+        "Create timeless wedding photos with natural skin tone enhancements, color grading, and flawless detail work for every bride and groom.",
       services: [
-        ' Wedding Retouching',
-        ' Bridal Portrait Enhancements',
-        ' Groom Retouching',
-        ' Skin Smoothing',
-        ' Event Color Correction',
-        ' Album-Ready Output'
-      ]
+        " Wedding Retouching",
+        " Bridal Portrait Enhancements",
+        " Groom Retouching",
+        " Skin Smoothing",
+        " Event Color Correction",
+        " Album-Ready Output",
+      ],
     },
 
     before: {
-      title: 'Before: Raw Wedding Photo',
-      description: 'Unedited wedding portrait with uneven skin tones and color shifts',
-      imageUrl: '/images/real-estate-raw.jpg',
-      stats: ['Low Contrast', 'Uneven Skin Tone', 'Muted Colors']
+      title: "Before: Raw Wedding Photo",
+      description:
+        "Unedited wedding portrait with uneven skin tones and color shifts",
+      imageUrl: "/images/real-estate-raw.jpg",
+      stats: ["Low Contrast", "Uneven Skin Tone", "Muted Colors"],
     },
 
     after: {
-      title: 'After: Wedding-Ready',
-      description: 'Bright, balanced wedding photography with polished details and natural warmth',
-      imageUrl: '/images/real-estate-corrected.jpg',
-      stats: ['Balanced Exposure', 'Natural Skin', 'Crisp Detail']
+      title: "After: Wedding-Ready",
+      description:
+        "Bright, balanced wedding photography with polished details and natural warmth",
+      imageUrl: "/images/real-estate-corrected.jpg",
+      stats: ["Balanced Exposure", "Natural Skin", "Crisp Detail"],
     },
 
-    difficulty: 'Medium',
-    timeSaved: '3 hours',
-    tags: ['wedding', 'events', 'portrait', 'retouch']
+    difficulty: "Medium",
+    timeSaved: "3 hours",
+    tags: ["wedding", "events", "portrait", "retouch"],
   },
 
   // CLIPPING PATH
   {
-    id: 'cliping-path-extraction',
-    title: 'Clipping Path & Extraction',
-    category: 'cliping-path',
+    id: "cliping-path-extraction",
+    title: "Clipping Path & Extraction",
+    category: "cliping-path",
 
     content: {
       description:
-        'We deliver background removals, transparent images, and path clippings for jewelry and product photos efficiently.',
+        "We deliver background removals, transparent images, and path clippings for jewelry and product photos efficiently.",
       services: [
-        ' Background Removal',
-        ' Blue Screen Removal',
-        ' Green Screen Removal',
-        ' Extraction',
-        'Clipping Path',
-        'CP with Shadows & Reflection'
-      ]
+        " Background Removal",
+        " Blue Screen Removal",
+        " Green Screen Removal",
+        " Extraction",
+        "Clipping Path",
+        "CP with Shadows & Reflection",
+      ],
     },
 
     before: {
-      title: 'Before: Product Background',
-      description: 'Complex background and unwanted elements',
-      imageUrl: '/images/Clipping-Path-HP-RAW-1.webp',
-      stats: ['Busy Background', 'Uncut', 'Raw Product']
+      title: "Before: Product Background",
+      description: "Complex background and unwanted elements",
+      imageUrl: "/images/Clipping-Path-HP-RAW-1.webp",
+      stats: ["Busy Background", "Uncut", "Raw Product"],
     },
 
     after: {
-      title: 'After: Clean Extraction',
-      description: 'Perfect clipping path and transparent background',
-      imageUrl: '/images/Clipping-Path-HP-Corrected-1.webp',
-      stats: ['Transparent', 'Clean Edge', 'Web Ready']
+      title: "After: Clean Extraction",
+      description: "Perfect clipping path and transparent background",
+      imageUrl: "/images/Clipping-Path-HP-Corrected-1.webp",
+      stats: ["Transparent", "Clean Edge", "Web Ready"],
     },
 
-    difficulty: 'Medium',
-    timeSaved: '45 min',
-    tags: ['clipping-path', 'background-removal', 'masking']
+    difficulty: "Medium",
+    timeSaved: "45 min",
+    tags: ["clipping-path", "background-removal", "masking"],
   },
 
   // 3D RENDERING
   {
-    id: '3d-rendering',
-    title: '3D Rendering',
-    category: '3D-services',
+    id: "3d-rendering",
+    title: "3D Rendering",
+    category: "3D-services",
 
     content: {
       description:
-        'We specialize in creating high-quality Architectural 3D Rendering, Interior Rendering and 3D Floor Plans delivered quickly and cost-effectively.',
-      services: [
-        '3D Floor Plans',
-        '3D Rendering'
-      ]
+        "We specialize in creating high-quality Architectural 3D Rendering, Interior Rendering and 3D Floor Plans delivered quickly and cost-effectively.",
+      services: ["3D Floor Plans", "3D Rendering"],
     },
 
     before: {
-      title: 'Before: Concept Model',
-      description: 'Basic architectural visualization',
-      imageUrl: '/images/Day-to-Dusk-SHP-Raw-1.webp',
-      stats: ['Concept', 'Basic Lighting', 'No Materials']
+      title: "Before: Concept Model",
+      description: "Basic architectural visualization",
+      imageUrl: "/images/Day-to-Dusk-SHP-Raw-1.webp",
+      stats: ["Concept", "Basic Lighting", "No Materials"],
     },
 
     after: {
-      title: 'After: Photorealistic Render',
-      description: 'Detailed rendering with realistic lighting',
-      imageUrl: '/images/Day-to-Dusk-SHP-Corrected-1.webp',
-      stats: ['Photorealistic', 'Lighting', 'Materials']
+      title: "After: Photorealistic Render",
+      description: "Detailed rendering with realistic lighting",
+      imageUrl: "/images/Day-to-Dusk-SHP-Corrected-1.webp",
+      stats: ["Photorealistic", "Lighting", "Materials"],
     },
 
-    difficulty: 'Hard',
-    timeSaved: '3 hours',
-    tags: ['3d', 'architecture', 'rendering', 'floor-plan']
+    difficulty: "Hard",
+    timeSaved: "3 hours",
+    tags: ["3d", "architecture", "rendering", "floor-plan"],
   },
-
-]
+];
 
 // Category configurations
 const categories = [
   {
-    id: 'real-estate',
-    name: 'Real Estate',
+    id: "real-estate",
+    name: "Real Estate",
     icon: Home,
-    description: 'Property photography enhancements',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/real-estate',
-  },
-   {
-    id: '3D-services',
-    name: '3D Services',
-    icon: Building,
-    description: '3D visualization and rendering',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/3d-services',
-  },
-   {
-    id: 'wedding-retouching',
-    name: 'Wedding Retouching',
-    icon: Building,
-    description: 'Wedding photo enhancements',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/wedding-events',
+    description: "Property photography enhancements",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/real-estate",
   },
   {
-    id: 'product-retouching',
-    name: 'Product Ecommerce',
+    id: "3D-services",
+    name: "3D Services",
     icon: Building,
-    description: 'E-commerce product enhancements',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/commercial',
+    description: "3D visualization and rendering",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/3d-services",
   },
   {
-    id: 'people-retouching',
-    name: 'People Retouching',
+    id: "wedding-retouching",
+    name: "Wedding Retouching",
+    icon: Building,
+    description: "Wedding photo enhancements",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/wedding-events",
+  },
+  {
+    id: "product-retouching",
+    name: "Product Ecommerce",
+    icon: Building,
+    description: "E-commerce product enhancements",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/commercial",
+  },
+  {
+    id: "people-retouching",
+    name: "People Retouching",
     icon: Camera,
-    description: 'Professional portrait retouching',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/people',
+    description: "Professional portrait retouching",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/people",
   },
   {
-    id: 'cliping-path',
-    name: 'Clipping Path ',
+    id: "cliping-path",
+    name: "Clipping Path ",
     icon: Layers,
-    description: 'Background removal & extraction',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/clipping-path-extraction',
+    description: "Background removal & extraction",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/clipping-path-extraction",
   },
   {
-    id: 'day-to-dusk',
-    name: 'Day to Dusk',
+    id: "day-to-dusk",
+    name: "Day to Dusk",
     icon: Sunset,
-    description: 'Daytime to sunset transformations',
-    color: ' from-white-500 to-red-600 ',
-    bgColor: 'bg-red-500/10',
-    route: '/service/real-estate',
+    description: "Daytime to sunset transformations",
+    color: " from-white-500 to-red-600 ",
+    bgColor: "bg-red-500/10",
+    route: "/service/real-estate",
   },
 ];
 
@@ -364,10 +383,10 @@ const categories = [
 
 // Performance stats
 const improvementStats = [
-  { value: 98, suffix: '%', label: 'Accuracy', icon: Award },
-  { value: 10, suffix: 'x', label: 'Faster', icon: Zap },
-  { value: 95, suffix: '%', label: 'User Satisfaction', icon: TrendingUp },
-  { value: 2, suffix: ' min', label: 'Average Edit Time', icon: Timer },
+  { value: 98, suffix: "%", label: "Accuracy", icon: Award },
+  { value: 10, suffix: "x", label: "Faster", icon: Zap },
+  { value: 95, suffix: "%", label: "User Satisfaction", icon: TrendingUp },
+  { value: 2, suffix: " min", label: "Average Edit Time", icon: Timer },
 ];
 
 const BeforeAfterSection = () => {
@@ -375,14 +394,14 @@ const BeforeAfterSection = () => {
 
   // State management
   const [activeExample, setActiveExample] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isAutoMode] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [animationSpeed] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
-
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   // Refs
   const sectionRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -391,24 +410,26 @@ const BeforeAfterSection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const sliderDirectionRef = useRef<1 | -1>(1);
 
-
   const categoryButtons = [
     {
-      id: 'all',
-      name: 'All Categories',
+      id: "all",
+      name: "All Categories",
       icon: Home,
-      description: 'Show all services',
-      color: ' from-white-500 to-red-600 ',
-      bgColor: 'bg-red-500/10',
-      route: '/service',
+      description: "Show all services",
+      color: " from-white-500 to-red-600 ",
+      bgColor: "bg-red-500/10",
+      route: "/service",
     },
     ...categories,
   ];
 
   // Filter examples by category
-  const filteredExamples = selectedCategory === 'all'
-    ? comparisonExamples
-    : comparisonExamples.filter(example => example.category === selectedCategory);
+  const filteredExamples =
+    selectedCategory === "all"
+      ? comparisonExamples
+      : comparisonExamples.filter(
+          (example) => example.category === selectedCategory,
+        );
 
   // If category changes and current index is out of range, reset to first item
   useEffect(() => {
@@ -422,7 +443,7 @@ const BeforeAfterSection = () => {
     if (!isPlaying || isDragging || filteredExamples.length <= 1) return;
 
     const interval = window.setInterval(() => {
-      setActiveExample(prev => (prev + 1) % filteredExamples.length);
+      setActiveExample((prev) => (prev + 1) % filteredExamples.length);
       setSliderPosition(50);
     }, 8000);
 
@@ -430,9 +451,14 @@ const BeforeAfterSection = () => {
   }, [filteredExamples.length, isPlaying, isDragging]);
 
   // Current example - fallback to first example if none found
-  const currentExample = filteredExamples[activeExample] || filteredExamples[0] || comparisonExamples[0];
+  const currentExample =
+    filteredExamples[activeExample] ||
+    filteredExamples[0] ||
+    comparisonExamples[0];
 
-  const currentCategoryRoute = categories.find((cat) => cat.id === currentExample.category)?.route ?? '/packages/';
+  const currentCategoryRoute =
+    categories.find((cat) => cat.id === currentExample.category)?.route ??
+    "/packages/";
 
   // Safety check - if no data loaded, don't render
   if (!currentExample) {
@@ -455,12 +481,12 @@ const BeforeAfterSection = () => {
         opacity: 0,
         y: 10,
         duration: 0.6,
-        ease: 'power2.out',
+        ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none', // fire once, no scrub
-        }
+          start: "top 85%",
+          toggleActions: "play none none none", // fire once, no scrub
+        },
       });
     }, sectionRef);
 
@@ -519,24 +545,24 @@ const BeforeAfterSection = () => {
 
     const handleMouseUp = () => {
       setIsDragging(false);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
 
     const handleTouchEnd = () => {
       setIsDragging(false);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
     };
 
-    if ('touches' in e) {
+    if ("touches" in e) {
       updatePosition(e.touches[0].clientX);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener("touchend", handleTouchEnd);
     } else {
       updatePosition(e.clientX);
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
     }
   };
 
@@ -553,12 +579,14 @@ const BeforeAfterSection = () => {
   };
 
   const showPreviousExample = () => {
-    setActiveExample(prev => (prev - 1 + filteredExamples.length) % filteredExamples.length);
+    setActiveExample(
+      (prev) => (prev - 1 + filteredExamples.length) % filteredExamples.length,
+    );
     resetSlider();
   };
 
   const showNextExample = () => {
-    setActiveExample(prev => (prev + 1) % filteredExamples.length);
+    setActiveExample((prev) => (prev + 1) % filteredExamples.length);
     resetSlider();
   };
 
@@ -600,18 +628,14 @@ const BeforeAfterSection = () => {
       <div className="relative w-full max-w-full px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-       
-
           <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-slate-900">
             Real Edits.
-           
-            <span className="text-red-600">
-              Real Results.
-            </span>
+            <span className="text-red-600">Real Results.</span>
           </h2>
 
           <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-           Explore professional photo enhancements across different editing categories.
+            Explore professional photo enhancements across different editing
+            categories.
           </p>
         </div>
 
@@ -641,9 +665,7 @@ const BeforeAfterSection = () => {
                       />
                     </div>
 
-                    <div className="text-slate-600 text-sm">
-                      {stat.label}
-                    </div>
+                    <div className="text-slate-600 text-sm">{stat.label}</div>
                   </div>
                 </div>
               </div>
@@ -652,53 +674,142 @@ const BeforeAfterSection = () => {
         </div>
 
         {/* Category Filters */}
-        <div className="category-filters mb-12 ml-25 animate-fadeIn">
-          <div
-            ref={scrollRef}
-            className="max-w-full overflow-x-auto scrollbar-none px-2 py-2 sm:px-1"
+        {/* Category Filters */}
+<div className="category-filters mb-12 animate-fadeIn">
+
+  {/* ================= MOBILE ================= */}
+  <div className="block md:hidden relative">
+
+    <button
+      onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+      className="w-full flex items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3 shadow-sm transition-all duration-300"
+    >
+      <div className="flex items-center gap-3">
+
+        {(() => {
+          const current =
+            categoryButtons.find(c => c.id === selectedCategory);
+
+          const Icon = current?.icon || Home;
+
+          return (
+            <>
+              <Icon className="w-5 h-5 text-red-500" />
+              <span className="font-medium text-slate-800">
+                {current?.name}
+              </span>
+            </>
+          );
+        })()}
+
+      </div>
+
+      <ChevronDown
+        className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${
+          mobileDropdownOpen ? "rotate-180" : ""
+        }`}
+      />
+    </button>
+
+    <div
+      className={`absolute left-0 right-0 mt-2 z-50 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl transition-all duration-300 ${
+        mobileDropdownOpen
+          ? "max-h-96 opacity-100"
+          : "max-h-0 opacity-0 border-0 shadow-none"
+      }`}
+    >
+
+      {categoryButtons.map(category => {
+
+        const Icon = category.icon;
+
+        return (
+
+          <button
+            key={category.id}
+            onClick={() => {
+              handleCategorySelect(category.id);
+              setMobileDropdownOpen(false);
+            }}
+            className={`w-full flex items-center gap-3 px-4 py-3 text-left transition hover:bg-red-50 ${
+              selectedCategory === category.id
+                ? "bg-red-50 text-red-600 font-semibold"
+                : "text-slate-700"
+            }`}
           >
-            <div className="flex items-center gap-3 whitespace-nowrap">
-              {categoryButtons.map((category) => {
-                const Icon = category.icon;
-                const isActive = selectedCategory === category.id;
 
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => handleCategorySelect(category.id)}
-                    className={`category-filter active:scale-95 flex-shrink-0 flex items-center gap-2 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-2xl sm:text-xl font-medium transition-all duration-300 border ${
-                      isActive
-                        ? 'active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20'
-                        : 'bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]'
-                    }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{category.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+            <Icon className="w-4 h-4" />
 
-        <div className="relative rounded-[2rem] w-full h-[600px] bg-white p-1 border border-slate-200">
+            <span>{category.name}</span>
+
+          </button>
+
+        );
+
+      })}
+
+    </div>
+
+  </div>
+
+  {/* ================= DESKTOP ================= */}
+
+  <div
+    ref={scrollRef}
+    className="hidden md:block w-full overflow-x-auto scrollbar-none px-4 py-2"
+  >
+    <div className="flex w-max mx-auto items-center gap-3 whitespace-nowrap">
+
+      {categoryButtons.map((category) => {
+
+        const Icon = category.icon;
+        const isActive = selectedCategory === category.id;
+
+        return (
+          <button
+            key={category.id}
+            onClick={() => handleCategorySelect(category.id)}
+            className={`category-filter active:scale-95 flex-shrink-0 flex items-center gap-2 rounded-full px-4 py-2 sm:px-5 sm:py-3 text-sm sm:text-base lg:text-lg font-medium transition-all duration-300 border ${
+              isActive
+                ? "active-category bg-[#F44336] text-white border-[#F44336] shadow-lg shadow-red-500/20"
+                : "bg-white text-slate-800 border-slate-300 hover:border-[#F44336] hover:text-[#F44336]"
+            }`}
+          >
+            <Icon className="w-4 h-4" />
+            <span>{category.name}</span>
+          </button>
+        );
+
+      })}
+
+    </div>
+  </div>
+
+</div>
+        <div className="relativew-fullmin-h-[600px]rounded-[2rem]bg-whitep-1borderborder-slate-200">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] items-stretch gap-5 lg:gap-12 rounded-[1.7rem] p-4 sm:p-8">
             {/* Left Hero Content */}
             <div className="flex flex-col justify-center w-full h-full gap-6">
               <div className="rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 hover:border-red-300 transition-all duration-300">
                 {/* <div className="text-xs uppercase tracking-[0.3em] text-red-600 font-semibold mb-4">Featured Example</div> */}
-                <div className="text-5xl sm:text-5xl font-bold text-slate-900 mb-3">{currentExample.title}</div>
-                <p className="text-base sm:text-2xl text-slate-600 mb-5 leading-relaxed">{currentExample.content.description}</p>
+                <div className="text-5xl sm:text-5xl font-bold text-slate-900 mb-3">
+                  {currentExample.title}
+                </div>
+                <p className="text-base sm:text-2xl text-slate-600 mb-5 leading-relaxed">
+                  {currentExample.content.description}
+                </p>
 
                 <div className="mb-6 flex flex-wrap gap-2 text-xs">
-                  {currentExample.content.services.slice(0, 4).map((service, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full bg-red-50 px-2.5 py-1 text-xl text-red-700 border border-red-200"
-                    >
-                      {service}
-                    </span>
-                  ))}
+                  {currentExample.content.services
+                    .slice(0, 4)
+                    .map((service, index) => (
+                      <span
+                        key={index}
+                        className="rounded-full bg-red-50 px-2.5 py-1 text-xl text-red-700 border border-red-200"
+                      >
+                        {service}
+                      </span>
+                    ))}
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -786,7 +897,7 @@ const BeforeAfterSection = () => {
                       AFTER
                     </div>
                   </div>
-                    <div className="absolute bottom-4 left-4 z-20">
+                  <div className="absolute bottom-4 left-4 z-20">
                     <div className="rounded-full bg-slate-900/90 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                       BEFORE
                     </div>
@@ -812,15 +923,10 @@ const BeforeAfterSection = () => {
 
                 {/* SLIDER */}
                 {renderComparisonSlider()}
-
-
-
               </div>
             </div>
           </div>
         </div>
-
-     
       </div>
     </section>
   );
