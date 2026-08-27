@@ -207,6 +207,31 @@ const previewImages = {
     after: "/images/Day-to-Dusk-SHP-Corrected-1.webp",
   },
 
+  "Real Estate": {
+    before: "/images/real-estate-raw.jpg",
+    after: "/images/real-estate-corrected.jpg",
+  },
+
+  "Single Exposure": {
+    before: "/images/Single-Exposure/1-before.webp",
+    after: "/images/Single-Exposure/1-after.webp",
+  },
+
+  "HDR Basic": {
+    before: "/images/HDR Basic/1-before.webp",
+    after: "/images/HDR Basic/1-after.webp",
+  },
+
+  "Flambient Editing": {
+    before: "/images/Flambient/1-before.webp",
+    after: "/images/Flambient/1-after.webp",
+  },
+
+  "Manual Blending": {
+    before: "/images/manual-blending-1.webp",
+    after: "/images/manual-blending-2.webp",
+  },
+
   "Day To Dusk": {
     before: "/images/Day-to-Dusk-SHP-Raw-1.webp",
     after: "/images/Day-to-Dusk-SHP-Corrected-1.webp",
@@ -215,6 +240,11 @@ const previewImages = {
   "De-Clutter Objects": {
     before: "/images/Declutter-SPH-Raw-2.webp",
     after: "/images/Declutter-SPH-Corrected-2.webp",
+  },
+
+  "Virtual Staging": {
+    before: "/images/Virtual-Staging-SPH-Raw-1.webp",
+    after: "/images/Virtual-Staging-SPH-Corrected-1.webp",
   },
 
   "Baby Retouch": {
@@ -230,6 +260,11 @@ const previewImages = {
   Extraction: {
     before: "/images/Clipping-Path-HP-RAW-1.webp",
     after: "/images/Clipping-Path-HP-Corrected-1.webp",
+  },
+
+  "Product Retouching": {
+    before: "/images/Product-eComm-HP-Raw-1-scaled.webp",
+    after: "/images/Product-eComm-HP-Corrected-1-scaled.webp",
   },
 } as const;
 
@@ -821,8 +856,8 @@ export default function Navbar() {
               <Image
                 src="/toWEBP/snappeditt.webp"
                 alt="Snappeditt Logo"
-                width={160}
-                height={160}
+                width={260}
+                height={260}
                 priority
                 className="
                   h-[120px]
@@ -863,7 +898,7 @@ export default function Navbar() {
 
               <Link
                 href="/"
-                className={`whitespace-nowrap text-sm font-medium transition-colors duration-200 xl:text-[15px] ${
+                className={`whitespace-nowrap text-xl font-medium transition-colors duration-200 xl:text-xl ${
                   pathname === "/"
                     ? "text-red-500"
                     : "text-black hover:text-red-500"
@@ -876,7 +911,7 @@ export default function Navbar() {
 
               <Link
                 href="/about-us"
-                className={`whitespace-nowrap text-sm font-medium transition-colors duration-200 xl:text-[15px] ${
+                className={`whitespace-nowrap text-xl font-medium transition-colors duration-200 xl:text-xl ${
                   pathname === "/about-us"
                     ? "text-red-500"
                     : "text-black hover:text-red-500"
@@ -942,11 +977,11 @@ export default function Navbar() {
                     items-center
                     gap-1
                     whitespace-nowrap
-                    text-sm
+                    text-xl
                     font-medium
                     transition-colors
                     duration-200
-                    xl:text-[15px]
+                    xl:text-xl
                     ${
                       serviceOpen ||
                       isServiceRoute
@@ -1054,7 +1089,7 @@ export default function Navbar() {
                         className="
                           px-3
                           pb-3
-                          text-[10px]
+                          text-xs
                           font-bold
                           uppercase
                           tracking-[0.18em]
@@ -1096,7 +1131,7 @@ export default function Navbar() {
                                   px-3
                                   py-3
                                   text-left
-                                  text-sm
+                                  text-2xl
                                   font-medium
                                   transition-all
                                   duration-150
@@ -1147,7 +1182,7 @@ export default function Navbar() {
                         <div className="min-w-0">
                           <p
                             className="
-                              text-[10px]
+                              text-xs
                               font-bold
                               uppercase
                               tracking-[0.18em]
@@ -1161,11 +1196,11 @@ export default function Navbar() {
                             className="
                               mt-2
                               truncate
-                              text-lg
+                              text-2xl
                               font-semibold
                               tracking-tight
                               text-slate-950
-                              xl:text-xl
+                              xl:text-2xl
                             "
                           >
                             {
@@ -1222,7 +1257,7 @@ export default function Navbar() {
                                 border
                                 px-4
                                 py-3
-                                text-sm
+                                text-lg
                                 transition-all
                                 duration-150
                                 ${
@@ -1280,7 +1315,7 @@ export default function Navbar() {
                             bg-red-500/15
                             px-3
                             py-1
-                            text-xs
+                            text-sm
                             font-semibold
                             uppercase
                             tracking-[0.2em]
@@ -1295,7 +1330,7 @@ export default function Navbar() {
                         <h4
                           className="
                             mt-5
-                            text-xl
+                            text-2xl
                             font-semibold
                             tracking-tight
                             text-white
@@ -1312,10 +1347,10 @@ export default function Navbar() {
                           className="
                             mt-3
                             max-w-sm
-                            text-sm
+                            text-lg
                             leading-6
                             text-slate-300
-                            xl:text-[0.95rem]
+                            xl:text-lg
                             xl:leading-7
                           "
                         >
@@ -1342,14 +1377,14 @@ export default function Navbar() {
                           border-white/10
                           bg-white/5
                           p-4
-                          text-sm
+                          text-xl
                           text-slate-200
                         "
                       >
                         <div className="mb-3 flex items-center justify-between gap-3">
                           <span
                             className="
-                              text-xs
+                              text-sm
                               uppercase
                               tracking-[0.18em]
                               text-slate-400
@@ -1365,7 +1400,7 @@ export default function Navbar() {
                               bg-red-500/15
                               px-2
                               py-1
-                              text-[11px]
+                              text-xl
                               font-semibold
                               text-red-200
                             "
@@ -1591,7 +1626,7 @@ export default function Navbar() {
                               null,
                             );
                           }}
-                          className="
+                          className="x
                             inline-flex
                             items-center
                             justify-center
@@ -1618,7 +1653,7 @@ export default function Navbar() {
 
               <Link
                 href="/contact-us"
-                className={`whitespace-nowrap text-sm font-medium transition-colors duration-200 xl:text-[15px] ${
+                className={`whitespace-nowrap text-xl font-medium transition-colors duration-200 xl:text-xl ${
                   pathname ===
                   "/contact-us"
                     ? "text-red-500"
@@ -1633,7 +1668,7 @@ export default function Navbar() {
                 DESKTOP RIGHT ACTIONS
             ================================================= */}
 
-            <div className="hidden items-center gap-4 text-sm text-black lg:flex">
+            <div className="hidden items-center gap-4 text-xl text-black lg:flex">
               {/* CART */}
 
               <Link
@@ -1648,7 +1683,7 @@ export default function Navbar() {
                 "
                 aria-label="Cart"
               >
-                <ShoppingCart size={24} />
+                <ShoppingCart size={30} />
               </Link>
 
               {/* ACCOUNT */}
@@ -1670,7 +1705,7 @@ export default function Navbar() {
                   bg-red-500
                   px-5
                   py-2.5
-                  text-sm
+                  text-xl
                   font-semibold
                   text-white
                   shadow-md

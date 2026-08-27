@@ -121,14 +121,14 @@ export default function AnimatedPhotoHero() {
   const dirRef = useRef<1 | -1>(1);
   const imgRef = useRef<HTMLDivElement>(null);
   const calcPos = (clientX: number) => {
-  if (!imgRef.current) return;
+    if (!imgRef.current) return;
 
-  const rect = imgRef.current.getBoundingClientRect();
+    const rect = imgRef.current.getBoundingClientRect();
 
-  const percentage = ((clientX - rect.left) / rect.width) * 100;
+    const percentage = ((clientX - rect.left) / rect.width) * 100;
 
-  setPos(Math.max(0, Math.min(100, percentage)));
-};
+    setPos(Math.max(0, Math.min(100, percentage)));
+  };
   const [trustOpen, setTrustOpen] = useState(false);
 
   const handleTrustClick = (e: any) => {
@@ -140,28 +140,28 @@ export default function AnimatedPhotoHero() {
 
   /* Auto ping-pong */
   useEffect(() => {
-  if (!playing || dragging) return;
+    if (!playing || dragging) return;
 
-  const interval = setInterval(() => {
-    setPos((prev) => {
-      let next = prev + dirRef.current * 1.2;
+    const interval = setInterval(() => {
+      setPos((prev) => {
+        let next = prev + dirRef.current * 1.2;
 
-      if (next >= 100) {
-        dirRef.current = -1;
-        next = 100;
-      }
+        if (next >= 100) {
+          dirRef.current = -1;
+          next = 100;
+        }
 
-      if (next <= 0) {
-        dirRef.current = 1;
-        next = 0;
-      }
+        if (next <= 0) {
+          dirRef.current = 1;
+          next = 0;
+        }
 
-      return next;
-    });
-  }, 25);
+        return next;
+      });
+    }, 25);
 
-  return () => clearInterval(interval);
-}, [playing, dragging]);
+    return () => clearInterval(interval);
+  }, [playing, dragging]);
 
   const TRUST_POINTS = [
     {
@@ -200,7 +200,7 @@ export default function AnimatedPhotoHero() {
     { value: "10+ Years", label: "Experience" },
   ];
 
-  
+
   return (
     <>
       <style>{`
@@ -212,10 +212,10 @@ export default function AnimatedPhotoHero() {
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-10 xl:px-14 pt-14 sm:pt-20 pb-12 sm:pb-16 scroll-mt-24">
         {/* ─── TOP GRID: left copy + right slider ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.45fr] gap-8 lg:gap-14 items-center mb-10 sm:mb-14">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-8 lg:gap-14 items-center mb-10 sm:mb-14">
           {/* ── LEFT ── */}
           <div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight text-gray-800">
               Get Professionally
             </h1>
             <div className="mb-4 min-h-[50px] sm:min-h-[65px] lg:min-h-[90px]">
@@ -230,6 +230,9 @@ export default function AnimatedPhotoHero() {
             </div>
 
             {/* subheading */}
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl">
+              Transform your property images with our professional editing services.
+            </p>
           </div>
 
           {/* ── RIGHT: Before/After slider ── */}
@@ -265,14 +268,14 @@ export default function AnimatedPhotoHero() {
     cursor-col-resize
   "
               onMouseEnter={() => {
-  setPlaying(false);
-}}
+                setPlaying(false);
+              }}
 
-onMouseLeave={() => {
-  if (!dragging) {
-    setPlaying(true);
-  }
-}}
+              onMouseLeave={() => {
+                if (!dragging) {
+                  setPlaying(true);
+                }
+              }}
             >
               {/* BEFORE */}
               <Image
@@ -420,6 +423,10 @@ touch-none
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.045),transparent_50%)] -z-10" />
 
         <div className="relative z-10">
+
+
+
+          
           <div className="container mx-auto px-4 sm:px-6 lg:px-10">
             <div className="relative grid gap-8 lg:grid-cols-[minmax(0,450px)_1fr] items-center py-10 lg:py-0">
               <div className="relative ">
@@ -485,7 +492,7 @@ lg:min-h-[430px]
                     </div>
 
                     <div className="mt-4 rounded-[1.75rem] border border-[#FEE2E2] bg-[#FFEBEE] px-5 py-5 text-center">
-                      <p className="text-[11px] uppercase tracking-[0.3em] text-[#9CA3AF]">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#D71920]">
                         Premium Results
                       </p>
                       <p className="mt-3 text-2xl font-bold tracking-tight text-[#111111]">
