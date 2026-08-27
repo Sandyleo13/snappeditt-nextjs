@@ -4,26 +4,17 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Camera,
   Instagram,
   Twitter,
   Youtube,
-  Linkedin,
   Facebook,
-  Github,
   Mail,
   Phone,
   Heart,
-  Zap,
-  Sparkles,
-  CheckCircle,
-  ArrowRight,
   Send,
   Shield,
-  Globe,
   Lock,
-  Award,
-  Star,
+  CheckCircle,
 } from "lucide-react";
 
 export function Footer() {
@@ -67,83 +58,126 @@ export function Footer() {
       href: "/service/clipping-path-extraction",
     },
   ];
+
   const company = [
-    { name: "About Us", href: "/about-us" },
-    { name: "How It Works", href: "/features" },
-    { name: "Before & After", href: "/before-after" },
-    { name: "Contact Us", href: "/contact-us" },
-    { name: "Free Trial", href: "/free-trial" },
+    {
+      name: "About Us",
+      href: "/about-us",
+    },
+    {
+      name: "How It Works",
+      href: "/features",
+    },
+    {
+      name: "Before & After",
+      href: "/before-after",
+    },
+    {
+      name: "Contact Us",
+      href: "/contact-us",
+    },
+    {
+      name: "Free Trial",
+      href: "/free-trial",
+    },
   ];
 
   const resources = [
-    { name: "Support", href: "/contact-us" },
-    { name: "Login", href: "/login" },
-    { name: "Register", href: "/register" },
-    { name: "Cart", href: "/cart" },
+    {
+      name: "Support",
+      href: "/contact-us",
+    },
+    {
+      name: "Login",
+      href: "/login",
+    },
+    {
+      name: "Register",
+      href: "/register",
+    },
+    {
+      name: "Cart",
+      href: "/cart",
+    },
   ];
+
+  const legalLinks = [
+    {
+      name: "Privacy Policy",
+      href: "/privacy",
+    },
+    {
+      name: "Terms of Service",
+      href: "/terms",
+    },
+    {
+      name: "Security",
+      href: "/security",
+    },
+    {
+      name: "GDPR",
+      href: "/gdpr",
+    },
+  ];
+
   const socialLinks = [
     {
       name: "Instagram",
       icon: Instagram,
       href: "https://instagram.com",
-      color: "text-[var(--primary)]",
     },
     {
       name: "Twitter",
       icon: Twitter,
       href: "https://twitter.com",
-      color: "text-[var(--primary)]",
     },
     {
       name: "YouTube",
       icon: Youtube,
       href: "https://youtube.com",
-      color: "text-[var(--primary)]",
     },
-    // {
-    //   name: "LinkedIn",
-    //   icon: Linkedin,
-    //   href: "https://linkedin.com",
-    //   color: "text-[var(--primary)]",
-    // },
     {
       name: "Facebook",
       icon: Facebook,
       href: "https://facebook.com",
-      color: "text-[var(--primary)]",
     },
-    // {
-    //   name: "GitHub",
-    //   icon: Github,
-    //   href: "https://github.com",
-    //   color: "text-[var(--primary)]",
-    // },
   ];
 
   return (
     <footer className="relative overflow-hidden border border-black/10 bg-black">
-      {/* Background Grid Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      {/* =========================================================
+          BACKGROUND
+      ========================================================= */}
+
+      <div className="pointer-events-none absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:50px_50px]" />
       </div>
 
-      {/* Gradient Blobs */}
-      <div className="absolute -left-36 -top-36 h-80 w-80 rounded-full bg-[var(--primary)]/10 opacity-40 mix-blend-screen blur-3xl filter" />
+      <div className="pointer-events-none absolute -left-36 -top-36 h-80 w-80 rounded-full bg-[var(--primary)]/10 opacity-40 mix-blend-screen blur-3xl" />
 
-      <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-[var(--primary-dark)]/10 opacity-40 mix-blend-screen blur-3xl filter" />
+      <div className="pointer-events-none absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-[var(--primary-dark)]/10 opacity-40 mix-blend-screen blur-3xl" />
 
-      {/* Main Content */}
+      {/* =========================================================
+          MAIN CONTENT
+      ========================================================= */}
+
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Top Section */}
+        {/* =======================================================
+            TOP SECTION
+        ======================================================= */}
+
         <div className="pb-16 pt-20">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5 lg:gap-8">
-            {/* Brand Column */}
+            {/* ===================================================
+                BRAND
+            =================================================== */}
+
             <div className="space-y-6 lg:col-span-1">
               <Link href="/" className="group inline-flex items-center gap-3">
                 <div className="relative h-12 w-12 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg shadow-[var(--primary)]/15">
                   <Image
                     src="/toWEBP/snappeditt.webp"
-                    alt="SnapEdit logo"
+                    alt="SnappEditt logo"
                     fill
                     className="object-cover"
                   />
@@ -162,11 +196,9 @@ export function Footer() {
                 worldwide.
               </p>
 
-              {/* Newsletter Subscription */}
+              {/* Newsletter */}
               <div className="space-y-3 pt-4">
-                <h4 className="flex items-center gap-2 text-sm font-semibold text-white">
-                  Newsletter
-                </h4>
+                <h4 className="text-sm font-semibold text-white">Newsletter</h4>
 
                 <form onSubmit={handleSubscribe} className="space-y-3">
                   <div className="flex gap-2">
@@ -175,13 +207,14 @@ export function Footer() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Your email"
-                      className="flex-1 rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition-all focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20"
+                      className="min-w-0 flex-1 rounded-2xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition-all focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20"
                       required
                     />
 
                     <button
                       type="submit"
-                      className="rounded-2xl bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] px-3 py-2 text-white transition-all duration-300 hover:shadow-xl hover:shadow-[var(--primary)]/25"
+                      aria-label="Subscribe to newsletter"
+                      className="shrink-0 rounded-2xl bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] px-3 py-2 text-white transition-all duration-300 hover:shadow-xl hover:shadow-[var(--primary)]/25"
                     >
                       {subscribed ? (
                         <CheckCircle className="h-4 w-4" />
@@ -200,9 +233,12 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Services Column */}
+            {/* ===================================================
+                SERVICES
+            =================================================== */}
+
             <div className="space-y-4">
-              <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-white">
                 Services
               </h3>
 
@@ -220,9 +256,12 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Company Column */}
+            {/* ===================================================
+                COMPANY
+            =================================================== */}
+
             <div className="space-y-4">
-              <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-white">
                 Company
               </h3>
 
@@ -240,9 +279,12 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Resources Column */}
+            {/* ===================================================
+                RESOURCES
+            =================================================== */}
+
             <div className="space-y-4">
-              <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-white">
                 Resources
               </h3>
 
@@ -260,25 +302,26 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* =====================================================
-                CONTACT COLUMN
-            ===================================================== */}
+            {/* ===================================================
+                CONTACT
+            =================================================== */}
+
             <div className="space-y-4">
               <h3 className="text-sm font-bold uppercase tracking-wider text-white">
                 Contact
               </h3>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {/* Email */}
                 <a
-                  href="mailto:sales@snappeditt.com"
+                  href="mailto:support@snappeditt.com"
                   className="group flex items-start gap-3"
                 >
                   <Mail className="mt-0.5 h-4 w-4 shrink-0 text-slate-300 transition-colors group-hover:text-[var(--primary)]" />
 
-                  <div className="text-sm text-[var(--footer-muted)] transition-colors group-hover:text-white">
-                    sales@snappeditt.com
-                  </div>
+                  <span className="min-w-0 break-all text-sm text-[var(--footer-muted)] transition-colors group-hover:text-white">
+                    support@snappeditt.com
+                  </span>
                 </a>
 
                 {/* Phone */}
@@ -288,26 +331,35 @@ export function Footer() {
                 >
                   <Phone className="mt-0.5 h-4 w-4 shrink-0 text-slate-300 transition-colors group-hover:text-[var(--primary)]" />
 
-                  <div className="text-sm text-[var(--footer-muted)] transition-colors group-hover:text-white">
-                    +1 (123) 456-7890
-                  </div>
+                  <a
+                    href="tel:+17869811712"
+                    className="text-sm text-[var(--footer-muted)] transition-colors group-hover:text-white"
+                  >
+                    +1 786 981 1712
+                  </a>
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Divider */}
+        {/* =========================================================
+            DIVIDER
+        ========================================================= */}
+
         <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-        {/* Middle Section - Trust & Security */}
+        {/* =========================================================
+            SECURITY / TRUST
+        ========================================================= */}
+
         <div className="py-12">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Security Badges */}
+            {/* Security */}
             <div className="space-y-4">
               <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white">
                 <Lock className="h-4 w-4 text-green-500" />
-                Security & Compliance
+                Security &amp; Compliance
               </h4>
 
               <div className="space-y-3">
@@ -316,15 +368,27 @@ export function Footer() {
                   <span className="text-slate-300">SSL 256-bit Encryption</span>
                 </div>
 
-                <div className="flex items-center gap-3 text-sm">
+                <Link
+                  href="/gdpr"
+                  className="group flex items-center gap-3 text-sm"
+                >
                   <CheckCircle className="h-4 w-4 shrink-0 text-green-500" />
-                  <span className="text-slate-300">GDPR Compliant</span>
-                </div>
 
-                <div className="flex items-center gap-3 text-sm">
+                  <span className="text-slate-300 transition-colors group-hover:text-white">
+                    GDPR
+                  </span>
+                </Link>
+
+                <Link
+                  href="/security"
+                  className="group flex items-center gap-3 text-sm"
+                >
                   <CheckCircle className="h-4 w-4 shrink-0 text-green-500" />
-                  <span className="text-slate-300">ISO 27001 Certified</span>
-                </div>
+
+                  <span className="text-slate-300 transition-colors group-hover:text-white">
+                    Security
+                  </span>
+                </Link>
               </div>
             </div>
 
@@ -335,29 +399,29 @@ export function Footer() {
               </h4>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-3 text-sm">
+                <div className="text-sm">
                   <span className="text-slate-300">
                     Professional Photo Editing
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 text-sm">
+                <div className="text-sm">
                   <span className="text-slate-300">Fast Turnaround Time</span>
                 </div>
 
-                <div className="flex items-center gap-3 text-sm">
+                <div className="text-sm">
                   <span className="text-slate-300">High-Quality Results</span>
                 </div>
               </div>
             </div>
 
-            {/* Social Links */}
+            {/* Social */}
             <div className="space-y-4">
               <h4 className="text-sm font-bold uppercase tracking-wider text-white">
                 Follow Us
               </h4>
 
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 {socialLinks.map((social) => {
                   const Icon = social.icon;
 
@@ -367,7 +431,7 @@ export function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex h-10 w-10 items-center justify-center rounded-lg bg-white/90 text-slate-900 transition-all duration-300 hover:scale-110 hover:bg-slate-100 hover:shadow-lg ${social.color}`}
+                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/90 text-slate-900 transition-all duration-300 hover:scale-110 hover:bg-slate-100 hover:shadow-lg"
                       aria-label={social.name}
                       title={social.name}
                     >
@@ -380,26 +444,64 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
+        {/* =========================================================
+            FINAL DIVIDER
+        ========================================================= */}
+
         <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        {/* Bottom Section */}
-        <div className="py-8">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            {/* Copyright */}
-            <div className="text-center md:text-left">
-              <div className="text-sm text-slate-300">
-                © {new Date().getFullYear()} SnappEditt rights reserved.
-              </div>
+
+        {/* =========================================================
+            BOTTOM FOOTER
+            Matches the provided screenshot
+        ========================================================= */}
+
+        <div className="py-8 sm:py-9">
+          <div className="flex flex-col gap-5 sm:gap-6 md:flex-row md:items-center md:justify-between">
+            {/* =====================================================
+                LEFT
+            ===================================================== */}
+
+            <div className="min-w-0">
+              <p className="text-sm text-slate-300">
+                © {new Date().getFullYear()} SnappEditt AI. All rights reserved.
+              </p>
+
+              {/* Legal Links */}
+              <nav
+                aria-label="Legal"
+                className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2"
+              >
+                {legalLinks.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-xs font-medium text-slate-300 transition-colors duration-200 hover:text-white sm:text-sm"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
             </div>
 
-            {/* Made with Love */}
-            <div className="flex items-center gap-2 text-sm text-[var(--footer-muted)]">
+            {/* =====================================================
+                RIGHT
+            ===================================================== */}
+
+            <a
+              href="https://atriawebsolutions.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex shrink-0 items-center gap-2 text-sm text-[var(--footer-muted)] transition-colors duration-200 hover:text-white md:justify-end"
+            >
               <span>Made with</span>
 
-              <Heart className="h-4 w-4 animate-pulse fill-[var(--primary)] text-[var(--primary)]" />
+              <Heart
+                className="h-4 w-4 animate-pulse fill-[var(--primary)] text-[var(--primary)] transition-transform duration-200 group-hover:scale-110"
+                aria-hidden="true"
+              />
 
               <span>by Atria Web Solutions</span>
-            </div>
+            </a>
           </div>
         </div>
       </div>

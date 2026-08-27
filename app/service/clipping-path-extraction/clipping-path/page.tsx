@@ -276,12 +276,6 @@ export default function ClippingPathPage() {
 
               <span className="absolute top-4 left-4 z-10 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#D2D2E0]">Before</span>
               <span className="absolute top-4 right-4 z-10 rounded-full bg-[#E8352A] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white">Clipped</span>
-
-              <motion.div
-                animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                className="absolute top-4 left-1/2 z-20 -translate-x-1/2 rounded-full bg-black/40 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
-                AI-Assisted Manual Edit
-              </motion.div>
             </div>
 
             <motion.div className="bg-[#11131A]/90 rounded-3xl border border-white/10 p-4 shadow-[0_16px_48px_rgba(0,0,0,0.25)] mt-6"

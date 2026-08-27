@@ -1,4 +1,3 @@
-// app/digital-declutter/page.tsx
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -294,8 +293,8 @@ export default function DigitalDeclutterPage() {
                 <span className="absolute top-4 right-4 z-10 bg-[#E8352A] text-white text-xs font-semibold px-3 py-1 rounded-full">After</span>
 
                 <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
-                  <Zap className="h-3.5 w-3.5 text-[#E8352A]" />
-                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Declutter</span>
+                  <Trash2 className="h-3.5 w-3.5 text-[#E8352A]" />
+                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">Professional Declutter</span>
                 </motion.div>
 
                 <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">

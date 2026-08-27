@@ -1,4 +1,3 @@
-// app/2d-3d-floor-plans/page.tsx
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -265,6 +264,18 @@ export default function FloorPlansPage() {
               <span className="absolute top-5 left-5 z-10 bg-black/60 text-white text-[11px] font-bold px-3 py-1.5 rounded-full backdrop-blur-md tracking-wider uppercase">Before</span>
               <span className="absolute top-5 right-5 z-10 bg-[#E8352A] text-white text-[11px] font-bold px-3 py-1.5 rounded-full tracking-wider uppercase">After</span>
 
+              {/* Service badge */}
+              <motion.div
+                animate={{ y: [-4, 4, -4] }}
+                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+                className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md"
+              >
+                <Box className="h-3.5 w-3.5 text-[#E8352A]" />
+                <span className="whitespace-nowrap text-[11px] font-semibold text-white">
+                  Professional 3D Floor Plan
+                </span>
+              </motion.div>
+
               {/* Bottom overlay: editor toolbar */}
               <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/80 to-transparent px-6 py-5">
                 <div className="flex items-center justify-between gap-2">
@@ -284,15 +295,7 @@ export default function FloorPlansPage() {
                     </button>
                   ))}
                 </div>
-              </div>
-
-              {/* Floating AI badge */}
-              <motion.div
-                animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#E8352A]" />
-                <span className="text-white text-[11px] font-semibold">AI-Assisted Manual Edit</span>
-              </motion.div>
+              </div>    
             </div>
 
             {/* Image selector dots */}

@@ -322,7 +322,7 @@ export default function VirtualStagingPage() {
 
                 <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
                   <Zap className="h-3.5 w-3.5 text-[#E8352A]" />
-                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Virtual Staging</span>
+                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">Virtual Staging</span>
                 </motion.div>
 
                 <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/90 to-transparent px-6 py-5">

@@ -1,4 +1,3 @@
-// app/day-to-dusk/page.tsx
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -282,15 +281,15 @@ export default function DayToDuskPage() {
 
               {/* Heading — red first, then black (matches screenshot) */}
               <h1 className="font-extrabold leading-[0.95] tracking-tight">
-                <motion.span className="block text-[#E8352A] text-[clamp(3rem,8vw,7rem)]"
+                <motion.span className="block max-w-full text-[#E8352A] text-[clamp(2.8rem,4.4vw,5.25rem)]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.55 }}>
                   Day to Dusk
                 </motion.span>
-                <motion.span className="block text-white text-[clamp(3rem,8vw,7rem)]"
+                <motion.span className="block max-w-full text-white text-[clamp(2.8rem,4.4vw,5.25rem)]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.30, duration: 0.55 }}>
                   Time Transformation
                 </motion.span>
-                <motion.span className="block text-white text-[clamp(3rem,8vw,7rem)]"
+                <motion.span className="block max-w-full text-white text-[clamp(2.8rem,4.4vw,5.25rem)]"
                   initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.40, duration: 0.55 }}>
                   Magic
                 </motion.span>
@@ -397,8 +396,8 @@ export default function DayToDuskPage() {
                 <span className="absolute top-3 right-3 z-10 bg-[#E8352A] text-white text-[11px] font-semibold px-3 py-1 rounded-full">After</span>
 
                 <motion.div animate={{ y: [-4, 4, -4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
-                  <Sparkles className="h-3.5 w-3.5 text-[#E8352A]" />
-                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">AI-Assisted Time Edit</span>
+                  <Sunset className="h-3.5 w-3.5 text-[#E8352A]" />
+                  <span className="whitespace-nowrap text-[11px] font-semibold text-white">Day-to-Dusk Retouching</span>
                 </motion.div>
               </div>
 

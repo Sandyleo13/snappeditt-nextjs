@@ -184,11 +184,6 @@ export default function MaternityPregnancyRetouchPage() {
                   ))}
                 </div>
               </div>
-
-              <motion.div animate={{ y: [-4,4,-4] }} transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }} className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#E8352A]" />
-                <span className="text-white text-[11px] font-semibold">AI-Assisted Manual Edit</span>
-              </motion.div>
             </div>
 
             <div className="flex items-center justify-center gap-3 py-5 lg:absolute lg:bottom-24 lg:right-6 lg:flex-col lg:py-0">

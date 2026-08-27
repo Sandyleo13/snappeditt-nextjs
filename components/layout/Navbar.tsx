@@ -11,7 +11,7 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
-  ImageIcon,
+  ChevronLeft,
   Home,
   Layout,
   Heart,
@@ -100,7 +100,7 @@ const services = [
       },
       {
         name: "Wedding Retouch",
-        href: "/service/wedding-retouching",
+        href: "/service/wedding-events/wedding-events-retouch",
       },
       {
         name: "Album Retouch",
@@ -190,6 +190,79 @@ const services = [
   },
 ];
 
+/* =============================================================
+   BEFORE / AFTER PREVIEW IMAGES
+
+   These use the files you showed from:
+
+   public/images/
+
+   Services with matching image names use their own pair.
+   Other services use Day-to-Dusk as a safe fallback.
+============================================================= */
+
+const previewImages = {
+  default: {
+    before: "/images/Day-to-Dusk-SHP-Raw-1.webp",
+    after: "/images/Day-to-Dusk-SHP-Corrected-1.webp",
+  },
+
+  "Day To Dusk": {
+    before: "/images/Day-to-Dusk-SHP-Raw-1.webp",
+    after: "/images/Day-to-Dusk-SHP-Corrected-1.webp",
+  },
+
+  "De-Clutter Objects": {
+    before: "/images/Declutter-SPH-Raw-2.webp",
+    after: "/images/Declutter-SPH-Corrected-2.webp",
+  },
+
+  "Baby Retouch": {
+    before: "/images/Baby-SPH-Raw-3.webp",
+    after: "/images/Baby-SPH-Corrected-3.webp",
+  },
+
+  "Clipping Path": {
+    before: "/images/Clipping-Path-HP-RAW-1.webp",
+    after: "/images/Clipping-Path-HP-Corrected-1.webp",
+  },
+
+  Extraction: {
+    before: "/images/Clipping-Path-HP-RAW-1.webp",
+    after: "/images/Clipping-Path-HP-Corrected-1.webp",
+  },
+} as const;
+
+type PreviewImagePair = {
+  before: string;
+  after: string;
+};
+
+function getPreviewImages(
+  serviceName?: string,
+  itemName?: string,
+): PreviewImagePair {
+  if (
+    itemName &&
+    itemName in previewImages
+  ) {
+    return previewImages[
+      itemName as keyof typeof previewImages
+    ];
+  }
+
+  if (
+    serviceName &&
+    serviceName in previewImages
+  ) {
+    return previewImages[
+      serviceName as keyof typeof previewImages
+    ];
+  }
+
+  return previewImages.default;
+}
+
 export default function Navbar() {
   const pathname = usePathname();
 
@@ -197,17 +270,50 @@ export default function Navbar() {
   const [trialOpen, setTrialOpen] = useState(false);
 
   const [serviceOpen, setServiceOpen] = useState(false);
-  const [activeService, setActiveService] = useState<string | null>(null);
+  const [activeService, setActiveService] =
+    useState<string | null>(null);
 
-  const [mobileServiceOpen, setMobileServiceOpen] = useState(false);
-  const [mobileActiveService, setMobileActiveService] = useState<string | null>(
-    null,
-  );
+  const [mobileServiceOpen, setMobileServiceOpen] =
+    useState(false);
 
-  const [scrolled, setScrolled] = useState(false);
+  const [
+    mobileActiveService,
+    setMobileActiveService,
+  ] = useState<string | null>(null);
 
-  const serviceRef = useRef<HTMLLIElement | null>(null);
-  const closeTimeoutRef = useRef<number | null>(null);
+  const [scrolled, setScrolled] =
+    useState(false);
+
+  // Auto-hide/show navbar while scrolling, like the main pages.
+  const [navbarVisible, setNavbarVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+
+  /* =========================================================
+     BEFORE / AFTER SLIDER STATE
+  ========================================================= */
+
+  const [sliderPosition, setSliderPosition] =
+    useState(50);
+
+  const [isDragging, setIsDragging] =
+    useState(false);
+
+  const previewRef =
+    useRef<HTMLDivElement | null>(null);
+
+  // Automatic before/after slider animation.
+  // The ref keeps the animation loop stable while React state updates.
+  const isDraggingRef = useRef(false);
+  const autoSliderFrameRef = useRef<number | null>(null);
+  const autoDirectionRef = useRef<1 | -1>(1);
+  const lastAutoTimeRef = useRef<number | null>(null);
+  const resumeAutoSliderRef = useRef<number | null>(null);
+
+  const serviceRef =
+    useRef<HTMLLIElement | null>(null);
+
+  const closeTimeoutRef =
+    useRef<number | null>(null);
 
   /*
    * ------------------------------------------------------------
@@ -217,28 +323,71 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      const currentScrollY = window.scrollY;
+
+      setScrolled(currentScrollY > 10);
+
+      // Keep the navbar visible at the very top.
+      if (currentScrollY <= 10) {
+        setNavbarVisible(true);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
+      // Scrolling down -> hide. Scrolling up -> show.
+      if (currentScrollY > lastScrollYRef.current + 4) {
+        setNavbarVisible(false);
+        setServiceOpen(false);
+        setActiveService(null);
+      } else if (currentScrollY < lastScrollYRef.current - 4) {
+        setNavbarVisible(true);
+      }
+
+      lastScrollYRef.current = currentScrollY;
     };
 
-    const handleClickOutside = (e: MouseEvent) => {
+    lastScrollYRef.current = window.scrollY;
+
+    const handleClickOutside = (
+      e: MouseEvent,
+    ) => {
       if (
         serviceRef.current &&
-        !serviceRef.current.contains(e.target as Node)
+        !serviceRef.current.contains(
+          e.target as Node,
+        )
       ) {
         setServiceOpen(false);
         setActiveService(null);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+    );
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside,
+    );
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener(
+        "scroll",
+        handleScroll,
+      );
+
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside,
+      );
 
       if (closeTimeoutRef.current) {
-        window.clearTimeout(closeTimeoutRef.current);
+        window.clearTimeout(
+          closeTimeoutRef.current,
+        );
+
         closeTimeoutRef.current = null;
       }
     };
@@ -250,23 +399,280 @@ export default function Navbar() {
    * ------------------------------------------------------------
    */
 
-  const isServiceRoute = pathname?.startsWith("/service/") ?? false;
+  const isServiceRoute =
+    pathname?.startsWith("/service/") ??
+    false;
 
   const currentServiceCategory =
     services.find((service) =>
-      service.submenu.some((item) => item.href === pathname),
+      service.submenu.some(
+        (item) => item.href === pathname,
+      ),
     )?.name ?? null;
 
   const dropdownActiveService =
-    activeService ?? currentServiceCategory ?? services[0]?.name;
+    activeService ??
+    currentServiceCategory ??
+    services[0]?.name;
 
   const activeCategory =
-    services.find((service) => service.name === dropdownActiveService) ??
-    services[0];
+    services.find(
+      (service) =>
+        service.name ===
+        dropdownActiveService,
+    ) ?? services[0];
 
   const selectedServiceItem =
-    activeCategory.submenu.find((item) => item.href === pathname) ??
+    activeCategory.submenu.find(
+      (item) => item.href === pathname,
+    ) ??
     activeCategory.submenu[0];
+
+  /*
+   * ------------------------------------------------------------
+   * RESET SLIDER WHEN SERVICE CHANGES
+   * ------------------------------------------------------------
+   */
+
+  useEffect(() => {
+    setSliderPosition(50);
+
+    // Restart the automatic slider from the middle for each service.
+    autoDirectionRef.current = 1;
+    lastAutoTimeRef.current = null;
+  }, [
+    dropdownActiveService,
+    selectedServiceItem?.name,
+  ]);
+
+  /*
+   * ------------------------------------------------------------
+   * AUTOMATIC BEFORE / AFTER SLIDER
+   *
+   * The handle continuously travels between 10% and 90%.
+   * Manual mouse/touch interaction temporarily pauses it.
+   * ------------------------------------------------------------
+   */
+
+  useEffect(() => {
+    const animate = (time: number) => {
+      if (lastAutoTimeRef.current === null) {
+        lastAutoTimeRef.current = time;
+      }
+
+      const delta = time - lastAutoTimeRef.current;
+      lastAutoTimeRef.current = time;
+
+      if (!isDraggingRef.current) {
+        setSliderPosition((current) => {
+          // Keep the movement smooth and independent of frame rate.
+          const speed = 0.035;
+          let next =
+            current +
+            autoDirectionRef.current * delta * speed;
+
+          if (next >= 90) {
+            next = 90;
+            autoDirectionRef.current = -1;
+          } else if (next <= 10) {
+            next = 10;
+            autoDirectionRef.current = 1;
+          }
+
+          return next;
+        });
+      }
+
+      autoSliderFrameRef.current =
+        window.requestAnimationFrame(animate);
+    };
+
+    autoSliderFrameRef.current =
+      window.requestAnimationFrame(animate);
+
+    return () => {
+      if (autoSliderFrameRef.current !== null) {
+        window.cancelAnimationFrame(
+          autoSliderFrameRef.current,
+        );
+      }
+
+      if (resumeAutoSliderRef.current !== null) {
+        window.clearTimeout(
+          resumeAutoSliderRef.current,
+        );
+      }
+
+      autoSliderFrameRef.current = null;
+      resumeAutoSliderRef.current = null;
+      lastAutoTimeRef.current = null;
+    };
+  }, []);
+
+  /*
+   * ------------------------------------------------------------
+   * CURRENT PREVIEW IMAGES
+   * ------------------------------------------------------------
+   */
+
+  const currentPreview =
+    getPreviewImages(
+      activeCategory?.name,
+      selectedServiceItem?.name,
+    );
+
+  /*
+   * ------------------------------------------------------------
+   * BEFORE / AFTER SLIDER
+   * ------------------------------------------------------------
+   */
+
+  const updateSliderPosition = (
+    clientX: number,
+  ) => {
+    const element =
+      previewRef.current;
+
+    if (!element) return;
+
+    const rect =
+      element.getBoundingClientRect();
+
+    if (rect.width <= 0) return;
+
+    const percentage =
+      ((clientX - rect.left) /
+        rect.width) *
+      100;
+
+    setSliderPosition(
+      Math.max(
+        0,
+        Math.min(
+          100,
+          percentage,
+        ),
+      ),
+    );
+  };
+
+  /*
+   * ------------------------------------------------------------
+   * MOUSE DRAG
+   * ------------------------------------------------------------
+   */
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseMove = (
+      event: MouseEvent,
+    ) => {
+      updateSliderPosition(
+        event.clientX,
+      );
+    };
+
+    const handleMouseUp = () => {
+      isDraggingRef.current = false;
+      setIsDragging(false);
+
+      // Give the user a moment to see their selected position
+      // before the automatic animation starts again.
+      if (resumeAutoSliderRef.current !== null) {
+        window.clearTimeout(
+          resumeAutoSliderRef.current,
+        );
+      }
+
+      resumeAutoSliderRef.current =
+        window.setTimeout(() => {
+          lastAutoTimeRef.current = null;
+        }, 1500);
+    };
+
+    window.addEventListener(
+      "mousemove",
+      handleMouseMove,
+    );
+
+    window.addEventListener(
+      "mouseup",
+      handleMouseUp,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "mousemove",
+        handleMouseMove,
+      );
+
+      window.removeEventListener(
+        "mouseup",
+        handleMouseUp,
+      );
+    };
+  }, [isDragging]);
+
+  /*
+   * ------------------------------------------------------------
+   * TOUCH DRAG
+   * ------------------------------------------------------------
+   */
+
+  const handleTouchStart = (
+    event: React.TouchEvent<HTMLDivElement>,
+  ) => {
+    isDraggingRef.current = true;
+    setIsDragging(true);
+
+    if (resumeAutoSliderRef.current !== null) {
+      window.clearTimeout(
+        resumeAutoSliderRef.current,
+      );
+      resumeAutoSliderRef.current = null;
+    }
+
+    const touch =
+      event.touches[0];
+
+    if (touch) {
+      updateSliderPosition(
+        touch.clientX,
+      );
+    }
+  };
+
+  const handleTouchMove = (
+    event: React.TouchEvent<HTMLDivElement>,
+  ) => {
+    if (!isDragging) return;
+
+    const touch =
+      event.touches[0];
+
+    if (touch) {
+      updateSliderPosition(
+        touch.clientX,
+      );
+    }
+  };
+
+  const handleTouchEnd = () => {
+    isDraggingRef.current = false;
+    setIsDragging(false);
+
+    if (resumeAutoSliderRef.current !== null) {
+      window.clearTimeout(
+        resumeAutoSliderRef.current,
+      );
+    }
+
+    resumeAutoSliderRef.current =
+      window.setTimeout(() => {
+        lastAutoTimeRef.current = null;
+      }, 1500);
+  };
 
   /*
    * ------------------------------------------------------------
@@ -274,28 +680,75 @@ export default function Navbar() {
    * ------------------------------------------------------------
    */
 
-  const categoryIcon = (name: string) => {
+  const categoryIcon = (
+    name: string,
+  ) => {
     switch (true) {
-      case name.includes("Real Estate"):
-        return <Home size={16} className="text-red-500" />;
+      case name.includes(
+        "Real Estate",
+      ):
+        return (
+          <Home
+            size={16}
+            className="text-red-500"
+          />
+        );
 
       case name.includes("3D"):
-        return <Layout size={16} className="text-red-500" />;
+        return (
+          <Layout
+            size={16}
+            className="text-red-500"
+          />
+        );
 
-      case name.includes("Wedding"):
-        return <Heart size={16} className="text-red-500" />;
+      case name.includes(
+        "Wedding",
+      ):
+        return (
+          <Heart
+            size={16}
+            className="text-red-500"
+          />
+        );
 
-      case name.includes("Product"):
-        return <Box size={16} className="text-red-500" />;
+      case name.includes(
+        "Product",
+      ):
+        return (
+          <Box
+            size={16}
+            className="text-red-500"
+          />
+        );
 
-      case name.includes("People"):
-        return <User size={16} className="text-red-500" />;
+      case name.includes(
+        "People",
+      ):
+        return (
+          <User
+            size={16}
+            className="text-red-500"
+          />
+        );
 
-      case name.includes("Clipping"):
-        return <Scissors size={16} className="text-red-500" />;
+      case name.includes(
+        "Clipping",
+      ):
+        return (
+          <Scissors
+            size={16}
+            className="text-red-500"
+          />
+        );
 
       default:
-        return <Camera size={16} className="text-red-500" />;
+        return (
+          <Camera
+            size={16}
+            className="text-red-500"
+          />
+        );
     }
   };
 
@@ -320,7 +773,9 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky left-0 right-0 top-0 z-[9999] transition-all duration-300 ${
+        className={`sticky left-0 right-0 top-0 z-[9999] transform transition-all duration-300 ease-out ${
+          navbarVisible ? "translate-y-0" : "-translate-y-full"
+        } ${
           scrolled
             ? "border-b border-gray-100 bg-white/95 shadow-lg backdrop-blur-md"
             : "border-b border-gray-100 bg-white shadow-sm"
@@ -438,9 +893,15 @@ export default function Navbar() {
                 ref={serviceRef}
                 className="relative list-none"
                 onMouseEnter={() => {
-                  if (closeTimeoutRef.current) {
-                    window.clearTimeout(closeTimeoutRef.current);
-                    closeTimeoutRef.current = null;
+                  if (
+                    closeTimeoutRef.current
+                  ) {
+                    window.clearTimeout(
+                      closeTimeoutRef.current,
+                    );
+
+                    closeTimeoutRef.current =
+                      null;
                   }
 
                   setServiceOpen(true);
@@ -452,11 +913,13 @@ export default function Navbar() {
                   );
                 }}
                 onMouseLeave={() => {
-                  closeTimeoutRef.current = window.setTimeout(() => {
-                    setServiceOpen(false);
-                    setActiveService(null);
-                    closeTimeoutRef.current = null;
-                  }, 250);
+                  closeTimeoutRef.current =
+                    window.setTimeout(() => {
+                      setServiceOpen(false);
+                      setActiveService(null);
+                      closeTimeoutRef.current =
+                        null;
+                    }, 250);
                 }}
               >
                 {/* SERVICES BUTTON */}
@@ -464,7 +927,9 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => {
-                    setServiceOpen((prev) => !prev);
+                    setServiceOpen(
+                      (prev) => !prev,
+                    );
 
                     setActiveService(
                       currentServiceCategory ??
@@ -483,7 +948,8 @@ export default function Navbar() {
                     duration-200
                     xl:text-[15px]
                     ${
-                      serviceOpen || isServiceRoute
+                      serviceOpen ||
+                      isServiceRoute
                         ? "text-red-500"
                         : "text-black hover:text-red-500"
                     }
@@ -494,20 +960,17 @@ export default function Navbar() {
                   <ChevronDown
                     size={15}
                     className={`transition-transform duration-200 ${
-                      serviceOpen ? "rotate-180" : ""
+                      serviceOpen
+                        ? "rotate-180"
+                        : ""
                     } ${
-                      serviceOpen || isServiceRoute
+                      serviceOpen ||
+                      isServiceRoute
                         ? "text-red-500"
                         : "text-black"
                     }`}
                   />
                 </button>
-
-                {/* =================================================
-                    HOVER BRIDGE
-
-                    Wide enough for the larger desktop dropdown.
-                ================================================= */}
 
                 {/* =================================================
                     DESKTOP DROPDOWN
@@ -552,11 +1015,6 @@ export default function Navbar() {
 
                   {/* =================================================
                       MEGA MENU
-
-                      Responsive widths:
-                      lg  : fits laptop
-                      xl  : larger
-                      2xl : very large
                   ================================================= */}
 
                   <div
@@ -607,55 +1065,65 @@ export default function Navbar() {
                       </p>
 
                       <div className="space-y-1">
-                        {services.map((s) => {
-                          const isActive =
-                            dropdownActiveService === s.name;
+                        {services.map(
+                          (s) => {
+                            const isActive =
+                              dropdownActiveService ===
+                              s.name;
 
-                          return (
-                            <button
-                              key={s.name}
-                              type="button"
-                              onMouseEnter={() =>
-                                setActiveService(s.name)
-                              }
-                              onClick={() =>
-                                setActiveService(s.name)
-                              }
-                              className={`
-                                flex
-                                w-full
-                                items-center
-                                gap-3
-                                rounded-xl
-                                px-3
-                                py-3
-                                text-left
-                                text-sm
-                                font-medium
-                                transition-all
-                                duration-150
-                                xl:px-4
-                                ${
-                                  isActive
-                                    ? "bg-red-500 text-white shadow-sm"
-                                    : "text-gray-700 hover:bg-red-50 hover:text-red-600"
+                            return (
+                              <button
+                                key={
+                                  s.name
                                 }
-                              `}
-                            >
-                              {/* ICON */}
+                                type="button"
+                                onMouseEnter={() =>
+                                  setActiveService(
+                                    s.name,
+                                  )
+                                }
+                                onClick={() =>
+                                  setActiveService(
+                                    s.name,
+                                  )
+                                }
+                                className={`
+                                  flex
+                                  w-full
+                                  items-center
+                                  gap-3
+                                  rounded-xl
+                                  px-3
+                                  py-3
+                                  text-left
+                                  text-sm
+                                  font-medium
+                                  transition-all
+                                  duration-150
+                                  xl:px-4
+                                  ${
+                                    isActive
+                                      ? "bg-red-500 text-white shadow-sm"
+                                      : "text-gray-700 hover:bg-red-50 hover:text-red-600"
+                                  }
+                                `}
+                              >
+                                <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                                  {categoryIcon(
+                                    s.name,
+                                  )}
+                                </span>
 
-                              <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-                                {categoryIcon(s.name)}
-                              </span>
-
-                              {/* CATEGORY NAME */}
-
-                              <span className="min-w-0 whitespace-nowrap">
-                                {s.name.replace(" & Events", "")}
-                              </span>
-                            </button>
-                          );
-                        })}
+                                <span className="min-w-0 whitespace-nowrap">
+                                  {s.name.replace(
+                                    " & Events",
+                                    "",
+                                  )}
+                                </span>
+                              </button>
+                            );
+                          },
+                        )}
                       </div>
                     </div>
 
@@ -700,7 +1168,9 @@ export default function Navbar() {
                               xl:text-xl
                             "
                           >
-                            {activeCategory.name}
+                            {
+                              activeCategory.name
+                            }
                           </h3>
                         </div>
 
@@ -725,44 +1195,59 @@ export default function Navbar() {
                       {/* SERVICES LIST */}
 
                       <div className="mt-5 grid gap-2.5">
-                        {activeCategory.submenu.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            onClick={() => {
-                              setServiceOpen(false);
-                              setActiveService(null);
-                            }}
-                            className={`
-                              flex
-                              min-h-[48px]
-                              items-center
-                              justify-between
-                              gap-4
-                              rounded-2xl
-                              border
-                              px-4
-                              py-3
-                              text-sm
-                              transition-all
-                              duration-150
-                              ${
-                                pathname === item.href
-                                  ? "border-red-200 bg-red-50 text-red-600"
-                                  : "border-gray-100 text-slate-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                        {activeCategory.submenu.map(
+                          (item) => (
+                            <Link
+                              key={
+                                item.href
                               }
-                            `}
-                          >
-                            <span className="min-w-0 truncate">
-                              {item.name}
-                            </span>
+                              href={
+                                item.href
+                              }
+                              onClick={() => {
+                                setServiceOpen(
+                                  false,
+                                );
+                                setActiveService(
+                                  null,
+                                );
+                              }}
+                              className={`
+                                flex
+                                min-h-[48px]
+                                items-center
+                                justify-between
+                                gap-4
+                                rounded-2xl
+                                border
+                                px-4
+                                py-3
+                                text-sm
+                                transition-all
+                                duration-150
+                                ${
+                                  pathname ===
+                                  item.href
+                                    ? "border-red-200 bg-red-50 text-red-600"
+                                    : "border-gray-100 text-slate-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                                }
+                              `}
+                            >
+                              <span className="min-w-0 truncate">
+                                {
+                                  item.name
+                                }
+                              </span>
 
-                            <ChevronRight
-                              size={14}
-                              className="shrink-0 opacity-50"
-                            />
-                          </Link>
-                        ))}
+                              <ChevronRight
+                                size={
+                                  14
+                                }
+                                className="shrink-0 opacity-50"
+                              />
+                            </Link>
+                          ),
+                        )}
                       </div>
                     </div>
 
@@ -836,12 +1321,18 @@ export default function Navbar() {
                         >
                           Explore how our{" "}
                           {activeCategory.name.toLowerCase()}{" "}
-                          workflow transforms your images with sharp
-                          color, clean edits, and fast delivery.
+                          workflow transforms
+                          your images with sharp
+                          color, clean edits, and
+                          fast delivery.
                         </p>
                       </div>
 
-                      {/* BEFORE / AFTER */}
+                      {/* =================================================
+                          BEFORE / AFTER SLIDER
+
+                          THIS IS THE ONLY MAJOR VISUAL CHANGE.
+                      ================================================= */}
 
                       <div
                         className="
@@ -883,21 +1374,207 @@ export default function Navbar() {
                           </span>
                         </div>
 
+                        {/* =================================================
+                            SLIDER AREA
+                        ================================================= */}
+
                         <div
+                          ref={previewRef}
                           className="
-                            flex
+                            relative
                             h-32
-                            items-center
-                            justify-center
+                            w-full
+                            cursor-col-resize
+                            select-none
+                            touch-none
+                            overflow-hidden
                             rounded-2xl
                             bg-slate-900
                             xl:h-36
                           "
+                          onMouseDown={(
+                            event,
+                          ) => {
+                            isDraggingRef.current = true;
+                            setIsDragging(true);
+
+                            if (
+                              resumeAutoSliderRef.current !==
+                              null
+                            ) {
+                              window.clearTimeout(
+                                resumeAutoSliderRef.current,
+                              );
+                              resumeAutoSliderRef.current = null;
+                            }
+
+                            updateSliderPosition(
+                              event.clientX,
+                            );
+                          }}
+                          onTouchStart={
+                            handleTouchStart
+                          }
+                          onTouchMove={
+                            handleTouchMove
+                          }
+                          onTouchEnd={
+                            handleTouchEnd
+                          }
+                          onTouchCancel={
+                            handleTouchEnd
+                          }
                         >
-                          <ImageIcon
-                            size={38}
-                            className="text-red-500"
+                          {/* =================================================
+                              BEFORE IMAGE
+                          ================================================= */}
+
+                          <Image
+                            src={
+                              currentPreview.before
+                            }
+                            alt={`${selectedServiceItem?.name ?? "Service"} before`}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 360px"
+                            className="pointer-events-none object-cover"
+                            draggable={false}
                           />
+
+                          {/* =================================================
+                              AFTER IMAGE
+
+                              The clip path reveals only the part
+                              to the right of the slider.
+                          ================================================= */}
+
+                          <div
+                            className="
+                              pointer-events-none
+                              absolute
+                              inset-0
+                              overflow-hidden
+                            "
+                            style={{
+                              clipPath: `inset(0 0 0 ${sliderPosition}%)`,
+                            }}
+                          >
+                            <Image
+                              src={
+                                currentPreview.after
+                              }
+                              alt={`${selectedServiceItem?.name ?? "Service"} after`}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 360px"
+                              className="object-cover"
+                              draggable={false}
+                            />
+                          </div>
+
+                          {/* =================================================
+                              BEFORE LABEL
+                          ================================================= */}
+
+                          <div className="pointer-events-none absolute left-3 top-3 z-20">
+                            <span
+                              className="
+                                rounded-full
+                                bg-black/70
+                                px-2.5
+                                py-1
+                                text-[9px]
+                                font-bold
+                                uppercase
+                                tracking-wider
+                                text-white
+                                backdrop-blur-sm
+                              "
+                            >
+                              Before
+                            </span>
+                          </div>
+
+                          {/* =================================================
+                              AFTER LABEL
+                          ================================================= */}
+
+                          <div className="pointer-events-none absolute right-3 top-3 z-20">
+                            <span
+                              className="
+                                rounded-full
+                                bg-red-500
+                                px-2.5
+                                py-1
+                                text-[9px]
+                                font-bold
+                                uppercase
+                                tracking-wider
+                                text-white
+                                shadow-lg
+                              "
+                            >
+                              After
+                            </span>
+                          </div>
+
+                          {/* =================================================
+                              SLIDER DIVIDER
+                          ================================================= */}
+
+                          <div
+                            className="
+                              pointer-events-none
+                              absolute
+                              bottom-0
+                              top-0
+                              z-30
+                              w-[2px]
+                              bg-white
+                              shadow-[0_0_8px_rgba(0,0,0,0.45)]
+                            "
+                            style={{
+                              left: `${sliderPosition}%`,
+                            }}
+                          >
+                            {/* =================================================
+                                SLIDER HANDLE
+                            ================================================= */}
+
+                            <div
+                              className="
+                                absolute
+                                left-1/2
+                                top-1/2
+                                flex
+                                h-9
+                                w-9
+                                -translate-x-1/2
+                                -translate-y-1/2
+                                items-center
+                                justify-center
+                                rounded-full
+                                border-2
+                                border-red-500
+                                bg-white
+                                shadow-xl
+                              "
+                            >
+                              <div className="flex items-center gap-0.5">
+                                <ChevronRight
+                                  size={
+                                    12
+                                  }
+                                  className="text-red-500"
+                                />
+
+                                <ChevronLeft
+                                  size={
+                                    12
+                                  }
+                                  className="text-red-500"
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
@@ -907,8 +1584,12 @@ export default function Navbar() {
                         <Link
                           href="/features"
                           onClick={() => {
-                            setServiceOpen(false);
-                            setActiveService(null);
+                            setServiceOpen(
+                              false,
+                            );
+                            setActiveService(
+                              null,
+                            );
                           }}
                           className="
                             inline-flex
@@ -938,7 +1619,8 @@ export default function Navbar() {
               <Link
                 href="/contact-us"
                 className={`whitespace-nowrap text-sm font-medium transition-colors duration-200 xl:text-[15px] ${
-                  pathname === "/contact-us"
+                  pathname ===
+                  "/contact-us"
                     ? "text-red-500"
                     : "text-black hover:text-red-500"
                 }`}
@@ -977,7 +1659,9 @@ export default function Navbar() {
 
               <button
                 type="button"
-                onClick={() => setTrialOpen(true)}
+                onClick={() =>
+                  setTrialOpen(true)
+                }
                 className="
                   inline-flex
                   items-center
@@ -1014,9 +1698,15 @@ export default function Navbar() {
                 hover:text-black
                 lg:hidden
               "
-              onClick={() => setMobileOpen((prev) => !prev)}
+              onClick={() =>
+                setMobileOpen(
+                  (prev) => !prev,
+                )
+              }
               aria-label="Toggle menu"
-              aria-expanded={mobileOpen}
+              aria-expanded={
+                mobileOpen
+              }
             >
               {mobileOpen ? (
                 <X size={24} />
@@ -1030,8 +1720,7 @@ export default function Navbar() {
         {/* =====================================================
             MOBILE DRAWER
 
-            IMPORTANT:
-            This is completely separate from desktop mega-menu.
+            UNCHANGED
         ===================================================== */}
 
         <div
@@ -1124,107 +1813,136 @@ export default function Navbar() {
                     hover:text-red-500
                   "
                 >
-                  <span>Services</span>
+                  <span>
+                    Services
+                  </span>
 
                   {mobileServiceOpen ? (
                     <ChevronUp size={16} />
                   ) : (
-                    <ChevronDown size={16} />
+                    <ChevronDown
+                      size={16}
+                    />
                   )}
                 </button>
 
                 {mobileServiceOpen && (
                   <div className="flex flex-col gap-0.5 pb-2 pl-1">
-                    {services.map((s) => (
-                      <div key={s.name}>
-                        {/* CATEGORY */}
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setMobileActiveService(
-                              mobileActiveService === s.name
-                                ? null
-                                : s.name,
-                            )
-                          }
-                          className="
-                            flex
-                            w-full
-                            items-center
-                            justify-between
-                            rounded-lg
-                            px-3
-                            py-2.5
-                            text-left
-                            text-sm
-                            text-gray-600
-                            transition-colors
-                            hover:bg-gray-50
-                            hover:text-red-500
-                          "
+                    {services.map(
+                      (s) => (
+                        <div
+                          key={s.name}
                         >
-                          <span className="pr-3">
-                            {s.name}
-                          </span>
+                          {/* CATEGORY */}
 
-                          {mobileActiveService === s.name ? (
-                            <ChevronUp
-                              size={14}
-                              className="shrink-0"
-                            />
-                          ) : (
-                            <ChevronDown
-                              size={14}
-                              className="shrink-0"
-                            />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setMobileActiveService(
+                                mobileActiveService ===
+                                  s.name
+                                  ? null
+                                  : s.name,
+                              )
+                            }
+                            className="
+                              flex
+                              w-full
+                              items-center
+                              justify-between
+                              rounded-lg
+                              px-3
+                              py-2.5
+                              text-left
+                              text-sm
+                              text-gray-600
+                              transition-colors
+                              hover:bg-gray-50
+                              hover:text-red-500
+                            "
+                          >
+                            <span className="pr-3">
+                              {
+                                s.name
+                              }
+                            </span>
+
+                            {mobileActiveService ===
+                            s.name ? (
+                              <ChevronUp
+                                size={
+                                  14
+                                }
+                                className="shrink-0"
+                              />
+                            ) : (
+                              <ChevronDown
+                                size={
+                                  14
+                                }
+                                className="shrink-0"
+                              />
+                            )}
+                          </button>
+
+                          {/* SUBMENU */}
+
+                          {mobileActiveService ===
+                            s.name && (
+                            <div className="mb-1 flex flex-col gap-0.5 pl-4">
+                              {s.submenu.map(
+                                (
+                                  item,
+                                ) => (
+                                  <Link
+                                    key={
+                                      item.href
+                                    }
+                                    href={
+                                      item.href
+                                    }
+                                    onClick={
+                                      closeAll
+                                    }
+                                    className="
+                                      flex
+                                      items-start
+                                      gap-2
+                                      rounded-lg
+                                      px-3
+                                      py-2
+                                      text-xs
+                                      leading-5
+                                      text-gray-500
+                                      transition-colors
+                                      hover:bg-red-50
+                                      hover:text-red-500
+                                    "
+                                  >
+                                    <span
+                                      className="
+                                        mt-1.5
+                                        h-1.5
+                                        w-1.5
+                                        shrink-0
+                                        rounded-full
+                                        bg-red-400
+                                      "
+                                    />
+
+                                    <span className="min-w-0">
+                                      {
+                                        item.name
+                                      }
+                                    </span>
+                                  </Link>
+                                ),
+                              )}
+                            </div>
                           )}
-                        </button>
-
-                        {/* SUBMENU */}
-
-                        {mobileActiveService === s.name && (
-                          <div className="mb-1 flex flex-col gap-0.5 pl-4">
-                            {s.submenu.map((item) => (
-                              <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={closeAll}
-                                className="
-                                  flex
-                                  items-start
-                                  gap-2
-                                  rounded-lg
-                                  px-3
-                                  py-2
-                                  text-xs
-                                  leading-5
-                                  text-gray-500
-                                  transition-colors
-                                  hover:bg-red-50
-                                  hover:text-red-500
-                                "
-                              >
-                                <span
-                                  className="
-                                    mt-1.5
-                                    h-1.5
-                                    w-1.5
-                                    shrink-0
-                                    rounded-full
-                                    bg-red-400
-                                  "
-                                />
-
-                                <span className="min-w-0">
-                                  {item.name}
-                                </span>
-                              </Link>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                        </div>
+                      ),
+                    )}
                   </div>
                 )}
               </div>
@@ -1258,7 +1976,9 @@ export default function Navbar() {
 
                   <Link
                     href="/cart"
-                    onClick={closeAll}
+                    onClick={
+                      closeAll
+                    }
                     className="
                       shrink-0
                       p-2
@@ -1268,7 +1988,9 @@ export default function Navbar() {
                     "
                     aria-label="Cart"
                   >
-                    <ShoppingCart size={20} />
+                    <ShoppingCart
+                      size={20}
+                    />
                   </Link>
 
                   {/* ACCOUNT */}
@@ -1283,7 +2005,9 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => {
-                    setTrialOpen(true);
+                    setTrialOpen(
+                      true,
+                    );
                     closeAll();
                   }}
                   className="
@@ -1313,7 +2037,9 @@ export default function Navbar() {
 
       <FreeTrialModal
         open={trialOpen}
-        onClose={() => setTrialOpen(false)}
+        onClose={() =>
+          setTrialOpen(false)
+        }
       />
     </>
   );
@@ -1330,10 +2056,17 @@ function FreeTrialModal({
   open: boolean;
   onClose: () => void;
 }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
+  const [name, setName] =
+    useState("");
+
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [remember, setRemember] =
+    useState(false);
 
   return (
     <>
@@ -1480,7 +2213,9 @@ function FreeTrialModal({
                 type="text"
                 value={name}
                 onChange={(e) =>
-                  setName(e.target.value)
+                  setName(
+                    e.target.value,
+                  )
                 }
                 placeholder="Jane Doe"
                 required
@@ -1524,7 +2259,9 @@ function FreeTrialModal({
                 type="email"
                 value={email}
                 onChange={(e) =>
-                  setEmail(e.target.value)
+                  setEmail(
+                    e.target.value,
+                  )
                 }
                 placeholder="you@example.com"
                 required
@@ -1568,7 +2305,9 @@ function FreeTrialModal({
                 type="password"
                 value={password}
                 onChange={(e) =>
-                  setPassword(e.target.value)
+                  setPassword(
+                    e.target.value,
+                  )
                 }
                 placeholder="••••••••"
                 required
@@ -1608,7 +2347,9 @@ function FreeTrialModal({
                   type="checkbox"
                   checked={remember}
                   onChange={(e) =>
-                    setRemember(e.target.checked)
+                    setRemember(
+                      e.target.checked,
+                    )
                   }
                   className="
                     h-4
