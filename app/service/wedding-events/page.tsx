@@ -1,31 +1,35 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, Clock, Heart, Sparkles, ShieldCheck } from 'lucide-react';
+import AutoBeforeAfterImage from '../../../components/shared/AutoBeforeAfterImage';
 
 const weddingServices = [
   {
     title: 'Wedding Retouch',
     href: '/service/wedding-events/wedding-events-retouch',
     description: 'Remove blemishes, refine skin tone, and preserve the natural emotion of every moment.',
-    image: '/images/manual-blending-1.webp',
+    beforeImage: 'https://images.unsplash.com/photo-1511295742362-92c96b1cf484?w=900&q=85&auto=format&fit=crop&sat=-40&brightness=70',
+    afterImage: 'https://images.unsplash.com/photo-1511295742362-92c96b1cf484?w=900&q=85&auto=format&fit=crop',
   },
   {
     title: 'Album Retouch',
     href: '/service/wedding-events/album-retouch',
     description: 'Prepare wedding albums with consistent color, balanced layouts, and polished final images.',
-    image: '/images/manual-blending-2.webp',
+    beforeImage: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=900&q=85&auto=format&fit=crop&sat=-45&brightness=70',
+    afterImage: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=900&q=85&auto=format&fit=crop',
   },
   {
     title: 'Perfect Color Balance',
     href: '/service/wedding-events/perfect-color-balance',
     description: 'Create a beautifully unified wedding gallery with crisp whites and vibrant tonal contrast.',
-    image: '/images/manual-blending-3.webp',
+    beforeImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=85&auto=format&fit=crop&sat=-40&brightness=75',
+    afterImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=85&auto=format&fit=crop',
   },
   {
     title: 'Color Balance + Culling',
     href: '/service/wedding-events/perfect-color-balance-culling',
     description: 'Cull the best frames and color-correct them for galleries, highlights, and client previews.',
-    image: '/images/manual-blending-4.webp',
+    beforeImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=900&q=85&auto=format&fit=crop&sat=-50&brightness=70',
+    afterImage: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=900&q=85&auto=format&fit=crop',
   },
 ];
 
@@ -94,11 +98,11 @@ export default function WeddingEventsServicePage() {
             <div className="absolute left-10 bottom-10 h-28 w-28 rounded-full bg-slate-200/60 blur-3xl" />
             <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_30px_80px_rgba(15,23,42,0.08)]">
               <div className="relative h-[520px] w-full overflow-hidden">
-                <Image
-                  src="/images/manual-blending-1.webp"
+                <AutoBeforeAfterImage
+                  beforeImage={weddingServices[0].beforeImage}
+                  afterImage={weddingServices[0].afterImage}
                   alt="Wedding event photography preview"
-                  fill
-                  className="object-cover"
+                  className="h-[520px] w-full"
                 />
               </div>
               <div className="absolute bottom-6 left-6 right-6 rounded-[28px] border border-white/60 bg-white/90 p-6 shadow-xl backdrop-blur-md">
@@ -125,14 +129,12 @@ export default function WeddingEventsServicePage() {
                 className="group block overflow-hidden rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="grid gap-6 lg:grid-cols-[240px_1fr] items-center">
-                  <div className="relative h-48 overflow-hidden rounded-3xl bg-slate-100 sm:h-56">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
+                  <AutoBeforeAfterImage
+                    beforeImage={service.beforeImage}
+                    afterImage={service.afterImage}
+                    alt={service.title}
+                    className="h-48 rounded-3xl bg-slate-100 sm:h-56"
+                  />
                   <div className="space-y-5">
                     <div>
                       <span className="inline-flex rounded-full bg-[#FFE9E9] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#D32F2F]">

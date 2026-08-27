@@ -1,23 +1,24 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, ShieldCheck, Sparkles, Clock3 } from 'lucide-react';
+import AutoBeforeAfterImage from '../../../components/shared/AutoBeforeAfterImage';
 
 const serviceItems = [
   {
     title: '3D Rendering',
     href: '/service/3d-services/3d-rendering',
-    description:
-      'Photorealistic renders for architecture, interiors, and product visualization.',
-    image: '/images/3D-Rendering-2.webp',
+    description: 'Photorealistic renders for architecture, interiors, and product visualization.',
+    beforeImage: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=85&auto=format&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=900&q=85&auto=format&fit=crop',
   },
   {
     title: '3D Floor Plan',
     href: '/service/3d-services/3d-floor-plan',
-    description:
-      'Detailed 2D to 3D floor plan transformation with furniture, lighting, and realistic materials.',
-    image: '/images/3D-Floor-Plan-2.webp',
+    description: 'Detailed 2D to 3D floor plan transformation with furniture, lighting, and realistic materials.',
+    beforeImage: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85&auto=format&fit=crop',
+    afterImage: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&q=85&auto=format&fit=crop',
   },
 ];
+
 export default function ThreeDServicesPage() {
   return (
     <main className="min-h-screen bg-[#F9F8F6] text-slate-900">
@@ -94,12 +95,11 @@ export default function ThreeDServicesPage() {
                 <div className="absolute right-6 bottom-10 h-24 w-24 rounded-full bg-[#FFCDD2]/30 blur-3xl" />
                 <div className="relative overflow-hidden rounded-[1.75rem] bg-slate-950">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#000000]/0 via-[#000000]/10 to-[#000000]/20" />
-                  <Image
-                    src="/images/real-estate/real-estate-corrected.jpg"
+                  <AutoBeforeAfterImage
+                    beforeImage={serviceItems[0].beforeImage}
+                    afterImage={serviceItems[0].afterImage}
                     alt="3D architectural render"
-                    width={940}
-                    height={620}
-                    className="h-full w-full object-cover"
+                    className="h-[420px] w-full"
                   />
                 </div>
               </div>
@@ -120,15 +120,12 @@ export default function ThreeDServicesPage() {
                   className="group overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                 >
                   <div className="grid gap-6 lg:grid-cols-[220px_1fr] p-6">
-                    <div className="relative overflow-hidden rounded-[1.75rem] bg-slate-100">
-                      <Image
-                        src={service.image}
-                        alt={service.title}
-                        width={540}
-                        height={380}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
+                    <AutoBeforeAfterImage
+                      beforeImage={service.beforeImage}
+                      afterImage={service.afterImage}
+                      alt={service.title}
+                      className="h-48 rounded-[1.75rem] bg-slate-100"
+                    />
 
                     <div className="flex flex-col justify-between">
                       <div>

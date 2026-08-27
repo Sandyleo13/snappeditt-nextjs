@@ -62,21 +62,21 @@ const serviceCategories: ServiceCategory[] = [
     hoverGlow: "#60a5fa",
   },
   {
-    title: "Wedding Retouching",
-    description:
-      "Elegant wedding photo retouching and event image enhancement while keeping every important moment natural.",
-    href: "/service/wedding-events/wedding-events-retouch",
-    icon: Sparkles,
-    offerTitle: "Wedding Editing",
-    features: [
-      "Wedding retouching",
-      "Color correction",
-      "Skin retouching",
-      "Event photo enhancement",
-    ],
-    hoverColor: "#db2777",
-    hoverGlow: "#f472b6",
-  },
+  title: "Wedding Retouching",
+  description:
+    "Elegant wedding photo retouching and event image enhancement while keeping every important moment natural.",
+  href: "/service/wedding-events",
+  icon: Sparkles,
+  offerTitle: "Wedding Editing",
+  features: [
+    "Wedding retouching",
+    "Color correction",
+    "Skin retouching",
+    "Event photo enhancement",
+  ],
+  hoverColor: "#db2777",
+  hoverGlow: "#f472b6",
+},
   {
     title: "Product Ecommerce",
     description:
@@ -168,7 +168,7 @@ function ServiceFlipCard({
       style={{ perspective: "1200px" }}
     >
       <div
-        className={`relative h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] [transform-style:preserve-3d] ${
+        className={`relative h-full w-full transition-transform duration-700 ease-out [transform-style:preserve-3d] ${
           flipped ? "[transform:rotateY(180deg)]" : ""
         }`}
       >
@@ -192,7 +192,7 @@ function ServiceFlipCard({
             group-hover:shadow-2xl
           "
         >
-          {/* Full-card hover background */}
+          {/* Full card hover background */}
           <div
             aria-hidden="true"
             className="
@@ -207,7 +207,7 @@ function ServiceFlipCard({
             }}
           />
 
-          {/* Decorative circle */}
+          {/* Large decorative circle */}
           <div
             aria-hidden="true"
             className="
@@ -229,7 +229,7 @@ function ServiceFlipCard({
             }}
           />
 
-          {/* Decorative glow */}
+          {/* Soft decorative glow */}
           <div
             aria-hidden="true"
             className="
@@ -251,7 +251,7 @@ function ServiceFlipCard({
             }}
           />
 
-          {/* Top icon */}
+          {/* Icon */}
           <button
             type="button"
             onClick={toggleCard}
@@ -276,7 +276,7 @@ function ServiceFlipCard({
             />
           </button>
 
-          {/* Main content */}
+          {/* Content */}
           <button
             type="button"
             onClick={toggleCard}
@@ -319,7 +319,7 @@ function ServiceFlipCard({
             </p>
           </button>
 
-          {/* Bottom action */}
+          {/* Bottom actions */}
           <div
             className="
               relative z-10
@@ -332,7 +332,7 @@ function ServiceFlipCard({
               group-hover:border-white/20
             "
           >
-            {/* Direct redirect */}
+            {/* Direct service redirect */}
             <Link
               href={category.href}
               className="
@@ -365,7 +365,7 @@ function ServiceFlipCard({
               />
             </Link>
 
-            {/* Single flip button */}
+            {/* Flip button */}
             <button
               type="button"
               onClick={toggleCard}
@@ -373,8 +373,7 @@ function ServiceFlipCard({
               className="
                 flex h-9 w-9
                 cursor-pointer
-                items-center
-                justify-center
+                items-center justify-center
                 rounded-full
                 bg-slate-50
                 text-slate-500
@@ -428,7 +427,7 @@ function ServiceFlipCard({
             "
           />
 
-          {/* Header */}
+          {/* Back header */}
           <div className="relative flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-red-400">
@@ -444,7 +443,7 @@ function ServiceFlipCard({
               </h3>
             </div>
 
-            {/* ONLY ONE BACK BUTTON */}
+            {/* Only one back button */}
             <button
               type="button"
               onClick={toggleCard}
@@ -453,8 +452,7 @@ function ServiceFlipCard({
                 flex h-9 w-9
                 shrink-0
                 cursor-pointer
-                items-center
-                justify-center
+                items-center justify-center
                 rounded-full
                 bg-white/10
                 text-slate-300
@@ -518,7 +516,7 @@ export default function ServiceIndexPage() {
       <section className="px-4 pb-14 pt-10 sm:px-6 sm:pt-14 lg:px-8 lg:pt-16">
         <div className="mx-auto max-w-7xl">
           <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-xl shadow-slate-200/40">
-            {/* Hero glow */}
+            {/* Hero decoration */}
             <div
               aria-hidden="true"
               className="
@@ -613,7 +611,7 @@ export default function ServiceIndexPage() {
       </section>
 
       {/* =====================================================
-          SERVICES
+          SERVICE CARDS
       ===================================================== */}
       <section className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -650,7 +648,7 @@ export default function ServiceIndexPage() {
       </section>
 
       {/* =====================================================
-          CUSTOM CTA
+          CUSTOM PAYMENT CTA
       ===================================================== */}
       <section className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">

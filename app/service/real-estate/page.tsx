@@ -1,14 +1,14 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { Zap, Clock, Shield, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Building2, House, LockKeyhole, Sparkles, Timer } from 'lucide-react';
+import AutoBeforeAfterImage from '../../../components/shared/AutoBeforeAfterImage';
 
 const realEstateServices = [
-  { title: 'HDR Basic', href: '/service/real-estate/hdr-basic', description: 'Enhanced property photos with rich tones, sharp detail, and balanced exposure.', image: '/images/HDR Basic/1-after.webp', badge: 'HDR Basic' },
-  { title: 'Virtual Staging', href: '/service/real-estate/virtual-staging', description: 'Stage interiors digitally for better listing appeal without costly furniture or styling.', image: '/images/real-estate-corrected.jpg', badge: 'Virtual Staging' },
-  { title: 'Day To Dusk', href: '/service/real-estate/day-to-dusk', description: 'Convert daytime property photos into warm golden-hour images that command attention.', image: '/images/Day-to-Dusk-SHP-Corrected-1.webp', badge: 'Day To Dusk' },
-  { title: 'Flambient Editing', href: '/service/real-estate/flambient-editing', description: 'Blend flash and ambient lighting for perfectly lit architectural imagery.', image: '/images/real-estate-raw.jpg', badge: 'Flambient Editing' },
-  { title: 'Architecture Retouch', href: '/service/real-estate/architecture-retouch', description: 'Fine-tune architectural detail and perspective for polished real estate marketing.', image: '/images/manual-blending-4.webp', badge: 'Architecture Retouch' },
-  { title: 'Digital De-Clutter', href: '/service/real-estate/digital-declutter', description: 'Remove distractions and unwanted objects while preserving natural room flow.', image: '/images/Declutter-SPH-Corrected-2.webp', badge: 'Digital De-Clutter' },
+  { title: 'HDR Basic', href: '/service/real-estate/hdr-basic', description: 'Enhanced property photos with rich tones, sharp detail, and balanced exposure.', beforeImage: '/images/real-estate-basic-sky-explosure-before.webp', afterImage: '/images/real-estate-basic-sky-explosure-after.webp', badge: 'HDR Basic' },
+  { title: 'Virtual Staging', href: '/service/real-estate/virtual-staging', description: 'Stage interiors digitally for better listing appeal without costly furniture or styling.', beforeImage: '/images/Virtual-Staging-SPH-Raw-1.webp', afterImage: '/images/Virtual-Staging-SPH-Corrected-1.webp', badge: 'Virtual Staging' },
+  { title: 'Day To Dusk', href: '/service/real-estate/day-to-dusk', description: 'Convert daytime property photos into warm golden-hour images that command attention.', beforeImage: '/images/Day-to-Dusk-SHP-Raw-1.webp', afterImage: '/images/Day-to-Dusk-SHP-Corrected-1.webp', badge: 'Day To Dusk' },
+  { title: 'Flambient Editing', href: '/service/real-estate/flambient-editing', description: 'Blend flash and ambient lighting for perfectly lit architectural imagery.', beforeImage: '/images/real-estate-raw.jpg', afterImage: '/images/real-estate-corrected.jpg', badge: 'Flambient Editing' },
+  { title: 'Architecture Retouch', href: '/service/real-estate/architecture-retouch', description: 'Fine-tune architectural detail and perspective for polished real estate marketing.', beforeImage: '/images/Single-Exposure/1-before.webp', afterImage: '/images/Single-Exposure/1-after.webp', badge: 'Architecture Retouch' },
+  { title: 'Digital De-Clutter', href: '/service/real-estate/digital-declutter', description: 'Remove distractions and unwanted objects while preserving natural room flow.', beforeImage: '/images/Declutter-SPH-Raw-2.webp', afterImage: '/images/Declutter-SPH-Corrected-2.webp', badge: 'Digital De-Clutter' },
 ];
 
 export default function RealEstateServicePage() {
@@ -18,7 +18,7 @@ export default function RealEstateServicePage() {
         <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] items-center">
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#F44336]/20 bg-[#FFEBEE] px-4 py-2 text-sm font-semibold text-[#C62828]">
-              <span className="text-lg">🏘️</span>
+              <Building2 className="h-5 w-5" aria-hidden="true" />
               <span>REAL ESTATE SERVICES</span>
             </div>
 
@@ -49,17 +49,17 @@ export default function RealEstateServicePage() {
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="rounded-3xl border border-slate-200 bg-white p-5 text-center shadow-sm">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFEBEE] text-[#C62828]">✨</div>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFEBEE] text-[#C62828]"><Sparkles className="h-6 w-6" aria-hidden="true" /></div>
                 <p className="font-semibold text-slate-950">Professional Finish</p>
                 <p className="mt-2 text-sm text-slate-500">High-end, listing-ready imagery.</p>
               </div>
               <div className="rounded-3xl border border-slate-200 bg-white p-5 text-center shadow-sm">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F6FF] text-[#0F62FE]">⏱️</div>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F6FF] text-[#0F62FE]"><Timer className="h-6 w-6" aria-hidden="true" /></div>
                 <p className="font-semibold text-slate-950">Fast Turnaround</p>
                 <p className="mt-2 text-sm text-slate-500">Delivered quickly for fast listings.</p>
               </div>
               <div className="rounded-3xl border border-slate-200 bg-white p-5 text-center shadow-sm">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FEF3E4] text-[#B45309]">🔒</div>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FEF3E4] text-[#B45309]"><LockKeyhole className="h-6 w-6" aria-hidden="true" /></div>
                 <p className="font-semibold text-slate-950">Secure Delivery</p>
                 <p className="mt-2 text-sm text-slate-500">Safe file transfers and storage.</p>
               </div>
@@ -70,25 +70,14 @@ export default function RealEstateServicePage() {
             <div className="relative overflow-hidden rounded-[32px] bg-slate-900 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
               <div className="relative h-[520px] w-full">
-                <Image
-                  src="/images/real-estate-corrected.jpg"
+                <AutoBeforeAfterImage
+                  beforeImage="/images/real-estate-raw.jpg"
+                  afterImage="/images/real-estate-corrected.jpg"
                   alt="Real estate photo editing examples"
-                  fill
-                  className="object-cover"
+                  className="h-[520px] w-full"
                 />
               </div>
-              <div className="absolute bottom-6 left-6 right-6 rounded-3xl border border-white/15 bg-white/95 p-6 shadow-xl backdrop-blur-md">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Trusted by</p>
-                    <p className="mt-1 text-2xl font-bold text-slate-950">15,000+ real estate professionals</p>
-                  </div>
-                  <div className="inline-flex items-center gap-3 rounded-full bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm">
-                    <span className="h-8 w-8 rounded-full bg-[#F44336]/10 text-[#F44336] flex items-center justify-center">🏡</span>
-                    Trusted Service
-                  </div>
-                </div>
-              </div>
+        
             </div>
           </div>
         </div>
@@ -111,18 +100,16 @@ export default function RealEstateServicePage() {
                 className="group overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(15,23,42,0.12)]"
               >
                 <div className="grid items-center gap-6 p-6 lg:grid-cols-[220px_1fr] xl:grid-cols-[240px_1fr]">
-                  <div className="relative h-40 overflow-hidden rounded-3xl bg-slate-100 sm:h-48">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
+                  <AutoBeforeAfterImage
+                    beforeImage={service.beforeImage}
+                    afterImage={service.afterImage}
+                    alt={service.title}
+                    className="h-40 rounded-3xl bg-slate-100 sm:h-48"
+                  />
                   <div className="flex flex-col justify-between gap-5">
                     <div>
                       <span className="inline-flex rounded-full bg-[#FFE9E9] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#D32F2F] shadow-sm">
-                        {service.badge}
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F44336]/10 text-[#F44336]"><House className="h-4 w-4" aria-hidden="true" /></span>
                       </span>
                       <h3 className="mt-4 text-2xl font-semibold text-slate-950">{service.title}</h3>
                       <p className="mt-3 text-sm text-slate-600 leading-relaxed">{service.description}</p>
@@ -132,10 +119,10 @@ export default function RealEstateServicePage() {
                         Explore service
                         <ArrowUpRight className="h-4 w-4" />
                       </span>
-                      <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600">
+                      {/* <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600">
                         <span className="h-2.5 w-2.5 rounded-full bg-[#F44336]" />
                         Fast delivery
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                 </div>

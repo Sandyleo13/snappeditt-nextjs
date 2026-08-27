@@ -326,17 +326,14 @@ export function Footer() {
 
                 {/* Phone */}
                 <a
-                  href="tel:+11234567890"
+                  href="tel:+17869811712"
                   className="group flex items-start gap-3"
                 >
                   <Phone className="mt-0.5 h-4 w-4 shrink-0 text-slate-300 transition-colors group-hover:text-[var(--primary)]" />
 
-                  <a
-                    href="tel:+17869811712"
-                    className="text-sm text-[var(--footer-muted)] transition-colors group-hover:text-white"
-                  >
+                  <span className="text-sm text-[var(--footer-muted)] transition-colors group-hover:text-white">
                     +1 786 981 1712
-                  </a>
+                  </span>
                 </a>
               </div>
             </div>
