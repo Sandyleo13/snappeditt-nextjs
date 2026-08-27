@@ -22,9 +22,10 @@ type ServiceCategory = {
   description: string;
   href: string;
   icon: React.ElementType;
-  number: string;
   offerTitle: string;
   features: string[];
+  hoverColor: string;
+  hoverGlow: string;
 };
 
 const serviceCategories: ServiceCategory[] = [
@@ -34,7 +35,6 @@ const serviceCategories: ServiceCategory[] = [
       "Property photography enhancements and listing-ready edits for agents, photographers, and real estate teams.",
     href: "/service/real-estate",
     icon: ImageIcon,
-    number: "01",
     offerTitle: "Property Editing",
     features: [
       "HDR photo enhancement",
@@ -42,6 +42,8 @@ const serviceCategories: ServiceCategory[] = [
       "Virtual staging",
       "Sky replacement",
     ],
+    hoverColor: "#dc2626",
+    hoverGlow: "#f87171",
   },
   {
     title: "3D Services",
@@ -49,7 +51,6 @@ const serviceCategories: ServiceCategory[] = [
       "Architectural rendering, floor plan visualization, virtual staging, and polished 3D presentation services.",
     href: "/service/3d-services",
     icon: Layers3,
-    number: "02",
     offerTitle: "3D Visualization",
     features: [
       "3D floor plans",
@@ -57,6 +58,8 @@ const serviceCategories: ServiceCategory[] = [
       "Virtual staging",
       "Property visualization",
     ],
+    hoverColor: "#2563eb",
+    hoverGlow: "#60a5fa",
   },
   {
     title: "Wedding Retouching",
@@ -64,7 +67,6 @@ const serviceCategories: ServiceCategory[] = [
       "Elegant wedding photo retouching and event image enhancement while keeping every important moment natural.",
     href: "/service/wedding-events/wedding-events-retouch",
     icon: Sparkles,
-    number: "03",
     offerTitle: "Wedding Editing",
     features: [
       "Wedding retouching",
@@ -72,6 +74,8 @@ const serviceCategories: ServiceCategory[] = [
       "Skin retouching",
       "Event photo enhancement",
     ],
+    hoverColor: "#db2777",
+    hoverGlow: "#f472b6",
   },
   {
     title: "Product Ecommerce",
@@ -79,7 +83,6 @@ const serviceCategories: ServiceCategory[] = [
       "Professional product image editing for fashion, jewelry, ecommerce catalogs, marketplaces, and brands.",
     href: "/service/commercial",
     icon: Gem,
-    number: "04",
     offerTitle: "Product Editing",
     features: [
       "Product retouching",
@@ -87,6 +90,8 @@ const serviceCategories: ServiceCategory[] = [
       "Color correction",
       "Ecommerce-ready images",
     ],
+    hoverColor: "#9333ea",
+    hoverGlow: "#c084fc",
   },
   {
     title: "People Retouching",
@@ -94,7 +99,6 @@ const serviceCategories: ServiceCategory[] = [
       "Professional portrait, newborn, maternity, sports, and people retouching with natural-looking results.",
     href: "/service/people",
     icon: UserRound,
-    number: "05",
     offerTitle: "Portrait Editing",
     features: [
       "Portrait retouching",
@@ -102,6 +106,8 @@ const serviceCategories: ServiceCategory[] = [
       "Newborn & maternity",
       "Sports retouching",
     ],
+    hoverColor: "#059669",
+    hoverGlow: "#34d399",
   },
   {
     title: "Clipping Path",
@@ -109,7 +115,6 @@ const serviceCategories: ServiceCategory[] = [
       "Precise background removal, clipping paths, masking, cutouts, and image extraction for professional workflows.",
     href: "/service/clipping-path-extraction",
     icon: Scissors,
-    number: "06",
     offerTitle: "Image Extraction",
     features: [
       "Clipping paths",
@@ -117,6 +122,8 @@ const serviceCategories: ServiceCategory[] = [
       "Image masking",
       "Professional cutouts",
     ],
+    hoverColor: "#ea580c",
+    hoverGlow: "#fb923c",
   },
   {
     title: "Custom Payment",
@@ -124,7 +131,6 @@ const serviceCategories: ServiceCategory[] = [
       "Need a custom editing package? Choose a tailored payment option built around your specific project requirements.",
     href: "/pay",
     icon: CreditCard,
-    number: "07",
     offerTitle: "Flexible Payments",
     features: [
       "Custom project pricing",
@@ -132,6 +138,8 @@ const serviceCategories: ServiceCategory[] = [
       "Flexible requirements",
       "Tailored payment options",
     ],
+    hoverColor: "#4f46e5",
+    hoverGlow: "#818cf8",
   },
 ];
 
@@ -156,74 +164,225 @@ function ServiceFlipCard({
 
   return (
     <div
-      className="group h-[300px] w-full"
+      className="group h-[310px] w-full"
       style={{ perspective: "1200px" }}
     >
       <div
-        className={`relative h-full w-full transition-transform duration-700 [transform-style:preserve-3d] ${
+        className={`relative h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] [transform-style:preserve-3d] ${
           flipped ? "[transform:rotateY(180deg)]" : ""
         }`}
       >
-        {/* ==================== FRONT ==================== */}
+        {/* =====================================================
+            FRONT
+        ===================================================== */}
         <div
-          className="absolute inset-0 flex h-full w-full flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white p-7 shadow-sm transition-shadow duration-300 hover:border-red-100 hover:shadow-xl hover:shadow-slate-200/60 [backface-visibility:hidden]"
+          className="
+            absolute inset-0
+            flex h-full w-full flex-col
+            overflow-hidden
+            rounded-[1.75rem]
+            border border-slate-200
+            bg-white
+            p-7
+            shadow-sm
+            transition-all duration-500 ease-out
+            [backface-visibility:hidden]
+            group-hover:-translate-y-1
+            group-hover:border-transparent
+            group-hover:shadow-2xl
+          "
         >
-          {/* Number */}
-          <span className="absolute right-6 top-6 text-xs font-bold tracking-[0.12em] text-slate-300">
-            {category.number}
-          </span>
+          {/* Full-card hover background */}
+          <div
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute inset-0
+              opacity-0
+              transition-opacity duration-500
+              group-hover:opacity-100
+            "
+            style={{
+              backgroundColor: category.hoverColor,
+            }}
+          />
 
-          {/* Icon */}
+          {/* Decorative circle */}
+          <div
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              -bottom-24
+              -right-20
+              h-56
+              w-56
+              rounded-full
+              opacity-0
+              transition-all
+              duration-700
+              group-hover:scale-110
+              group-hover:opacity-100
+            "
+            style={{
+              backgroundColor: category.hoverGlow,
+            }}
+          />
+
+          {/* Decorative glow */}
+          <div
+            aria-hidden="true"
+            className="
+              pointer-events-none
+              absolute
+              -right-8
+              top-16
+              h-28
+              w-28
+              rounded-full
+              opacity-0
+              blur-2xl
+              transition-opacity
+              duration-500
+              group-hover:opacity-30
+            "
+            style={{
+              backgroundColor: category.hoverGlow,
+            }}
+          />
+
+          {/* Top icon */}
           <button
             type="button"
             onClick={toggleCard}
             aria-label={`View more information about ${category.title}`}
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-slate-50 text-slate-700 transition-all duration-300 hover:bg-red-50 hover:text-red-600"
+            className="
+              relative z-10
+              flex h-12 w-12
+              cursor-pointer
+              items-center justify-center
+              rounded-2xl
+              bg-slate-50
+              text-slate-700
+              transition-all duration-500
+              group-hover:bg-white/15
+              group-hover:text-white
+            "
           >
             <Icon
-              className="h-5 w-5"
+              className="h-6 w-6"
               strokeWidth={1.8}
               aria-hidden="true"
             />
           </button>
 
-          {/* Content */}
+          {/* Main content */}
           <button
             type="button"
             onClick={toggleCard}
-            className="mt-7 flex-1 cursor-pointer text-left"
+            className="
+              relative z-10
+              mt-7
+              flex-1
+              cursor-pointer
+              text-left
+            "
             aria-label={`Flip ${category.title} card`}
           >
-            <h3 className="pr-10 text-xl font-bold tracking-tight text-slate-900 transition-colors duration-300 group-hover:text-red-600">
+            <h3
+              className="
+                text-xl
+                font-bold
+                tracking-tight
+                text-slate-900
+                transition-colors
+                duration-500
+                group-hover:text-white
+              "
+            >
               {category.title}
             </h3>
 
-            <p className="mt-3 text-sm leading-6 text-slate-500">
+            <p
+              className="
+                mt-3
+                max-w-[95%]
+                text-sm
+                leading-6
+                text-slate-500
+                transition-colors
+                duration-500
+                group-hover:text-white/90
+              "
+            >
               {category.description}
             </p>
           </button>
 
-          {/* Bottom Actions */}
-          <div className="flex items-center justify-between border-t border-slate-100 pt-5">
-            {/* THIS NOW REDIRECTS */}
+          {/* Bottom action */}
+          <div
+            className="
+              relative z-10
+              flex items-center justify-between
+              border-t
+              border-slate-100
+              pt-5
+              transition-colors
+              duration-500
+              group-hover:border-white/20
+            "
+          >
+            {/* Direct redirect */}
             <Link
               href={category.href}
-              className="group/link flex items-center gap-2 text-sm font-bold text-red-600"
+              className="
+                group/link
+                inline-flex
+                items-center
+                gap-2
+                rounded-full
+                text-sm
+                font-bold
+                text-red-600
+                transition-all
+                duration-300
+                group-hover:bg-white
+                group-hover:px-5
+                group-hover:py-2.5
+                group-hover:text-slate-900
+              "
             >
-              Explore details
+              <span>Explore details</span>
 
               <ArrowRight
-                className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1"
+                className="
+                  h-4 w-4
+                  transition-transform
+                  duration-300
+                  group-hover/link:translate-x-1
+                "
                 aria-hidden="true"
               />
             </Link>
 
-            {/* Flip button */}
+            {/* Single flip button */}
             <button
               type="button"
               onClick={toggleCard}
               aria-label={`Flip ${category.title} card`}
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-slate-50 text-slate-500 transition-all duration-200 hover:bg-red-50 hover:text-red-600"
+              className="
+                flex h-9 w-9
+                cursor-pointer
+                items-center
+                justify-center
+                rounded-full
+                bg-slate-50
+                text-slate-500
+                transition-all
+                duration-500
+                group-hover:bg-white/15
+                group-hover:text-white
+              "
             >
               <Rotate3D
                 className="h-4 w-4"
@@ -231,17 +390,24 @@ function ServiceFlipCard({
               />
             </button>
           </div>
-
-          {/* Bottom accent */}
-          <span
-            aria-hidden="true"
-            className="absolute bottom-0 left-7 right-7 h-px origin-left scale-x-0 bg-red-500 transition-transform duration-300 group-hover:scale-x-100"
-          />
         </div>
 
-        {/* ==================== BACK ==================== */}
+        {/* =====================================================
+            BACK
+        ===================================================== */}
         <div
-          className="absolute inset-0 flex h-full w-full flex-col overflow-hidden rounded-[1.75rem] border border-red-100 bg-slate-950 p-7 text-white shadow-xl shadow-slate-300/30 [backface-visibility:hidden]"
+          className="
+            absolute inset-0
+            flex h-full w-full flex-col
+            overflow-hidden
+            rounded-[1.75rem]
+            border border-slate-800
+            bg-slate-950
+            p-7
+            text-white
+            shadow-xl
+            [backface-visibility:hidden]
+          "
           style={{
             transform: "rotateY(180deg)",
           }}
@@ -249,10 +415,20 @@ function ServiceFlipCard({
           {/* Decorative glow */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-red-600/20 blur-3xl"
+            className="
+              pointer-events-none
+              absolute
+              -right-20
+              -top-20
+              h-48
+              w-48
+              rounded-full
+              bg-red-600/20
+              blur-3xl
+            "
           />
 
-          {/* Back Header */}
+          {/* Header */}
           <div className="relative flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-red-400">
@@ -263,23 +439,29 @@ function ServiceFlipCard({
                 />
               </div>
 
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
-                  {category.number}
-                </p>
-
-                <h3 className="text-lg font-bold text-white">
-                  {category.title}
-                </h3>
-              </div>
+              <h3 className="text-lg font-bold text-white">
+                {category.title}
+              </h3>
             </div>
 
-            {/* Flip Back */}
+            {/* ONLY ONE BACK BUTTON */}
             <button
               type="button"
               onClick={toggleCard}
-              aria-label={`Return to ${category.title} card`}
-              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/10 text-slate-300 transition hover:bg-white/15 hover:text-white"
+              aria-label={`Return to ${category.title}`}
+              className="
+                flex h-9 w-9
+                shrink-0
+                cursor-pointer
+                items-center
+                justify-center
+                rounded-full
+                bg-white/10
+                text-slate-300
+                transition
+                hover:bg-white/15
+                hover:text-white
+              "
             >
               <ArrowLeft
                 className="h-4 w-4"
@@ -304,7 +486,13 @@ function ServiceFlipCard({
             {category.features.map((feature) => (
               <li
                 key={feature}
-                className="flex items-center gap-2 text-sm text-slate-300"
+                className="
+                  flex
+                  items-center
+                  gap-2
+                  text-sm
+                  text-slate-300
+                "
               >
                 <CheckCircle2
                   className="h-4 w-4 shrink-0 text-red-400"
@@ -315,35 +503,6 @@ function ServiceFlipCard({
               </li>
             ))}
           </ul>
-
-          {/* Back Actions */}
-          <div className="relative mt-auto flex items-center gap-3 pt-5">
-            {/* Back to front */}
-            <button
-              type="button"
-              onClick={toggleCard}
-              className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-white/10 bg-white/5 text-slate-300 transition hover:bg-white/10 hover:text-white"
-              aria-label="Go back"
-            >
-              <ArrowLeft
-                className="h-4 w-4"
-                aria-hidden="true"
-              />
-            </button>
-
-            {/* Redirect */}
-            <Link
-              href={category.href}
-              className="group/link flex flex-1 items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-red-500"
-            >
-              View Service
-
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-200 group-hover/link:translate-x-1"
-                aria-hidden="true"
-              />
-            </Link>
-          </div>
         </div>
       </div>
     </div>
@@ -353,18 +512,41 @@ function ServiceFlipCard({
 export default function ServiceIndexPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      {/* HERO */}
+      {/* =====================================================
+          HERO
+      ===================================================== */}
       <section className="px-4 pb-14 pt-10 sm:px-6 sm:pt-14 lg:px-8 lg:pt-16">
         <div className="mx-auto max-w-7xl">
           <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-xl shadow-slate-200/40">
+            {/* Hero glow */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-red-50 blur-3xl"
+              className="
+                pointer-events-none
+                absolute
+                -right-28
+                -top-28
+                h-72
+                w-72
+                rounded-full
+                bg-red-50
+                blur-3xl
+              "
             />
 
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -bottom-32 -left-24 h-64 w-64 rounded-full bg-slate-100 blur-3xl"
+              className="
+                pointer-events-none
+                absolute
+                -bottom-32
+                -left-24
+                h-64
+                w-64
+                rounded-full
+                bg-slate-100
+                blur-3xl
+              "
             />
 
             <div className="relative px-6 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-14">
@@ -395,6 +577,7 @@ export default function ServiceIndexPage() {
                         className="h-4 w-4 shrink-0 text-emerald-500"
                         aria-hidden="true"
                       />
+
                       {benefit}
                     </div>
                   ))}
@@ -429,7 +612,9 @@ export default function ServiceIndexPage() {
         </div>
       </section>
 
-      {/* SERVICES */}
+      {/* =====================================================
+          SERVICES
+      ===================================================== */}
       <section className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
@@ -448,6 +633,7 @@ export default function ServiceIndexPage() {
                 className="h-4 w-4 text-red-500"
                 aria-hidden="true"
               />
+
               <span>Click a card to explore</span>
             </div>
           </div>
@@ -463,18 +649,40 @@ export default function ServiceIndexPage() {
         </div>
       </section>
 
-      {/* CUSTOM CTA */}
+      {/* =====================================================
+          CUSTOM CTA
+      ===================================================== */}
       <section className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="relative overflow-hidden rounded-[2rem] bg-slate-950 px-7 py-10 text-white sm:px-10 lg:px-14 lg:py-12">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-red-600/20 blur-3xl"
+              className="
+                pointer-events-none
+                absolute
+                -right-20
+                -top-24
+                h-64
+                w-64
+                rounded-full
+                bg-red-600/20
+                blur-3xl
+              "
             />
 
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -bottom-32 left-1/3 h-64 w-64 rounded-full bg-slate-700/30 blur-3xl"
+              className="
+                pointer-events-none
+                absolute
+                -bottom-32
+                left-1/3
+                h-64
+                w-64
+                rounded-full
+                bg-slate-700/30
+                blur-3xl
+              "
             />
 
             <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
@@ -499,13 +707,36 @@ export default function ServiceIndexPage() {
               </div>
 
               <Link
-                href="/service/custom-payment"
-                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-red-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-red-950/20 transition hover:bg-red-500"
+                href="/pay"
+                className="
+                  group
+                  inline-flex
+                  shrink-0
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-full
+                  bg-red-600
+                  px-6
+                  py-3.5
+                  text-sm
+                  font-bold
+                  text-white
+                  shadow-lg
+                  shadow-red-950/20
+                  transition
+                  hover:bg-red-500
+                "
               >
                 View Custom Payment
 
                 <ArrowRight
-                  className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                  className="
+                    h-4 w-4
+                    transition-transform
+                    duration-200
+                    group-hover:translate-x-1
+                  "
                   aria-hidden="true"
                 />
               </Link>
@@ -516,4 +747,3 @@ export default function ServiceIndexPage() {
     </main>
   );
 }
-
