@@ -46,30 +46,30 @@ export default function NavbarFetchName() {
     return (
       <Link
         href="/login"
-        className="text-sm font-medium hover:text-red-500 transition-colors"
+        className="text-xl font-medium hover:text-red-500 transition-colors"
       >
         Login
       </Link>
     );
   }
 
-  // ✅ Logged in → clickable name
+  //  Logged in → clickable name
   if (user.loggedIn) {
     return (
       <Link
         href="/user"
-        className="text-sm font-medium hover:text-red-500 transition-colors"
+        className="text-xl font-medium hover:text-red-500 transition-colors"
       >
         Hi, {user.first_name}
       </Link>
     );
   }
 
-  // ❌ Not logged in
+  //  Not logged in
   return (
     <Link
       href="/login"
-      className="text-sm font-medium hover:text-red-500 transition-colors"
+      className="text-xl font-medium hover:text-red-500 transition-colors"
     >
       Login
     </Link>

@@ -1,0 +1,37 @@
+.button {
+  position: fixed;
+  right: 5.75rem;
+  bottom: 1.25rem;
+  z-index: 1000;
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.24);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.button:hover {
+  background: #1da851;
+  transform: translateY(-2px);
+}
+
+.button:focus-visible {
+  outline: 3px solid #111827;
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .button {
+    right: 5rem;
+    bottom: 0.75rem;
+  }
+}
