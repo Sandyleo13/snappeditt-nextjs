@@ -1,23 +1,27 @@
 import BeforeAfterSection from "../components/features/BeforeAfterSection";
 import { ClientReviewsSection } from "../components/features/ClientReviews";
-import { FreeTrialUpload } from "../components/features/FreeTrial";
 import HeroPeel from "../components/features/HeroPeel";
 import EnrollStep from "../components/features/EnrollStep";
-// import UnbreakableTrust from "@/components/features/UnbreakableTrust";
+import FreeTrialPrompt from "../components/features/FreeTrialPrompt";
 
 export const metadata = {
-  title: "Snappeditt - Home",
-  description: "Discover the features of Snappeditt, including before-and-after comparisons, client reviews, and more.",
+  title: "Snappeditt - Professional Photo Editing Services",
+  description:
+    "Professional photo editing services for real estate, wedding, ecommerce, product, portrait, and commercial photography. Try Snapedit free.",
 };
 
 export default function Home() {
   return (
     <>
       <HeroPeel />
+
       <BeforeAfterSection />
-      <FreeTrialUpload />
+
       <EnrollStep />
+
       <ClientReviewsSection />
+
+      <FreeTrialPrompt />
     </>
   );
 }
