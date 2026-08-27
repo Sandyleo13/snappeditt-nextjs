@@ -1049,26 +1049,28 @@ export default function Navbar() {
                   />
 
                   {/* =================================================
-                      MEGA MENU
+                      RESPONSIVE MEGA MENU
                   ================================================= */}
 
                   <div
                     className="
                       relative
                       grid
-                      w-[calc(100vw-32px)]
-                      max-w-[1100px]
-                      grid-cols-[230px_300px_minmax(0,1fr)]
+                      w-[calc(100vw-24px)]
+                      max-w-[1180px]
+                      grid-cols-[250px_minmax(280px,330px)_minmax(0,1fr)]
                       overflow-hidden
                       rounded-2xl
                       border
                       border-gray-100
                       bg-white
-                      shadow-2xl
-                      xl:max-w-[1250px]
-                      xl:grid-cols-[280px_350px_minmax(0,1fr)]
+                      shadow-[0_25px_70px_rgba(15,23,42,0.16)]
+
+                      xl:max-w-[1280px]
+                      xl:grid-cols-[270px_minmax(300px,350px)_minmax(0,1fr)]
+
                       2xl:max-w-[1400px]
-                      2xl:grid-cols-[300px_380px_minmax(0,1fr)]
+                      2xl:grid-cols-[290px_minmax(320px,380px)_minmax(0,1fr)]
                     "
                   >
                     {/* =================================================
@@ -1077,22 +1079,25 @@ export default function Navbar() {
 
                     <div
                       className="
+                        min-w-0
                         border-r
                         border-gray-100
                         bg-gray-50
                         px-3
                         py-5
                         xl:px-4
+                        xl:py-6
+                        2xl:px-5
                       "
                     >
                       <p
                         className="
                           px-3
                           pb-3
-                          text-xs
+                          text-[10px]
                           font-bold
                           uppercase
-                          tracking-[0.18em]
+                          tracking-[0.2em]
                           text-gray-400
                         "
                       >
@@ -1100,65 +1105,99 @@ export default function Navbar() {
                       </p>
 
                       <div className="space-y-1">
-                        {services.map(
-                          (s) => {
-                            const isActive =
-                              dropdownActiveService ===
-                              s.name;
+                        {services.map((s) => {
+                          const isActive =
+                            dropdownActiveService === s.name;
 
-                            return (
-                              <button
-                                key={
-                                  s.name
+                          return (
+                            <button
+                              key={s.name}
+                              type="button"
+                              onMouseEnter={() =>
+                                setActiveService(s.name)
+                              }
+                              onClick={() =>
+                                setActiveService(s.name)
+                              }
+                              className={`
+                                group
+                                flex
+                                w-full
+                                min-w-0
+                                items-center
+                                gap-3
+                                rounded-xl
+                                px-3
+                                py-3
+                                text-left
+                                transition-all
+                                duration-150
+                                xl:px-3.5
+                                xl:py-3.5
+                                2xl:px-4
+                                ${
+                                  isActive
+                                    ? "bg-red-500 text-white shadow-sm"
+                                    : "text-gray-700 hover:bg-red-50 hover:text-red-600"
                                 }
-                                type="button"
-                                onMouseEnter={() =>
-                                  setActiveService(
-                                    s.name,
-                                  )
-                                }
-                                onClick={() =>
-                                  setActiveService(
-                                    s.name,
-                                  )
-                                }
+                              `}
+                            >
+                              <span
                                 className={`
                                   flex
-                                  w-full
+                                  h-7
+                                  w-7
+                                  shrink-0
                                   items-center
-                                  gap-3
-                                  rounded-xl
-                                  px-3
-                                  py-3
-                                  text-left
-                                  text-2xl
-                                  font-medium
-                                  transition-all
-                                  duration-150
-                                  xl:px-4
+                                  justify-center
+                                  rounded-lg
                                   ${
                                     isActive
-                                      ? "bg-red-500 text-white shadow-sm"
-                                      : "text-gray-700 hover:bg-red-50 hover:text-red-600"
+                                      ? "bg-white/15"
+                                      : "bg-transparent"
                                   }
                                 `}
                               >
-                                <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-                                  {categoryIcon(
-                                    s.name,
-                                  )}
-                                </span>
+                                {categoryIcon(s.name)}
+                              </span>
 
-                                <span className="min-w-0 whitespace-nowrap">
-                                  {s.name.replace(
-                                    " & Events",
-                                    "",
-                                  )}
-                                </span>
-                              </button>
-                            );
-                          },
-                        )}
+                              <span
+                                className="
+                                  min-w-0
+                                  flex-1
+                                  whitespace-normal
+                                  break-words
+                                  text-[15px]
+                                  font-semibold
+                                  leading-5
+                                  xl:text-[16px]
+                                  2xl:text-[17px]
+                                "
+                              >
+                                {s.name.replace(
+                                  " & Events",
+                                  "",
+                                )}
+                              </span>
+
+                              <ChevronRight
+                                size={15}
+                                className={`
+                                  shrink-0
+                                  opacity-50
+                                  transition-transform
+                                  duration-150
+                                  group-hover:translate-x-0.5
+                                  ${
+                                    isActive
+                                      ? "text-white"
+                                      : "text-gray-400"
+                                  }
+                                `}
+                              />
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -1171,21 +1210,29 @@ export default function Navbar() {
                         min-w-0
                         bg-white
                         px-5
-                        py-6
+                        py-5
                         xl:px-6
+                        xl:py-6
                         2xl:px-7
+                        2xl:py-7
                       "
                     >
-                      {/* HEADER */}
-
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="min-w-0">
+                      <div
+                        className="
+                          flex
+                          min-w-0
+                          items-start
+                          justify-between
+                          gap-3
+                        "
+                      >
+                        <div className="min-w-0 flex-1">
                           <p
                             className="
-                              text-xs
+                              text-[10px]
                               font-bold
                               uppercase
-                              tracking-[0.18em]
+                              tracking-[0.2em]
                               text-gray-400
                             "
                           >
@@ -1194,32 +1241,33 @@ export default function Navbar() {
 
                           <h3
                             className="
-                              mt-2
-                              truncate
-                              text-2xl
-                              font-semibold
+                              mt-1.5
+                              break-words
+                              text-lg
+                              font-bold
+                              leading-6
                               tracking-tight
                               text-slate-950
-                              xl:text-2xl
+                              xl:text-xl
+                              2xl:text-[22px]
                             "
                           >
-                            {
-                              activeCategory.name
-                            }
+                            {activeCategory.name}
                           </h3>
                         </div>
 
                         <span
                           className="
+                            mt-0.5
                             shrink-0
                             rounded-full
                             bg-red-50
-                            px-3
+                            px-2.5
                             py-1
-                            text-[11px]
-                            font-semibold
+                            text-[9px]
+                            font-bold
                             uppercase
-                            tracking-[0.18em]
+                            tracking-[0.15em]
                             text-red-600
                           "
                         >
@@ -1227,58 +1275,64 @@ export default function Navbar() {
                         </span>
                       </div>
 
-                      {/* SERVICES LIST */}
-
-                      <div className="mt-5 grid gap-2.5">
+                      <div className="mt-4 grid gap-2">
                         {activeCategory.submenu.map(
                           (item) => (
                             <Link
-                              key={
-                                item.href
-                              }
-                              href={
-                                item.href
-                              }
+                              key={item.href}
+                              href={item.href}
                               onClick={() => {
-                                setServiceOpen(
-                                  false,
-                                );
-                                setActiveService(
-                                  null,
-                                );
+                                setServiceOpen(false);
+                                setActiveService(null);
                               }}
                               className={`
+                                group
                                 flex
-                                min-h-[48px]
+                                min-w-0
+                                min-h-[44px]
                                 items-center
                                 justify-between
-                                gap-4
-                                rounded-2xl
+                                gap-3
+                                rounded-xl
                                 border
-                                px-4
-                                py-3
-                                text-lg
+                                px-3.5
+                                py-2.5
+                                text-sm
+                                font-medium
+                                leading-5
                                 transition-all
                                 duration-150
+                                xl:min-h-[46px]
+                                xl:px-4
+                                xl:text-[15px]
                                 ${
-                                  pathname ===
-                                  item.href
+                                  pathname === item.href
                                     ? "border-red-200 bg-red-50 text-red-600"
                                     : "border-gray-100 text-slate-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                                 }
                               `}
                             >
-                              <span className="min-w-0 truncate">
-                                {
-                                  item.name
-                                }
+                              <span
+                                className="
+                                  min-w-0
+                                  flex-1
+                                  whitespace-normal
+                                  break-words
+                                "
+                              >
+                                {item.name}
                               </span>
 
                               <ChevronRight
-                                size={
-                                  14
-                                }
-                                className="shrink-0 opacity-50"
+                                size={15}
+                                className="
+                                  shrink-0
+                                  text-gray-300
+                                  transition-transform
+                                  duration-150
+                                  group-hover:translate-x-0.5
+                                  group-hover:text-red-500
+                                "
                               />
                             </Link>
                           ),
@@ -1293,98 +1347,106 @@ export default function Navbar() {
                     <div
                       className="
                         flex
-                        min-h-[390px]
+                        min-w-0
+                        min-h-[380px]
                         flex-col
                         justify-between
                         bg-slate-950
-                        p-6
+                        p-5
                         text-white
-                        xl:min-h-[420px]
-                        xl:p-7
-                        2xl:min-h-[440px]
-                        2xl:p-8
+                        xl:min-h-[400px]
+                        xl:p-6
+                        2xl:min-h-[420px]
+                        2xl:p-7
                       "
                     >
-                      <div>
-                        {/* LABEL */}
-
+                      <div className="min-w-0">
                         <span
                           className="
                             inline-flex
+                            max-w-full
                             rounded-full
                             bg-red-500/15
                             px-3
                             py-1
-                            text-sm
-                            font-semibold
+                            text-[10px]
+                            font-bold
                             uppercase
-                            tracking-[0.2em]
+                            tracking-[0.18em]
                             text-red-200
                           "
                         >
                           Featured Service
                         </span>
 
-                        {/* TITLE */}
-
                         <h4
                           className="
-                            mt-5
-                            text-2xl
-                            font-semibold
+                            mt-4
+                            break-words
+                            text-xl
+                            font-bold
+                            leading-6
                             tracking-tight
                             text-white
-                            xl:text-2xl
+                            xl:text-[22px]
+                            xl:leading-7
+                            2xl:text-2xl
                           "
                         >
                           {selectedServiceItem?.name ??
                             "Service Preview"}
                         </h4>
 
-                        {/* DESCRIPTION */}
-
                         <p
                           className="
-                            mt-3
-                            max-w-sm
-                            text-lg
+                            mt-2.5
+                            max-w-md
+                            text-sm
                             leading-6
                             text-slate-300
-                            xl:text-lg
-                            xl:leading-7
+                            xl:text-[15px]
+                            xl:leading-6
+                            2xl:text-base
+                            2xl:leading-7
                           "
                         >
                           Explore how our{" "}
                           {activeCategory.name.toLowerCase()}{" "}
-                          workflow transforms
-                          your images with sharp
-                          color, clean edits, and
+                          workflow transforms your images
+                          with sharp color, clean edits, and
                           fast delivery.
                         </p>
                       </div>
 
                       {/* =================================================
                           BEFORE / AFTER SLIDER
-
-                          THIS IS THE ONLY MAJOR VISUAL CHANGE.
                       ================================================= */}
 
                       <div
                         className="
-                          mt-6
-                          rounded-3xl
+                          mt-5
+                          rounded-2xl
                           border
                           border-white/10
                           bg-white/5
-                          p-4
-                          text-xl
-                          text-slate-200
+                          p-3
+                          xl:mt-6
+                          xl:p-3.5
                         "
                       >
-                        <div className="mb-3 flex items-center justify-between gap-3">
+                        <div
+                          className="
+                            mb-2.5
+                            flex
+                            items-center
+                            justify-between
+                            gap-2
+                          "
+                        >
                           <span
                             className="
-                              text-sm
+                              text-[10px]
+                              font-semibold
                               uppercase
                               tracking-[0.18em]
                               text-slate-400
@@ -1398,9 +1460,9 @@ export default function Navbar() {
                               shrink-0
                               rounded-full
                               bg-red-500/15
-                              px-2
+                              px-2.5
                               py-1
-                              text-xl
+                              text-[10px]
                               font-semibold
                               text-red-200
                             "
@@ -1409,27 +1471,22 @@ export default function Navbar() {
                           </span>
                         </div>
 
-                        {/* =================================================
-                            SLIDER AREA
-                        ================================================= */}
-
                         <div
                           ref={previewRef}
                           className="
                             relative
-                            h-32
+                            h-28
                             w-full
                             cursor-col-resize
                             select-none
                             touch-none
                             overflow-hidden
-                            rounded-2xl
+                            rounded-xl
                             bg-slate-900
-                            xl:h-36
+                            xl:h-32
+                            2xl:h-36
                           "
-                          onMouseDown={(
-                            event,
-                          ) => {
+                          onMouseDown={(event) => {
                             isDraggingRef.current = true;
                             setIsDragging(true);
 
@@ -1447,40 +1504,26 @@ export default function Navbar() {
                               event.clientX,
                             );
                           }}
-                          onTouchStart={
-                            handleTouchStart
-                          }
-                          onTouchMove={
-                            handleTouchMove
-                          }
-                          onTouchEnd={
-                            handleTouchEnd
-                          }
-                          onTouchCancel={
-                            handleTouchEnd
-                          }
+                          onTouchStart={handleTouchStart}
+                          onTouchMove={handleTouchMove}
+                          onTouchEnd={handleTouchEnd}
+                          onTouchCancel={handleTouchEnd}
                         >
-                          {/* =================================================
-                              BEFORE IMAGE
-                          ================================================= */}
-
                           <Image
-                            src={
-                              currentPreview.before
-                            }
+                            src={currentPreview.before}
                             alt={`${selectedServiceItem?.name ?? "Service"} before`}
                             fill
-                            sizes="(max-width: 1024px) 100vw, 360px"
-                            className="pointer-events-none object-cover"
+                            sizes="
+                              (max-width: 1024px) 100vw,
+                              (max-width: 1280px) 500px,
+                              600px
+                            "
+                            className="
+                              pointer-events-none
+                              object-cover
+                            "
                             draggable={false}
                           />
-
-                          {/* =================================================
-                              AFTER IMAGE
-
-                              The clip path reveals only the part
-                              to the right of the slider.
-                          ================================================= */}
 
                           <div
                             className="
@@ -1494,29 +1537,27 @@ export default function Navbar() {
                             }}
                           >
                             <Image
-                              src={
-                                currentPreview.after
-                              }
+                              src={currentPreview.after}
                               alt={`${selectedServiceItem?.name ?? "Service"} after`}
                               fill
-                              sizes="(max-width: 1024px) 100vw, 360px"
+                              sizes="
+                                (max-width: 1024px) 100vw,
+                                (max-width: 1280px) 500px,
+                                600px
+                              "
                               className="object-cover"
                               draggable={false}
                             />
                           </div>
 
-                          {/* =================================================
-                              BEFORE LABEL
-                          ================================================= */}
-
-                          <div className="pointer-events-none absolute left-3 top-3 z-20">
+                          <div className="pointer-events-none absolute left-2.5 top-2.5 z-20">
                             <span
                               className="
                                 rounded-full
-                                bg-black/70
-                                px-2.5
+                                bg-black/75
+                                px-2
                                 py-1
-                                text-[9px]
+                                text-[8px]
                                 font-bold
                                 uppercase
                                 tracking-wider
@@ -1528,18 +1569,14 @@ export default function Navbar() {
                             </span>
                           </div>
 
-                          {/* =================================================
-                              AFTER LABEL
-                          ================================================= */}
-
-                          <div className="pointer-events-none absolute right-3 top-3 z-20">
+                          <div className="pointer-events-none absolute right-2.5 top-2.5 z-20">
                             <span
                               className="
                                 rounded-full
                                 bg-red-500
-                                px-2.5
+                                px-2
                                 py-1
-                                text-[9px]
+                                text-[8px]
                                 font-bold
                                 uppercase
                                 tracking-wider
@@ -1550,10 +1587,6 @@ export default function Navbar() {
                               After
                             </span>
                           </div>
-
-                          {/* =================================================
-                              SLIDER DIVIDER
-                          ================================================= */}
 
                           <div
                             className="
@@ -1570,18 +1603,14 @@ export default function Navbar() {
                               left: `${sliderPosition}%`,
                             }}
                           >
-                            {/* =================================================
-                                SLIDER HANDLE
-                            ================================================= */}
-
                             <div
                               className="
                                 absolute
                                 left-1/2
                                 top-1/2
                                 flex
-                                h-9
-                                w-9
+                                h-8
+                                w-8
                                 -translate-x-1/2
                                 -translate-y-1/2
                                 items-center
@@ -1595,16 +1624,11 @@ export default function Navbar() {
                             >
                               <div className="flex items-center gap-0.5">
                                 <ChevronRight
-                                  size={
-                                    12
-                                  }
+                                  size={10}
                                   className="text-red-500"
                                 />
-
                                 <ChevronLeft
-                                  size={
-                                    12
-                                  }
+                                  size={10}
                                   className="text-red-500"
                                 />
                               </div>
@@ -1615,18 +1639,14 @@ export default function Navbar() {
 
                       {/* BOTTOM ACTION */}
 
-                      <div className="mt-6 flex items-center gap-3">
+                      <div className="mt-5 flex items-center gap-3">
                         <Link
                           href="/service"
                           onClick={() => {
-                            setServiceOpen(
-                              false,
-                            );
-                            setActiveService(
-                              null,
-                            );
+                            setServiceOpen(false);
+                            setActiveService(null);
                           }}
-                          className="x
+                          className="
                             inline-flex
                             items-center
                             justify-center
