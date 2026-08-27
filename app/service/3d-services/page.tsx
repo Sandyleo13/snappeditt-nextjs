@@ -6,17 +6,18 @@ const serviceItems = [
   {
     title: '3D Rendering',
     href: '/service/3d-services/3d-rendering',
-    description: 'Photorealistic renders for architecture, interiors, and product visualization.',
-    image: '/images/real-estate/real-estate-corrected.jpg',
+    description:
+      'Photorealistic renders for architecture, interiors, and product visualization.',
+    image: '/images/3D-Rendering-2.webp',
   },
   {
     title: '3D Floor Plan',
     href: '/service/3d-services/3d-floor-plan',
-    description: 'Detailed 2D to 3D floor plan transformation with furniture, lighting, and realistic materials.',
-    image: '/images/Day-to-Dusk-SHP-Corrected-1.webp',
+    description:
+      'Detailed 2D to 3D floor plan transformation with furniture, lighting, and realistic materials.',
+    image: '/images/3D-Floor-Plan-2.webp',
   },
 ];
-
 export default function ThreeDServicesPage() {
   return (
     <main className="min-h-screen bg-[#F9F8F6] text-slate-900">

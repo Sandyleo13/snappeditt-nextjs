@@ -1582,7 +1582,7 @@ export default function Navbar() {
 
                       <div className="mt-6 flex items-center gap-3">
                         <Link
-                          href="/features"
+                          href="/service"
                           onClick={() => {
                             setServiceOpen(
                               false,

@@ -499,7 +499,7 @@ lg:min-h-[430px]
                 </div>
               </div>
 
-              <div className="flex items-center lg:min-h-[460px]">
+              <div className="flex items-center lg:min-h-[460px] lg:pt-24 lg:translate-y-16 lg:mb-16">
                 <div
                   className="
   w-full

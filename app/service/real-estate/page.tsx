@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { Zap, Clock, Shield, ArrowUpRight } from 'lucide-react';
 
 const realEstateServices = [
-  { title: 'HDR Basic', href: '/service/real-estate/hdr-basic', description: 'Enhanced property photos with rich tones, sharp detail, and balanced exposure.', image: '/images/real-estate-real-estate-raw.jpg', badge: 'HDR Basic' },
+  { title: 'HDR Basic', href: '/service/real-estate/hdr-basic', description: 'Enhanced property photos with rich tones, sharp detail, and balanced exposure.', image: '/images/HDR Basic/1-after.webp', badge: 'HDR Basic' },
   { title: 'Virtual Staging', href: '/service/real-estate/virtual-staging', description: 'Stage interiors digitally for better listing appeal without costly furniture or styling.', image: '/images/real-estate-corrected.jpg', badge: 'Virtual Staging' },
   { title: 'Day To Dusk', href: '/service/real-estate/day-to-dusk', description: 'Convert daytime property photos into warm golden-hour images that command attention.', image: '/images/Day-to-Dusk-SHP-Corrected-1.webp', badge: 'Day To Dusk' },
   { title: 'Flambient Editing', href: '/service/real-estate/flambient-editing', description: 'Blend flash and ambient lighting for perfectly lit architectural imagery.', image: '/images/real-estate-raw.jpg', badge: 'Flambient Editing' },
-  { title: 'Architecture Retouch', href: '/service/real-estate/architecture-retouch', description: 'Fine-tune architectural detail and perspective for polished real estate marketing.', image: '/images/Real-Estate-Single_Exposure-S-Corrected-1.webp', badge: 'Architecture Retouch' },
+  { title: 'Architecture Retouch', href: '/service/real-estate/architecture-retouch', description: 'Fine-tune architectural detail and perspective for polished real estate marketing.', image: '/images/manual-blending-4.webp', badge: 'Architecture Retouch' },
   { title: 'Digital De-Clutter', href: '/service/real-estate/digital-declutter', description: 'Remove distractions and unwanted objects while preserving natural room flow.', image: '/images/Declutter-SPH-Corrected-2.webp', badge: 'Digital De-Clutter' },
 ];
 
